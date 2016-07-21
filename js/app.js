@@ -10,6 +10,9 @@ const basketTubeRadius = 0.5;
 const basketY = 20;
 const basketDistance = 80;
 
+/* EVENTS | MOBILE */
+const doubleTapTime = 300;
+
 const world = new WHS.World({
   autoresize: true,
 
@@ -25,17 +28,14 @@ const world = new WHS.World({
 
   gravity: {
     y: -200
-  },
-
-  rWidth: 2,
-  rHeight: 2
+  }
 });
 
 const ball = new WHS.Sphere({
   geometry: {
     radius: ballRadius, 
-    widthSegments: 32,
-    heightSegments: 32
+    widthSegments: 16,
+    heightSegments: 16
   },
 
   mass: 10,
@@ -121,12 +121,15 @@ world.start();
 _initEvents();
 
 /* PLAY */
-var thrown = false;
+var thrown = false, doubletap = false;
 var cursor = {x: 0, y: 0};
 
 function _initEvents() {
+  ['mousemove', 'touchmove'].forEach((e) => {
+    window.addEventListener(e, updateCoords);
+  });
+
   window.addEventListener('click', throwBall);
-  window.addEventListener('mousemove', updateCoords);
   window.addEventListener('keypress', checkKeys);
 
   const loop = new WHS.Loop(() => {
@@ -138,20 +141,22 @@ function _initEvents() {
 }
 
 function throwBall() {
-  const force = 200;
-  const vector = {
-    x: cursor.x - window.innerWidth / 2, 
-    y: 6.2 * force,
-    z: -2 * force
-  };
+  if (detectDoubleTap()) {
+    const force = 200;
+    const vector = {
+      x: cursor.x - window.innerWidth / 2, 
+      y: 6.2 * force,
+      z: -2 * force
+    };
 
-  if (!thrown) ball.applyCentralImpulse(vector);
-  thrown = true;
+    if (!thrown) ball.applyCentralImpulse(vector);
+    thrown = true;
+  }
 }
 
 function updateCoords(e) {
-  cursor.x = e.clientX;
-  cursor.y = e.clientY;
+  cursor.x = e.clientX || e.touches[0].clientX;
+  cursor.y = e.clientY || e.touches[0].clientY;
 }
 
 function checkKeys(e) {
@@ -167,4 +172,21 @@ function pickBall() {
 
   ball.setLinearVelocity(new THREE.Vector3(0, 0, 0)); // Reset gravity affect.
   ball.position.set(x, y, -40);
+}
+
+function detectDoubleTap() {
+  if (!doubletap) {
+    doubletap = true;
+
+    setTimeout(() => {
+      doubletap = false;
+    }, doubleTapTime);
+
+    return true;
+  } else {
+    thrown = false;
+    doubletap = true;
+
+    return false;
+  }
 }
