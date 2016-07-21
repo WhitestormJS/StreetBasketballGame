@@ -1,0 +1,29 @@
+{
+  "name": "whitestorm",
+  "homepage": "https://github.com/WhitestormJS/whitestorm.js",
+  "repository" : {
+      "type": "git",
+      "url": "https://github.com/WhitestormJS/whitestorm.js"
+  },
+  "authors": [
+    "sasha240100 <siteprogcom@gmail.com>"
+  ],
+  "description": "Framework for developing 3D web apps with physics.",
+  "main": "index.html",
+  "moduleType": [
+    "globals"
+  ],
+  "license": "Apache",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "src",
+    "src-examples",
+    "examples",
+    "lib",
+    "media"
+  ]
+}
