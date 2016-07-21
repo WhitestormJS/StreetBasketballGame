@@ -15,6 +15,7 @@ const doubleTapTime = 300;
 
 const world = new WHS.World({
   autoresize: true,
+  stats: 'fps',
 
   background: {
     color: bgColor
@@ -34,46 +35,52 @@ const world = new WHS.World({
 const ball = new WHS.Sphere({
   geometry: {
     radius: ballRadius, 
-    widthSegments: 16,
-    heightSegments: 16
+    widthSegments: 32,
+    heightSegments: 32
   },
 
   mass: 10,
 
   material: {
-    kind: 'basic',
-    map: WHS.texture('./textures/ball.png')
+    kind: 'phong',
+    map: WHS.texture('./textures/ball.png'),
+    normalMap: WHS.texture('./textures/ball_normal.png'),
+    shininess: 20,
+    reflectivity: 2,
+    normalScale: new THREE.Vector2(0.5, 0.5)
   },
 
   physics: {
     restitution: 3
-  },
-
-  pos: {
-    z: -20
   }
 });
 
-const ground = new WHS.Box({
+const ground = new WHS.Plane({
   geometry: {
     width: 250,
-    depth: 250
+    height: 200
   },
 
   mass: 0,
 
   material: {
-    kind: 'basic',
+    kind: 'phong',
     color: bgColor
   },
 
   pos: {
-    y: -20
+    y: -20,
+    z: 20
+  },
+
+  rot: {
+    x: -Math.PI / 2
   }
 });
 
 const wall = ground.clone();
-wall.rotation.x = Math.PI / 2;
+wall.rotation.x = 0;
+wall.position.y = 80;
 wall.position.z = -basketDistance;
 
 const basket = new WHS.Torus({
@@ -82,6 +89,10 @@ const basket = new WHS.Torus({
     tube: basketTubeRadius,
     radialSegments: 32,
     tubularSegments: 32
+  },
+
+  shadow: {
+    cast: false
   },
 
   mass: 0,
@@ -112,6 +123,39 @@ ball.addTo(world);
 ground.addTo(world);
 wall.addTo(world);
 basket.addTo(world);
+
+new WHS.PointLight({
+  light: {
+    distance: 100,
+    intensity: 1,
+    angle: Math.PI
+  },
+
+  shadowmap: {
+    width: 1024,
+    height: 1024,
+
+    left: -50,
+    right: 50,
+    top: 50,
+    bottom: -50,
+
+    far: 80,
+
+    fov: 90,
+  },
+
+  pos: {
+    y: 60,
+    z: -40
+  }
+}).addTo(world);
+
+new WHS.AmbientLight({
+  light: {
+    intensity: 0.3
+  }
+}).addTo(world);
 
 // world.setControls(WHS.orbitControls());
 
