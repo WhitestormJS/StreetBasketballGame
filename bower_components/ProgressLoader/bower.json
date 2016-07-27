@@ -1,0 +1,23 @@
+{
+  "name": "ProgressLoader",
+  "homepage": "https://github.com/sasha240100/ProgressLoader",
+  "authors": [
+    "sasha240100 <alexbuzin88@gmail.com>"
+  ],
+  "description": "Simple step counter. Useful for preloading percent calculation.",
+  "main": "progress-loader.js",
+  "keywords": [
+    "preloading",
+    "js",
+    "steps",
+    "process"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}

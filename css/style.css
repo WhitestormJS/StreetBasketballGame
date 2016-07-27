@@ -1,0 +1,22 @@
+.helpers {
+	position: fixed;
+	right: 100px;
+	top: 200px;
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;          /* Likely future */
+}
+
+.helpers img {
+	opacity: 0.6;
+}
+
+.helpers.deactivated img {
+	transition: opacity 1s ease-in;
+	-webkit-transition: opacity 1s ease-in;
+	-moz-transition: opacity 1s ease-in;
+	-o-transition: opacity 1s ease-in;
+	-ms-transition: opacity 1s ease-in;
+	opacity: 0;
+}

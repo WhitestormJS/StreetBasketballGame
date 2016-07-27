@@ -1,3 +1,8 @@
+/* === GLOABAL === */
+let helpersActive = true;
+
+/* === APP === */
+
 const bgColor = 0xcccccc;
 
 /* BALL */
@@ -176,7 +181,7 @@ const net = new WHS.Cylinder({ // Softbody (blue).
     height: 15,
     openEnded: true,
     heightSegments: 3,
-    radiusSegments: 32
+    radiusSegments: 16
   },
 
   shadow: {
@@ -187,7 +192,7 @@ const net = new WHS.Cylinder({ // Softbody (blue).
     pressure: 1000,
     friction: 0.02,
     margin: 0.3,
-    anchorHardness: 0.2
+    anchorHardness: 0.4
   },
 
   mass: 30,
@@ -212,112 +217,13 @@ const net = new WHS.Cylinder({ // Softbody (blue).
   }
 });
 
-/*
-const net = new WHS.Cylinder({ // Softbody (blue).
-  geometry: {
-    radiusTop: basketRadius + 0.5,
-    radiusBottom: basketRadius - 1.2,
-    height: 7,
-    openEnded: false,
-    heightSegments: 5,
-    radiusSegments: 32
-  },
-
-  shadow: {
-    cast: false
-  },
-
-  physics: {
-    pressure: 0,
-    friction: 0,
-    margin: 0.3
-  },
-
-  mass: 50,
-  softbody: true,
-
-  material: {
-    map: WHS.texture('./textures/net4.png', {repeat: {y: 0.3, x: 2}, offset: {y: 0.7}}), // 0.85, 19
-    transparent: true,
-    opacity: 0.7,
-    kind: 'basic',
-    side: THREE.DoubleSide,
-    depthWrite: false
-  },
-
-  pos: {
-    y: basketY - 20 + basketZ,
-    z: -16
-  },
-
-  rot: {
-    x: -Math.PI / 2
-  }
-});
-
-const net2 = new WHS.Tube({ // Softbody (blue).
-  geometry: {
-    path: new THREE.LineCurve3(new THREE.Vector3(0, -basketTubeRadius * 2, basketZ), new THREE.Vector3(0, -basketTubeRadius * 2 - 8, basketZ)),
-    segments: 3,
-    radius: basketRadius - 1.5,
-    radiusSegments: 32,
-    closed: false
-  },
-
-  shadow: {
-    cast: false
-  },
-
-  physics: {
-    pressure: 0,
-    friction: 0,
-    margin: 0.3
-  },
-
-  mass: 30,
-  softbody: true,
-
-  material: {
-    map: WHS.texture('./textures/net3.png', {repeat: {y: 2, x: 0.4}, offset: {x: 0.3}}), // 0.85, 19
-    transparent: true,
-    opacity: 0.7,
-    kind: 'basic',
-    side: THREE.DoubleSide,
-    depthWrite: false
-  },
-
-  pos: {
-    y: basketY - 20,
-    z: -13.3
-  },
-
-  rot: {
-    x: -Math.PI / 2
-  }
-});*/
-
 net.addTo(world).then(() => {
   net.getNative().frustumCulled = false;
 
-  // for (let i = 0; i < 12; i++) {
-  //   net.appendAnchor(world, basket, i * 2, 0.3, false);
-  // }
-
-  for (let i = 0; i < 32; i++) {
+  for (let i = 0; i < 16; i++) {
     net.appendAnchor(world, basket, i, 0.1, false);
   }
 });
-/*
-net2.addTo(world).then(() => {
-  net2.getNative().frustumCulled = false;
-
-  for (let i = 0; i < 20; i++) {
-    net2.appendAnchor(world, basket, i * 2, 0.1, false);
-  }
-});*/
-
-// const target = new WHS.Group(wall, basket);
-// target.position.z = -40;
 
 ball.addTo(world);
 ground.addTo(world);
@@ -381,7 +287,12 @@ function _initEvents() {
     if (ball.position.distanceTo(basket.position) < basketGoalDiff
       && Math.abs(ball.position.y - basket.position.y) < basketYGoalDiff 
       && !goal) {
-      // alert("goal!");
+      
+      if (helpersActive) {
+        document.querySelector('.helpers').className += ' deactivated';
+        helpersActive = false;
+      }
+
       goal = true;
       setTimeout(() => goal = false, goalDuration);
     }
