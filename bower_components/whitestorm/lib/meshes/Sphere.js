@@ -31,8 +31,6 @@ var THREE = _interopRequireWildcard(_three);
 
 var _index = require('../physics/index.js');
 
-var Physijs = _interopRequireWildcard(_index);
-
 var _Shape2 = require('../core/Shape');
 
 var _api = require('../extras/api');
@@ -74,7 +72,7 @@ var Sphere = function (_Shape) {
 
       var Mesh = void 0;
 
-      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.SphereMesh;else Mesh = THREE.Mesh;
+      if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.SphereMesh;else Mesh = THREE.Mesh;
 
       return new Promise(function (resolve) {
         _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));

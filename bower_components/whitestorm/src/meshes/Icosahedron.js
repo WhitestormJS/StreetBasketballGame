@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import Physijs  from '../physics/index.js';
+import {ConvexMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';
@@ -24,8 +24,8 @@ class Icosahedron extends Shape {
 
     let Mesh;
 
-    if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;
-    else if (this.physics) Mesh = Physijs.ConvexMesh;
+    if (this.physics && this.getParams().softbody) Mesh = SoftMesh;
+    else if (this.physics) Mesh = ConvexMesh;
     else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {

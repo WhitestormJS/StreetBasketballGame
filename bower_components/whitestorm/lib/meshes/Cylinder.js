@@ -31,8 +31,6 @@ var THREE = _interopRequireWildcard(_three);
 
 var _index = require('../physics/index.js');
 
-var Physijs = _interopRequireWildcard(_index);
-
 var _Shape2 = require('../core/Shape');
 
 var _api = require('../extras/api');
@@ -54,7 +52,11 @@ var Cylinder = function (_Shape) {
       radiusTop: 0,
       radiusBottom: 1,
       height: 1,
-      radiusSegments: 32
+      radiusSegments: 32,
+      heightSegments: 1,
+      openEnded: false,
+      thetaStart: 0,
+      thetaLength: Math.PI * 2
     });
 
     if (params.build) {
@@ -75,7 +77,7 @@ var Cylinder = function (_Shape) {
 
       var Mesh = void 0;
 
-      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.CylinderMesh;else Mesh = THREE.Mesh;
+      if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.CylinderMesh;else Mesh = THREE.Mesh;
 
       return new Promise(function (resolve) {
         _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -90,7 +92,11 @@ var Cylinder = function (_Shape) {
 
       var GConstruct = params.buffer && !params.softbody ? THREE.CylinderBufferGeometry : THREE.CylinderGeometry;
 
-      return new GConstruct(params.geometry.radiusTop, params.geometry.radiusBottom, params.geometry.height, params.geometry.radiusSegments);
+      var geometry = new GConstruct(params.geometry.radiusTop, params.geometry.radiusBottom, params.geometry.height, params.geometry.radiusSegments, params.geometry.heightSegments, params.geometry.openEnded, params.geometry.thetaStart, params.geometry.thetaLength);
+
+      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+
+      return geometry;
     }
   }, {
     key: 'clone',

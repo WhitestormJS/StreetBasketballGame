@@ -26,7 +26,8 @@ class Shape extends WHSObject {
       friction: 0.8,
       damping: 0,
       pressure: 100,
-      margin: 0
+      margin: 0,
+      stiffness: 0.9
     } : false;
 
     super({
@@ -630,8 +631,8 @@ class Shape extends WHSObject {
 
   proccessSoftbodyGeometry(geometry) {
     geometry.rotateX(this.__params.rot.x);
-    geometry.rotateY(this.__params.rot.x);
-    geometry.rotateZ(this.__params.rot.x);
+    geometry.rotateY(this.__params.rot.y);
+    geometry.rotateZ(this.__params.rot.z);
 
     geometry.scale(
       this.__params.scale.x,
@@ -717,6 +718,10 @@ class Shape extends WHSObject {
 
   setCcdSweptSphereRadius(...args) {
     return this.getNative().setCcdSweptSphereRadius(...args);
+  }
+
+  appendAnchor(world, object, node, influence, collisionBetweenLinkedBodies = true) {
+    return this.getNative().appendAnchor(world.getScene(), object.getNative(), node, influence, collisionBetweenLinkedBodies);
   }
 
   /* Three.js */

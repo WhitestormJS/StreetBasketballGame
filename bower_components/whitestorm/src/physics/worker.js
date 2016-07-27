@@ -100,6 +100,7 @@ module.exports = function (self) {
           _vec3_1.setY(description.normal.y);
           _vec3_1.setZ(description.normal.z);
           shape = new Ammo.btStaticPlaneShape(_vec3_1, 0);
+          shape.setMargin(description.params.margin);
           setShapeCache(cache_key, shape);
         }
 
@@ -113,6 +114,7 @@ module.exports = function (self) {
           _vec3_1.setY(description.height / 2);
           _vec3_1.setZ(description.depth / 2);
           shape = new Ammo.btBoxShape(_vec3_1);
+          shape.setMargin(description.params.margin);
           setShapeCache(cache_key, shape);
         }
 
@@ -123,6 +125,7 @@ module.exports = function (self) {
 
         if ((shape = getShapeFromCache(cache_key)) === null) {
           shape = new Ammo.btSphereShape(description.radius);
+          shape.setMargin(description.params.margin);
           setShapeCache(cache_key, shape);
         }
 
@@ -136,6 +139,7 @@ module.exports = function (self) {
           _vec3_1.setY(description.height / 2);
           _vec3_1.setZ(description.depth / 2);
           shape = new Ammo.btCylinderShape(_vec3_1);
+          shape.setMargin(description.params.margin);
           setShapeCache(cache_key, shape);
         }
 
@@ -147,6 +151,7 @@ module.exports = function (self) {
         if ((shape = getShapeFromCache(cache_key)) === null) {
           // In Bullet, capsule height excludes the end spheres
           shape = new Ammo.btCapsuleShape(description.radius, description.height - 2 * description.radius);
+          shape.setMargin(description.params.margin);
           setShapeCache(cache_key, shape);
         }
 
@@ -157,6 +162,7 @@ module.exports = function (self) {
 
         if ((shape = getShapeFromCache(cache_key)) === null) {
           shape = new Ammo.btConeShape(description.radius, description.height);
+          shape.setMargin(description.params.margin);
           setShapeCache(cache_key, shape);
         }
 
@@ -193,6 +199,9 @@ module.exports = function (self) {
           true,
           true
         );
+        
+        shape.setMargin(description.params.margin);
+
         _noncached_shapes[description.id] = shape;
 
         break;
@@ -208,6 +217,8 @@ module.exports = function (self) {
 
           shape.addPoint(_vec3_1);
         }
+
+        shape.setMargin(description.params.margin);
 
         _noncached_shapes[description.id] = shape;
 
@@ -243,6 +254,8 @@ module.exports = function (self) {
         _vec3_1.setZ(1);
 
         shape.setLocalScaling(_vec3_1);
+        shape.setMargin(description.params.margin);
+
         _noncached_shapes[description.id] = shape;
         break;
       }
@@ -252,6 +265,48 @@ module.exports = function (self) {
     }
 
     return shape;
+  };
+
+  const createSoftBody = (description) => {
+    let body;
+
+    switch (description.type) {
+      case 'softTrimesh': {
+        if (!description.aVertices.length) return false;
+
+        body = softBodyHelpers.CreateFromTriMesh(
+          world.getWorldInfo(),
+          description.aVertices,
+          description.aIndices,
+          description.aIndices.length / 3,
+          true
+        );
+
+        break;
+      }
+      case 'softClothMesh': {
+        const cr = description.corners;
+
+        body = softBodyHelpers.CreatePatch(
+          world.getWorldInfo(),
+          new Ammo.btVector3(cr[0], cr[1], cr[2]),
+          new Ammo.btVector3(cr[3], cr[4], cr[5]),
+          new Ammo.btVector3(cr[6], cr[7], cr[8]),
+          new Ammo.btVector3(cr[9], cr[10], cr[11]),
+          description.segments[0],
+          description.segments[1],
+          0,
+          true
+        );
+
+        break;
+      }
+      default:
+        // Not recognized
+        return;
+    }
+
+    return body;
   };
 
   public_functions.init = (params = {}) => {
@@ -337,19 +392,21 @@ module.exports = function (self) {
     world.setGravity(_vec3_1);
   };
 
+  public_functions.appendAnchor = (description) => {
+    _objects[description.obj]
+      .appendAnchor(
+        description.node, 
+        _objects[description.obj2], 
+        description.collisionBetweenLinkedBodies, 
+        description.influence
+      );
+  }
+
   public_functions.addObject = (description) => {
     let body, motionState;
 
-    if (description.type === 'softbody') {
-      if (!description.aVertices.length) return false;
-
-      body = softBodyHelpers.CreateFromTriMesh(
-        world.getWorldInfo(),
-        description.aVertices,
-        description.aIndices,
-        description.aIndices.length / 3,
-        true
-      );
+    if (description.type.indexOf('soft') !== -1) {
+      body = createSoftBody(description);
 
       const sbConfig = body.get_m_cfg(),
         physParams = description.params;
@@ -357,9 +414,13 @@ module.exports = function (self) {
       sbConfig.set_viterations(40);
       sbConfig.set_piterations(40);
       sbConfig.set_collisions(0x11);
-      sbConfig.set_kDF(physParams.friction ? physParams.friction : 0.1);
-      sbConfig.set_kDP(physParams.damping ? physParams.damping : 0.01);
-      sbConfig.set_kPR(physParams.pressure ? physParams.pressure : 0);
+      sbConfig.set_kDF(physParams.friction);
+      sbConfig.set_kDP(physParams.damping);
+      if (physParams.pressure) sbConfig.set_kPR(physParams.pressure);
+      if (physParams.drag) sbConfig.set_kDG(physParams.drag);
+      if (physParams.lift) sbConfig.set_kLF(physParams.lift);
+      if (physParams.anchorHardness) sbConfig.set_kAHR(physParams.anchorHardness);
+      if (physParams.rigidHardness) sbConfig.set_kCHR(physParams.rigidHardness);
 
       body.get_m_materials().at(0).set_m_kLST(physParams.stiffness ? physParams.stiffness : 0.9);
       body.get_m_materials().at(0).set_m_kAST(physParams.stiffness ? physParams.stiffness : 0.9);
@@ -383,7 +444,7 @@ module.exports = function (self) {
 
       body.transform(_transform);
 
-      body.setMass(description.mass, true);
+      body.setTotalMass(description.mass, false);
       world.addSoftBody(body, 1, -1);
       _softbody_report_size += body.get_m_nodes().size();
       _num_softbody_objects++;
@@ -450,9 +511,7 @@ module.exports = function (self) {
       rbInfo.set_m_linearDamping(physParams.damping);
       rbInfo.set_m_angularDamping(physParams.damping);
 
-
       body = new Ammo.btRigidBody(rbInfo);
-      Ammo.castObject(body, Ammo.btCollisionObject).getCollisionShape().setMargin(physParams.margin ? physParams.margin : 0.1);
       Ammo.destroy(rbInfo);
 
       if (typeof description.collision_flags !== 'undefined') body.setCollisionFlags(description.collision_flags);
@@ -1016,9 +1075,9 @@ module.exports = function (self) {
       last_simulation_duration = Date.now();
       world.stepSimulation(params.timeStep, params.maxSubSteps, fixedTimeStep);
 
-      reportVehicles();
+      if (_vehicles.length > 0) reportVehicles();
       reportCollisions();
-      reportConstraints();
+      if (_constraints.length > 0) reportConstraints();
       reportWorld();
       if (_softbody_enabled) reportWorld_softbodies();
 

@@ -54,7 +54,7 @@ var WHS =
 	var _index = __webpack_require__(1);
 	
 	Object.keys(_index).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -66,7 +66,7 @@ var WHS =
 	var _index2 = __webpack_require__(105);
 	
 	Object.keys(_index2).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -78,7 +78,7 @@ var WHS =
 	var _index3 = __webpack_require__(110);
 	
 	Object.keys(_index3).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -90,7 +90,7 @@ var WHS =
 	var _index4 = __webpack_require__(111);
 	
 	Object.keys(_index4).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -102,7 +102,7 @@ var WHS =
 	var _index5 = __webpack_require__(119);
 	
 	Object.keys(_index5).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -114,7 +114,7 @@ var WHS =
 	var _index6 = __webpack_require__(126);
 	
 	Object.keys(_index6).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -155,7 +155,7 @@ var WHS =
 	var _CubeCamera = __webpack_require__(2);
 	
 	Object.keys(_CubeCamera).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -167,7 +167,7 @@ var WHS =
 	var _OrtographicCamera = __webpack_require__(103);
 	
 	Object.keys(_OrtographicCamera).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -179,7 +179,7 @@ var WHS =
 	var _PerspectiveCamera = __webpack_require__(104);
 	
 	Object.keys(_PerspectiveCamera).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -44889,7 +44889,7 @@ var WHS =
 	var _Camera = __webpack_require__(94);
 	
 	Object.keys(_Camera).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -44901,7 +44901,7 @@ var WHS =
 	var _Light = __webpack_require__(106);
 	
 	Object.keys(_Light).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -44913,7 +44913,7 @@ var WHS =
 	var _Object = __webpack_require__(97);
 	
 	Object.keys(_Object).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -44925,7 +44925,7 @@ var WHS =
 	var _Shape = __webpack_require__(107);
 	
 	Object.keys(_Shape).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -44937,7 +44937,7 @@ var WHS =
 	var _World = __webpack_require__(108);
 	
 	Object.keys(_World).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -45406,7 +45406,8 @@ var WHS =
 	      friction: 0.8,
 	      damping: 0,
 	      pressure: 100,
-	      margin: 0
+	      margin: 0,
+	      stiffness: 0.9
 	    } : false;
 	
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Shape).call(this, {
@@ -45857,8 +45858,8 @@ var WHS =
 	    key: 'proccessSoftbodyGeometry',
 	    value: function proccessSoftbodyGeometry(geometry) {
 	      geometry.rotateX(this.__params.rot.x);
-	      geometry.rotateY(this.__params.rot.x);
-	      geometry.rotateZ(this.__params.rot.x);
+	      geometry.rotateY(this.__params.rot.y);
+	      geometry.rotateZ(this.__params.rot.z);
 	
 	      geometry.scale(this.__params.scale.x, this.__params.scale.y, this.__params.scale.z);
 	
@@ -45982,6 +45983,13 @@ var WHS =
 	      var _getNative14;
 	
 	      return (_getNative14 = this.getNative()).setCcdSweptSphereRadius.apply(_getNative14, arguments);
+	    }
+	  }, {
+	    key: 'appendAnchor',
+	    value: function appendAnchor(world, object, node, influence) {
+	      var collisionBetweenLinkedBodies = arguments.length <= 4 || arguments[4] === undefined ? true : arguments[4];
+	
+	      return this.getNative().appendAnchor(world.getScene(), object.getNative(), node, influence, collisionBetweenLinkedBodies);
 	    }
 	
 	    /* Three.js */
@@ -46334,8 +46342,6 @@ var WHS =
 	  (0, _createClass3.default)(World, [{
 	    key: '_initScene',
 	    value: function _initScene() {
-	      var _this2 = this;
-	
 	      var params = this.getParams(),
 	          scene = false ? new Physijs.Scene({
 	        fixedTimeStep: params.physics.fixedTimeStep
@@ -46349,11 +46355,6 @@ var WHS =
 	        scene.setGravity(new THREE.Vector3(params.gravity.x, params.gravity.y, params.gravity.z));
 	
 	        this.simulate = true;
-	        scene.addEventListener('update', function () {
-	          if (_this2.simulate) scene.simulate(undefined, 1);
-	        });
-	
-	        scene.simulate();
 	      } else this.simulate = false;
 	
 	      if (params.fog.type === 'regular') scene.fog = new THREE.Fog(params.fog.hex, params.fog.near, params.fog.far);else if (params.fog.type === 'exp' || params.fog.type === 'expodential') scene.fog = new THREE.FogExp2(params.fog.hex, params.fog.density);
@@ -46528,6 +46529,8 @@ var WHS =
 	        _scope._process(clock.getDelta());
 	        if (_scope.controls) _scope._updateControls();
 	
+	        if (_scope.simulate) scene.simulate(clock.getDelta());
+	
 	        // Effects rendering.
 	        if (_scope._composer && _scope.render) {
 	          _scope._composer.reset();
@@ -46605,7 +46608,7 @@ var WHS =
 	  }, {
 	    key: 'setScene',
 	    value: function setScene(scene) {
-	      var _this3 = this;
+	      var _this2 = this;
 	
 	      var import_three = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
 	
@@ -46613,7 +46616,7 @@ var WHS =
 	
 	      if (import_three) {
 	        (function () {
-	          _this3.children = [];
+	          _this2.children = [];
 	
 	          var moveChildren = function moveChildren(object) {
 	            for (var i = 0, max = object.children.length; i < max; i++) {
@@ -46622,13 +46625,13 @@ var WHS =
 	
 	              if (obj3D instanceof THREE.Light) WHSobj = new _Light.Light(obj3D);else WHSobj = new _Shape.Shape(obj3D);
 	
-	              WHSobj.addTo(_this3);
+	              WHSobj.addTo(_this2);
 	
 	              if (obj3D.children.length) moveChildren(obj3D, WHSobj);
 	            }
 	          };
 	
-	          moveChildren(scene, _this3);
+	          moveChildren(scene, _this2);
 	        })();
 	      }
 	
@@ -46731,7 +46734,7 @@ var WHS =
 	var _Loop = __webpack_require__(95);
 	
 	Object.keys(_Loop).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -46753,7 +46756,7 @@ var WHS =
 	var _firstPersonControls = __webpack_require__(112);
 	
 	Object.keys(_firstPersonControls).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -46765,7 +46768,7 @@ var WHS =
 	var _orbitControls = __webpack_require__(113);
 	
 	Object.keys(_orbitControls).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -46777,7 +46780,7 @@ var WHS =
 	var _api = __webpack_require__(99);
 	
 	Object.keys(_api).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -46789,7 +46792,7 @@ var WHS =
 	var _Curve = __webpack_require__(115);
 	
 	Object.keys(_Curve).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -46801,7 +46804,7 @@ var WHS =
 	var _Points = __webpack_require__(116);
 	
 	Object.keys(_Points).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -46813,7 +46816,7 @@ var WHS =
 	var _Group = __webpack_require__(117);
 	
 	Object.keys(_Group).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -46825,7 +46828,7 @@ var WHS =
 	var _Skybox = __webpack_require__(118);
 	
 	Object.keys(_Skybox).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -48776,7 +48779,7 @@ var WHS =
 	var _AmbientLight = __webpack_require__(120);
 	
 	Object.keys(_AmbientLight).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -48788,7 +48791,7 @@ var WHS =
 	var _DirectionalLight = __webpack_require__(121);
 	
 	Object.keys(_DirectionalLight).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -48800,7 +48803,7 @@ var WHS =
 	var _HemisphereLight = __webpack_require__(122);
 	
 	Object.keys(_HemisphereLight).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -48812,7 +48815,7 @@ var WHS =
 	var _NormalLight = __webpack_require__(123);
 	
 	Object.keys(_NormalLight).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -48824,7 +48827,7 @@ var WHS =
 	var _PointLight = __webpack_require__(124);
 	
 	Object.keys(_PointLight).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -48836,7 +48839,7 @@ var WHS =
 	var _SpotLight = __webpack_require__(125);
 	
 	Object.keys(_SpotLight).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49327,7 +49330,7 @@ var WHS =
 	var _Box = __webpack_require__(127);
 	
 	Object.keys(_Box).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49339,7 +49342,7 @@ var WHS =
 	var _Cylinder = __webpack_require__(128);
 	
 	Object.keys(_Cylinder).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49351,7 +49354,7 @@ var WHS =
 	var _Dodecahedron = __webpack_require__(129);
 	
 	Object.keys(_Dodecahedron).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49363,7 +49366,7 @@ var WHS =
 	var _Extrude = __webpack_require__(130);
 	
 	Object.keys(_Extrude).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49375,7 +49378,7 @@ var WHS =
 	var _Icosahedron = __webpack_require__(131);
 	
 	Object.keys(_Icosahedron).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49387,7 +49390,7 @@ var WHS =
 	var _Lathe = __webpack_require__(132);
 	
 	Object.keys(_Lathe).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49399,7 +49402,7 @@ var WHS =
 	var _Model = __webpack_require__(133);
 	
 	Object.keys(_Model).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49411,7 +49414,7 @@ var WHS =
 	var _Morph = __webpack_require__(134);
 	
 	Object.keys(_Morph).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49423,7 +49426,7 @@ var WHS =
 	var _Octahedron = __webpack_require__(135);
 	
 	Object.keys(_Octahedron).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49435,7 +49438,7 @@ var WHS =
 	var _Parametric = __webpack_require__(136);
 	
 	Object.keys(_Parametric).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49447,7 +49450,7 @@ var WHS =
 	var _Plane = __webpack_require__(137);
 	
 	Object.keys(_Plane).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49459,7 +49462,7 @@ var WHS =
 	var _Polyhedron = __webpack_require__(138);
 	
 	Object.keys(_Polyhedron).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49471,7 +49474,7 @@ var WHS =
 	var _Ring = __webpack_require__(139);
 	
 	Object.keys(_Ring).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49483,7 +49486,7 @@ var WHS =
 	var _Shape2D = __webpack_require__(140);
 	
 	Object.keys(_Shape2D).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49495,7 +49498,7 @@ var WHS =
 	var _Sphere = __webpack_require__(141);
 	
 	Object.keys(_Sphere).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49507,7 +49510,7 @@ var WHS =
 	var _Tetrahedron = __webpack_require__(142);
 	
 	Object.keys(_Tetrahedron).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49519,7 +49522,7 @@ var WHS =
 	var _Text = __webpack_require__(143);
 	
 	Object.keys(_Text).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49531,7 +49534,7 @@ var WHS =
 	var _Torus = __webpack_require__(144);
 	
 	Object.keys(_Torus).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49543,7 +49546,7 @@ var WHS =
 	var _Torusknot = __webpack_require__(145);
 	
 	Object.keys(_Torusknot).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49555,7 +49558,7 @@ var WHS =
 	var _Tube = __webpack_require__(146);
 	
 	Object.keys(_Tube).forEach(function (key) {
-	  if (key === "default") return;
+	  if (key === "default" || key === "__esModule") return;
 	  Object.defineProperty(exports, key, {
 	    enumerable: true,
 	    get: function get() {
@@ -49601,8 +49604,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -49644,7 +49645,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.BoxMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.BoxMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -49737,8 +49738,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -49760,7 +49759,11 @@ var WHS =
 	      radiusTop: 0,
 	      radiusBottom: 1,
 	      height: 1,
-	      radiusSegments: 32
+	      radiusSegments: 32,
+	      heightSegments: 1,
+	      openEnded: false,
+	      thetaStart: 0,
+	      thetaLength: Math.PI * 2
 	    });
 	
 	    if (params.build) {
@@ -49781,7 +49784,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.CylinderMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.CylinderMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -49796,7 +49799,11 @@ var WHS =
 	
 	      var GConstruct = params.buffer && !params.softbody ? THREE.CylinderBufferGeometry : THREE.CylinderGeometry;
 	
-	      return new GConstruct(params.geometry.radiusTop, params.geometry.radiusBottom, params.geometry.height, params.geometry.radiusSegments);
+	      var geometry = new GConstruct(params.geometry.radiusTop, params.geometry.radiusBottom, params.geometry.height, params.geometry.radiusSegments, params.geometry.heightSegments, params.geometry.openEnded, params.geometry.thetaStart, params.geometry.thetaLength);
+	
+	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+	
+	      return geometry;
 	    }
 	  }, {
 	    key: 'clone',
@@ -49878,8 +49885,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -49920,7 +49925,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -50001,8 +50006,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var _nophysi2 = _interopRequireDefault(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -50043,7 +50046,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi2.default.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi2.default.ConcaveMesh;else if (this.physics) Mesh = _nophysi2.default.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -50124,8 +50127,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var _nophysi2 = _interopRequireDefault(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -50166,7 +50167,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi2.default.SoftMesh;else if (this.physics) Mesh = _nophysi2.default.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -50247,8 +50248,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -50288,7 +50287,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -50361,8 +50360,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -50402,7 +50399,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      var promise = new Promise(function (resolve) {
 	        var pGeometry = params.geometry;
@@ -50626,8 +50623,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -50668,7 +50663,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -50749,8 +50744,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -50793,7 +50786,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -50882,8 +50875,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -50926,7 +50917,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.PlaneMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.ClothMesh;else if (this.physics) Mesh = _nophysi.PlaneMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -50939,9 +50930,13 @@ var WHS =
 	    value: function buildGeometry() {
 	      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 	
-	      var GConstruct = params.buffer && !params.softbody ? THREE.PlaneBufferGeometry : THREE.PlaneGeometry;
+	      var GConstruct = params.buffer || params.softbody ? THREE.PlaneBufferGeometry : THREE.PlaneGeometry;
 	
-	      return new GConstruct(params.geometry.width, params.geometry.height, params.geometry.wSegments, params.geometry.hSegments);
+	      var geometry = new GConstruct(params.geometry.width, params.geometry.height, params.geometry.wSegments, params.geometry.hSegments);
+	
+	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+	
+	      return geometry;
 	    }
 	  }, {
 	    key: 'clone',
@@ -51015,8 +51010,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -51059,7 +51052,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -51423,8 +51416,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -51466,7 +51457,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.SphereMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.SphereMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -51559,8 +51550,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -51601,7 +51590,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -51682,8 +51671,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var _nophysi2 = _interopRequireDefault(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -51733,7 +51720,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi2.default.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi2.default.ConcaveMesh;else if (this.physics) Mesh = _nophysi2.default.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      var promise = new Promise(function (resolve) {
 	        _api.FontLoader.load(params.geometry.parameters.font, function (font) {
@@ -51797,8 +51784,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -51842,7 +51827,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -51947,8 +51932,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var Physijs = _interopRequireWildcard(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -51994,7 +51977,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = Physijs.ConcaveMesh;else if (this.physics) Mesh = Physijs.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -52115,8 +52098,6 @@ var WHS =
 	
 	var _nophysi = __webpack_require__(100);
 	
-	var _nophysi2 = _interopRequireDefault(_nophysi);
-	
 	var _Shape2 = __webpack_require__(107);
 	
 	var _api = __webpack_require__(99);
@@ -52135,7 +52116,7 @@ var WHS =
 	    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Tube).call(this, params, 'tube'));
 	
 	    (0, _api.extend)(params.geometry, {
-	      path: options.geometryOptions.path ? new _this.CustomSinCurve(100) : false,
+	      path: false,
 	      segments: 20,
 	      radius: 2,
 	      radiusSegments: 8,
@@ -52160,7 +52141,7 @@ var WHS =
 	
 	      var Mesh = void 0;
 	
-	      if (this.physics && this.getParams().softbody) Mesh = _nophysi2.default.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi2.default.ConcaveMesh;else if (this.physics) Mesh = _nophysi2.default.ConvexMesh;else Mesh = THREE.Mesh;
+	      if (this.physics && this.getParams().softbody) Mesh = _nophysi.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _nophysi.ConcaveMesh;else if (this.physics) Mesh = _nophysi.ConvexMesh;else Mesh = THREE.Mesh;
 	
 	      return new Promise(function (resolve) {
 	        _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -52175,29 +52156,16 @@ var WHS =
 	
 	      var GConstruct = params.buffer && !params.softbody ? THREE.TubeBufferGeometry : THREE.TubeGeometry;
 	
-	      return new GConstruct(params.geometry.path, params.geometry.segments, params.geometry.radius, params.geometry.radiusSegments, params.geometry.closed);
+	      var geometry = new GConstruct(params.geometry.path, params.geometry.segments, params.geometry.radius, params.geometry.radiusSegments, params.geometry.closed);
+	
+	      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+	
+	      return geometry;
 	    }
 	  }, {
 	    key: 'clone',
 	    value: function clone() {
 	      return new Tube({ build: false }).copy(this);
-	    }
-	  }, {
-	    key: 'CustomSinCurve',
-	    get: function get() {
-	      var _this3 = this;
-	
-	      return THREE.Curve.create(function (scale) {
-	        // custom curve constructor
-	        _this3.scale = scale || 1;
-	      }, function (t) {
-	        // getPoint: t is between 0-1
-	        var tx = t * 3 - 1.5,
-	            ty = Math.sin(2 * Math.PI * t),
-	            tz = 0;
-	
-	        return new THREE.Vector3(tx, ty, tz).multiplyScalar(_this3.scale);
-	      });
 	    }
 	  }, {
 	    key: 'G_path',

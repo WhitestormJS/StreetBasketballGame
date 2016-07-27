@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as Physijs from '../physics/index.js';
+import {BoxMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';
@@ -25,8 +25,8 @@ class Box extends Shape {
 
     let Mesh;
 
-    if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;
-    else if (this.physics) Mesh = Physijs.BoxMesh;
+    if (this.physics && this.getParams().softbody) Mesh = SoftMesh;
+    else if (this.physics) Mesh = BoxMesh;
     else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {

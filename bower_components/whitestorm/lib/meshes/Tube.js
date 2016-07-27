@@ -31,8 +31,6 @@ var THREE = _interopRequireWildcard(_three);
 
 var _index = require('../physics/index.js');
 
-var _index2 = _interopRequireDefault(_index);
-
 var _Shape2 = require('../core/Shape');
 
 var _api = require('../extras/api');
@@ -51,7 +49,7 @@ var Tube = function (_Shape) {
     var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Tube).call(this, params, 'tube'));
 
     (0, _api.extend)(params.geometry, {
-      path: options.geometryOptions.path ? new _this.CustomSinCurve(100) : false,
+      path: false,
       segments: 20,
       radius: 2,
       radiusSegments: 8,
@@ -76,7 +74,7 @@ var Tube = function (_Shape) {
 
       var Mesh = void 0;
 
-      if (this.physics && this.getParams().softbody) Mesh = _index2.default.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index2.default.ConcaveMesh;else if (this.physics) Mesh = _index2.default.ConvexMesh;else Mesh = THREE.Mesh;
+      if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics && this.physics.type === 'concave') Mesh = _index.ConcaveMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
 
       return new Promise(function (resolve) {
         _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -91,29 +89,16 @@ var Tube = function (_Shape) {
 
       var GConstruct = params.buffer && !params.softbody ? THREE.TubeBufferGeometry : THREE.TubeGeometry;
 
-      return new GConstruct(params.geometry.path, params.geometry.segments, params.geometry.radius, params.geometry.radiusSegments, params.geometry.closed);
+      var geometry = new GConstruct(params.geometry.path, params.geometry.segments, params.geometry.radius, params.geometry.radiusSegments, params.geometry.closed);
+
+      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+
+      return geometry;
     }
   }, {
     key: 'clone',
     value: function clone() {
       return new Tube({ build: false }).copy(this);
-    }
-  }, {
-    key: 'CustomSinCurve',
-    get: function get() {
-      var _this3 = this;
-
-      return THREE.Curve.create(function (scale) {
-        // custom curve constructor
-        _this3.scale = scale || 1;
-      }, function (t) {
-        // getPoint: t is between 0-1
-        var tx = t * 3 - 1.5,
-            ty = Math.sin(2 * Math.PI * t),
-            tz = 0;
-
-        return new THREE.Vector3(tx, ty, tz).multiplyScalar(_this3.scale);
-      });
     }
   }, {
     key: 'G_path',

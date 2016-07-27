@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as Physijs from '../physics/index.js';
+import {PlaneMesh, ClothMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';
@@ -26,8 +26,8 @@ class Plane extends Shape {
 
     let Mesh;
 
-    if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;
-    else if (this.physics) Mesh = Physijs.PlaneMesh;
+    if (this.physics && this.getParams().softbody) Mesh = ClothMesh;
+    else if (this.physics) Mesh = PlaneMesh;
     else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {
@@ -42,14 +42,18 @@ class Plane extends Shape {
   }
 
   buildGeometry(params = {}) {
-    const GConstruct = params.buffer && !params.softbody ? THREE.PlaneBufferGeometry : THREE.PlaneGeometry;
+    const GConstruct = params.buffer || params.softbody ? THREE.PlaneBufferGeometry : THREE.PlaneGeometry;
 
-    return new GConstruct(
+    const geometry = new GConstruct(
       params.geometry.width,
       params.geometry.height,
       params.geometry.wSegments,
       params.geometry.hSegments
     );
+
+    if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+
+    return geometry;
   }
 
   set G_width(val) {

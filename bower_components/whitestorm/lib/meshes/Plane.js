@@ -31,8 +31,6 @@ var THREE = _interopRequireWildcard(_three);
 
 var _index = require('../physics/index.js');
 
-var Physijs = _interopRequireWildcard(_index);
-
 var _Shape2 = require('../core/Shape');
 
 var _api = require('../extras/api');
@@ -75,7 +73,7 @@ var Plane = function (_Shape) {
 
       var Mesh = void 0;
 
-      if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;else if (this.physics) Mesh = Physijs.PlaneMesh;else Mesh = THREE.Mesh;
+      if (this.physics && this.getParams().softbody) Mesh = _index.ClothMesh;else if (this.physics) Mesh = _index.PlaneMesh;else Mesh = THREE.Mesh;
 
       return new Promise(function (resolve) {
         _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
@@ -88,9 +86,13 @@ var Plane = function (_Shape) {
     value: function buildGeometry() {
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      var GConstruct = params.buffer && !params.softbody ? THREE.PlaneBufferGeometry : THREE.PlaneGeometry;
+      var GConstruct = params.buffer || params.softbody ? THREE.PlaneBufferGeometry : THREE.PlaneGeometry;
 
-      return new GConstruct(params.geometry.width, params.geometry.height, params.geometry.wSegments, params.geometry.hSegments);
+      var geometry = new GConstruct(params.geometry.width, params.geometry.height, params.geometry.wSegments, params.geometry.hSegments);
+
+      if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+
+      return geometry;
     }
   }, {
     key: 'clone',

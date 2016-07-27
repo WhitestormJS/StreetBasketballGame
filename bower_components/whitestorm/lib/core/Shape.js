@@ -73,7 +73,8 @@ var Shape = function (_WHSObject) {
       friction: 0.8,
       damping: 0,
       pressure: 100,
-      margin: 0
+      margin: 0,
+      stiffness: 0.9
     } : false;
 
     var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Shape).call(this, {
@@ -524,8 +525,8 @@ var Shape = function (_WHSObject) {
     key: 'proccessSoftbodyGeometry',
     value: function proccessSoftbodyGeometry(geometry) {
       geometry.rotateX(this.__params.rot.x);
-      geometry.rotateY(this.__params.rot.x);
-      geometry.rotateZ(this.__params.rot.x);
+      geometry.rotateY(this.__params.rot.y);
+      geometry.rotateZ(this.__params.rot.z);
 
       geometry.scale(this.__params.scale.x, this.__params.scale.y, this.__params.scale.z);
 
@@ -649,6 +650,13 @@ var Shape = function (_WHSObject) {
       var _getNative14;
 
       return (_getNative14 = this.getNative()).setCcdSweptSphereRadius.apply(_getNative14, arguments);
+    }
+  }, {
+    key: 'appendAnchor',
+    value: function appendAnchor(world, object, node, influence) {
+      var collisionBetweenLinkedBodies = arguments.length <= 4 || arguments[4] === undefined ? true : arguments[4];
+
+      return this.getNative().appendAnchor(world.getScene(), object.getNative(), node, influence, collisionBetweenLinkedBodies);
     }
 
     /* Three.js */

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as Physijs from '../physics/index.js';
+import {CylinderMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
 import {extend} from '../extras/api';
@@ -12,7 +12,11 @@ class Cylinder extends Shape {
       radiusTop: 0,
       radiusBottom: 1,
       height: 1,
-      radiusSegments: 32
+      radiusSegments: 32,
+      heightSegments: 1,
+      openEnded: false,
+      thetaStart: 0,
+      thetaLength: Math.PI * 2
     });
 
     if (params.build) {
@@ -26,8 +30,8 @@ class Cylinder extends Shape {
 
     let Mesh;
 
-    if (this.physics && this.getParams().softbody) Mesh = Physijs.SoftMesh;
-    else if (this.physics) Mesh = Physijs.CylinderMesh;
+    if (this.physics && this.getParams().softbody) Mesh = SoftMesh;
+    else if (this.physics) Mesh = CylinderMesh;
     else Mesh = THREE.Mesh;
 
     return new Promise((resolve) => {
@@ -44,12 +48,20 @@ class Cylinder extends Shape {
   buildGeometry(params = {}) {
     const GConstruct = params.buffer && !params.softbody ? THREE.CylinderBufferGeometry : THREE.CylinderGeometry;
 
-    return new GConstruct(
+    const geometry = new GConstruct(
       params.geometry.radiusTop,
       params.geometry.radiusBottom,
       params.geometry.height,
-      params.geometry.radiusSegments
+      params.geometry.radiusSegments,
+      params.geometry.heightSegments,
+      params.geometry.openEnded,
+      params.geometry.thetaStart,
+      params.geometry.thetaLength
     );
+
+    if (params.softbody) this.proccessSoftbodyGeometry(geometry);
+
+    return geometry;
   }
 
   set G_radiusTop(val) {

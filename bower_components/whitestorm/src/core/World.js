@@ -137,11 +137,6 @@ class World extends WHSObject {
       );
 
       this.simulate = true;
-      scene.addEventListener('update', () => {
-        if (this.simulate) scene.simulate(undefined, 1);
-      });
-
-      scene.simulate();
     } else this.simulate = false;
 
     if (params.fog.type === 'regular')
@@ -329,6 +324,8 @@ class World extends WHSObject {
 
       _scope._process(clock.getDelta());
       if (_scope.controls) _scope._updateControls();
+
+      if (_scope.simulate) scene.simulate(clock.getDelta());
 
       // Effects rendering.
       if (_scope._composer && _scope.render) {

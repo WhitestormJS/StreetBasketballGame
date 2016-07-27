@@ -9,6 +9,12 @@ const basketRadius = ballRadius + 2;
 const basketTubeRadius = 0.5;
 const basketY = 20;
 const basketDistance = 80;
+const basketZ = basketRadius + basketTubeRadius * 2 - basketDistance;
+
+/* GOAL */
+const basketGoalDiff = 2;
+const basketYGoalDiff = 0.5;
+const goalDuration = 800;
 
 /* EVENTS | MOBILE */
 const doubleTapTime = 300;
@@ -16,6 +22,7 @@ const doubleTapTime = 300;
 const world = new WHS.World({
   autoresize: true,
   stats: 'fps',
+  softbody: true,
 
   background: {
     color: bgColor
@@ -39,7 +46,7 @@ const ball = new WHS.Sphere({
     heightSegments: 32
   },
 
-  mass: 10,
+  mass: 120,
 
   material: {
     kind: 'phong',
@@ -78,17 +85,59 @@ const ground = new WHS.Plane({
   }
 });
 
-const wall = ground.clone();
-wall.rotation.x = 0;
-wall.position.y = 80;
-wall.position.z = -basketDistance;
+const wall = new WHS.Plane({
+  geometry: {
+    width: 250,
+    depth: 1,
+    height: 200
+  },
+
+  mass: 0,
+
+  material: {
+    kind: 'phong',
+    color: bgColor
+  },
+
+  pos: {
+    y: 80,
+    z: -basketDistance
+  }
+});
+
+const backboard = new WHS.Box({
+  geometry: {
+    width: 41,
+    depth: 1,
+    height: 28
+  },
+
+  mass: 0,
+
+  material: {
+    kind: 'standard',
+    map: WHS.texture('./textures/backboard.jpg'),
+    normalMap: WHS.texture('./textures/backboard_normal.png'),
+    displacementMap: WHS.texture('./textures/backboard_displacement.png'),
+    normalScale: new THREE.Vector2(0.3, 0.3),
+    metalness: 0,
+    roughness: 0.3
+  },
+
+  pos: {
+    y: basketY + 10,
+    z: basketZ - basketRadius
+  }
+});
+
+backboard.addTo(world);
 
 const basket = new WHS.Torus({
   geometry: {
     radius: basketRadius,
     tube: basketTubeRadius,
-    radialSegments: 32,
-    tubularSegments: 32
+    radialSegments: 16,
+    tubularSegments: 16
   },
 
   shadow: {
@@ -98,13 +147,17 @@ const basket = new WHS.Torus({
   mass: 0,
 
   material: {
-    kind: 'basic',
-    color: basketColor
+    kind: 'standard',
+    color: 0xff0000,
+    metalness: 0.8,
+    roughness: 0.5,
+    emissive: 0xffccff,
+    emissiveIntensity: 0.2
   },
 
   pos: {
     y: basketY,
-    z: basketRadius + basketTubeRadius - basketDistance
+    z: basketZ
   },
 
   physics: {
@@ -114,7 +167,154 @@ const basket = new WHS.Torus({
   rot: {
     x: Math.PI / 2
   }
-})
+});
+
+const net = new WHS.Cylinder({ // Softbody (blue).
+  geometry: {
+    radiusTop: basketRadius,
+    radiusBottom: basketRadius - 3,
+    height: 15,
+    openEnded: true,
+    heightSegments: 3,
+    radiusSegments: 32
+  },
+
+  shadow: {
+    cast: false
+  },
+
+  physics: {
+    pressure: 1000,
+    friction: 0.02,
+    margin: 0.3,
+    anchorHardness: 0.2
+  },
+
+  mass: 30,
+  softbody: true,
+
+  material: {
+    map: WHS.texture('./textures/net4.png', {repeat: {y: 0.7, x: 2}, offset: {y: 0.3}}), // 0.85, 19
+    transparent: true,
+    opacity: 0.7,
+    kind: 'basic',
+    side: THREE.DoubleSide,
+    depthWrite: false
+  },
+
+  pos: {
+    y: basketY - 20 + basketZ,
+    z: -12
+  },
+
+  rot: {
+    x: -Math.PI / 2
+  }
+});
+
+/*
+const net = new WHS.Cylinder({ // Softbody (blue).
+  geometry: {
+    radiusTop: basketRadius + 0.5,
+    radiusBottom: basketRadius - 1.2,
+    height: 7,
+    openEnded: false,
+    heightSegments: 5,
+    radiusSegments: 32
+  },
+
+  shadow: {
+    cast: false
+  },
+
+  physics: {
+    pressure: 0,
+    friction: 0,
+    margin: 0.3
+  },
+
+  mass: 50,
+  softbody: true,
+
+  material: {
+    map: WHS.texture('./textures/net4.png', {repeat: {y: 0.3, x: 2}, offset: {y: 0.7}}), // 0.85, 19
+    transparent: true,
+    opacity: 0.7,
+    kind: 'basic',
+    side: THREE.DoubleSide,
+    depthWrite: false
+  },
+
+  pos: {
+    y: basketY - 20 + basketZ,
+    z: -16
+  },
+
+  rot: {
+    x: -Math.PI / 2
+  }
+});
+
+const net2 = new WHS.Tube({ // Softbody (blue).
+  geometry: {
+    path: new THREE.LineCurve3(new THREE.Vector3(0, -basketTubeRadius * 2, basketZ), new THREE.Vector3(0, -basketTubeRadius * 2 - 8, basketZ)),
+    segments: 3,
+    radius: basketRadius - 1.5,
+    radiusSegments: 32,
+    closed: false
+  },
+
+  shadow: {
+    cast: false
+  },
+
+  physics: {
+    pressure: 0,
+    friction: 0,
+    margin: 0.3
+  },
+
+  mass: 30,
+  softbody: true,
+
+  material: {
+    map: WHS.texture('./textures/net3.png', {repeat: {y: 2, x: 0.4}, offset: {x: 0.3}}), // 0.85, 19
+    transparent: true,
+    opacity: 0.7,
+    kind: 'basic',
+    side: THREE.DoubleSide,
+    depthWrite: false
+  },
+
+  pos: {
+    y: basketY - 20,
+    z: -13.3
+  },
+
+  rot: {
+    x: -Math.PI / 2
+  }
+});*/
+
+net.addTo(world).then(() => {
+  net.getNative().frustumCulled = false;
+
+  // for (let i = 0; i < 12; i++) {
+  //   net.appendAnchor(world, basket, i * 2, 0.3, false);
+  // }
+
+  for (let i = 0; i < 32; i++) {
+    net.appendAnchor(world, basket, i, 0.1, false);
+  }
+});
+/*
+net2.addTo(world).then(() => {
+  net2.getNative().frustumCulled = false;
+
+  for (let i = 0; i < 20; i++) {
+    net2.appendAnchor(world, basket, i * 2, 0.1, false);
+  }
+});*/
 
 // const target = new WHS.Group(wall, basket);
 // target.position.z = -40;
@@ -148,7 +348,7 @@ new WHS.PointLight({
   pos: {
     y: 60,
     z: -40
-  }
+  },
 }).addTo(world);
 
 new WHS.AmbientLight({
@@ -165,8 +365,8 @@ world.start();
 _initEvents();
 
 /* PLAY */
-var thrown = false, doubletap = false;
-var cursor = {x: 0, y: 0};
+let thrown = false, doubletap = false, goal = false;
+let cursor = {x: 0, y: 0};
 
 function _initEvents() {
   ['mousemove', 'touchmove'].forEach((e) => {
@@ -178,6 +378,13 @@ function _initEvents() {
 
   const loop = new WHS.Loop(() => {
     if (!thrown) pickBall();
+    if (ball.position.distanceTo(basket.position) < basketGoalDiff
+      && Math.abs(ball.position.y - basket.position.y) < basketYGoalDiff 
+      && !goal) {
+      // alert("goal!");
+      goal = true;
+      setTimeout(() => goal = false, goalDuration);
+    }
   });
 
   world.addLoop(loop);
@@ -186,7 +393,7 @@ function _initEvents() {
 
 function throwBall() {
   if (detectDoubleTap()) {
-    const force = 200;
+    const force = 2400;
     const vector = {
       x: cursor.x - window.innerWidth / 2, 
       y: 6.2 * force,
@@ -215,7 +422,7 @@ function pickBall() {
   const y = - (cursor.y - yCenter) / window.innerHeight * intensity;
 
   ball.setLinearVelocity(new THREE.Vector3(0, 0, 0)); // Reset gravity affect.
-  ball.position.set(x, y, -40);
+  ball.position.set(x, y, -36);
 }
 
 function detectDoubleTap() {

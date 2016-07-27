@@ -13,7 +13,6 @@ export class SoftMesh extends Mesh {
 
     tempGeometry.mergeVertices();
     const idxGeometry = this.createIndexedBufferGeometryFromGeometry(tempGeometry);
-    if (!tempGeometry.boundingBox) tempGeometry.computeBoundingBox();
     this.tempGeometry = tempGeometry;
 
     const aVertices = idxGeometry.attributes.position.array;
@@ -38,11 +37,7 @@ export class SoftMesh extends Mesh {
       }
     }
 
-    const width = geometry.boundingBox.max.x - geometry.boundingBox.min.x;
-    const height = geometry.boundingBox.max.y - geometry.boundingBox.min.y;
-    const depth = geometry.boundingBox.max.z - geometry.boundingBox.min.z;
-
-    this._physijs.type = 'softbody';
+    this._physijs.type = 'softTrimesh';
     this._physijs.aVertices = aVertices;
     this._physijs.aIndices = aIndices;
     this._physijs.aIdxAssoc = aIdxAssoc;
@@ -53,6 +48,11 @@ export class SoftMesh extends Mesh {
       damping: physParams.damping,
       pressure: physParams.pressure,
       margin: physParams.margin,
+      stiffness: physParams.stiffness,
+      drag: physParams.drag,
+      lift: physParams.lift,
+      anchorHardness: physParams.anchorHardness,
+      rigidHardness: physParams.rigidHardness,
     };
 
     this._physijs.mass = mass;
@@ -95,5 +95,18 @@ export class SoftMesh extends Mesh {
     return Math.abs(x2 - x1) < delta
       && Math.abs(y2 - y1) < delta
       && Math.abs(z2 - z1) < delta;
+  }
+
+  appendAnchor(world, object, node, influence, collisionBetweenLinkedBodies = true) {
+    const o1 = this._physijs.id;
+    const o2 = object._physijs.id;
+
+    world.execute('appendAnchor', {
+      obj: o1,
+      obj2: o2,
+      node,
+      influence,
+      collisionBetweenLinkedBodies
+    });
   }
 }
