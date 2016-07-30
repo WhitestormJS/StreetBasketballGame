@@ -50996,6 +50996,19 @@ var WHS =
 	        }, time);
 	      }
 	    }
+	
+	    /* VISIBILITY */
+	
+	  }, {
+	    key: 'show',
+	    value: function show() {
+	      this.getNative().visible = true;
+	    }
+	  }, {
+	    key: 'hide',
+	    value: function hide() {
+	      this.getNative().visible = false;
+	    }
 	  }, {
 	    key: 'position',
 	    get: function get() {
@@ -51750,6 +51763,19 @@ var WHS =
 	        }, time);
 	      }
 	    }
+	
+	    /* VISIBILITY */
+	
+	  }, {
+	    key: 'show',
+	    value: function show() {
+	      this.getNative().visible = true;
+	    }
+	  }, {
+	    key: 'hide',
+	    value: function hide() {
+	      this.getNative().visible = false;
+	    }
 	  }, {
 	    key: 'position',
 	    get: function get() {
@@ -52022,9 +52048,13 @@ var WHS =
 	    // NOTE: ==================== Autoresize. ======================
 	    var scope = _this;
 	
-	    if (_this.getParams().autoresize) {
+	    if (params.autoresize === "window") {
 	      window.addEventListener('resize', function () {
-	        scope.setSize(window.innerWidth, window.innerHeight);
+	        scope.setSize(Number(window.innerWidth * params.rWidth).toFixed(), Number(window.innerHeight * params.rHeight).toFixed());
+	      });
+	    } else if (_this.getParams().autoresize) {
+	      window.addEventListener('resize', function () {
+	        scope.setSize(Number(params.container.offsetWidth * params.rWidth).toFixed(), Number(params.container.offsetHeight * params.rHeight).toFixed());
 	      });
 	    }
 	

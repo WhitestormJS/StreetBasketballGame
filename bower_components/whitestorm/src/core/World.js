@@ -99,9 +99,19 @@ class World extends WHSObject {
     // NOTE: ==================== Autoresize. ======================
     const scope = this;
 
-    if (this.getParams().autoresize) {
+    if (params.autoresize === "window") {
       window.addEventListener('resize', () => {
-        scope.setSize(window.innerWidth, window.innerHeight);
+        scope.setSize(
+          Number(window.innerWidth * params.rWidth).toFixed(),
+          Number(window.innerHeight * params.rHeight).toFixed()
+        );
+      });
+    } else if (this.getParams().autoresize) {
+      window.addEventListener('resize', () => {
+        scope.setSize(
+          Number(params.container.offsetWidth * params.rWidth).toFixed(),
+          Number(params.container.offsetHeight * params.rHeight).toFixed()
+        );
       });
     }
 

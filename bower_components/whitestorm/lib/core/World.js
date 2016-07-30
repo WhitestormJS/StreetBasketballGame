@@ -150,9 +150,13 @@ var World = function (_WHSObject) {
     // NOTE: ==================== Autoresize. ======================
     var scope = _this;
 
-    if (_this.getParams().autoresize) {
+    if (params.autoresize === "window") {
       window.addEventListener('resize', function () {
-        scope.setSize(window.innerWidth, window.innerHeight);
+        scope.setSize(Number(window.innerWidth * params.rWidth).toFixed(), Number(window.innerHeight * params.rHeight).toFixed());
+      });
+    } else if (_this.getParams().autoresize) {
+      window.addEventListener('resize', function () {
+        scope.setSize(Number(params.container.offsetWidth * params.rWidth).toFixed(), Number(params.container.offsetHeight * params.rHeight).toFixed());
       });
     }
 

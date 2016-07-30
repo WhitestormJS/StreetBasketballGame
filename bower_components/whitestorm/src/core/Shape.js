@@ -772,6 +772,15 @@ class Shape extends WHSObject {
       }, time);
     }
   }
+
+  /* VISIBILITY */
+  show() {
+    this.getNative().visible = true;
+  }
+
+  hide() {
+    this.getNative().visible = false;
+  }
 }
 
 export {

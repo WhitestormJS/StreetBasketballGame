@@ -345,6 +345,19 @@ var Light = function (_WHSObject) {
         }, time);
       }
     }
+
+    /* VISIBILITY */
+
+  }, {
+    key: 'show',
+    value: function show() {
+      this.getNative().visible = true;
+    }
+  }, {
+    key: 'hide',
+    value: function hide() {
+      this.getNative().visible = false;
+    }
   }, {
     key: 'position',
     get: function get() {

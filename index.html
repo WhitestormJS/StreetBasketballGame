@@ -3,14 +3,47 @@
 <head>
 	<title>ThrowIntoBasket v1.0</title>
 	<meta name="viewport" content="width=device-width, user-scalable=no">
+	<link rel="stylesheet" type="text/css" href="bower_components/loaders.css/loaders.min.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
+	<div class="loader">
+		<div class="preloader"></div>
+	</div>
 	<div class="helpers">
 		<img src="./img/intro.gif" width="200" height="200">
 	</div>
+
+	<div class="menu">
+		<div class="stars">
+			<div class="star"></div>
+			<div class="star"></div>
+			<div class="star inactive"></div>
+			<h1 class="menu_mark">Excellent!</h1>
+		</div>
+		<table>
+			<tr>
+				<th>Time</th>
+				<td class="menu_time">15s</td>
+			</tr>
+			<tr>
+				<th>Accuracy</th>
+				<td class="menu_accuracy">80%</td>
+			</tr>
+			<tr>
+				<th>Attempts</th>
+				<td class="menu_attempts">3</td>
+			</tr>
+			<tr>
+				<th>Goal</th>
+				<td class="menu_goal">Complete!</td>
+			</tr>
+		</table>
+	</div>
 </body>
 <script type="text/javascript" src="bower_components/whitestorm/build/whitestorm.js"></script>
+<script type="text/javascript" src="bower_components/gsap/src/minified/TweenLite.min.js"></script>
+<script type="text/javascript" src="bower_components/gsap/src/minified/plugins/CSSPlugin.min.js"></script>
 <script type="text/javascript" src="bower_components/ProgressLoader/progress-loader.js"></script>
 <script type="text/javascript" src="js/app.js"></script>
 </html>
