@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {ConvexMesh, ConcaveMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend} from '../extras/api';
+import {extend, loadMaterial} from '../extras/api';
 
 class Parametric extends Shape {
   constructor(params = {}) {
@@ -21,7 +21,7 @@ class Parametric extends Shape {
   }
 
   build(params = {}) {
-    const material = super._initMaterial(params.material);
+    const material = loadMaterial(params.material);
 
     let Mesh;
 
@@ -52,27 +52,27 @@ class Parametric extends Shape {
   }
 
   set G_func(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {func: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {func: val}}));
   }
 
   get G_func() {
-    return this.native.geometry.parameters.func;
+    return this._native.geometry.parameters.func;
   }
 
   set G_slices(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {slices: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {slices: val}}));
   }
 
   get G_slices() {
-    return this.native.geometry.parameters.slices;
+    return this._native.geometry.parameters.slices;
   }
 
   set G_stacks(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {stacks: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {stacks: val}}));
   }
 
   get G_stacks() {
-    return this.native.geometry.parameters.stacks;
+    return this._native.geometry.parameters.stacks;
   }
 
   clone() {

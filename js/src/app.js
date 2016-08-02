@@ -1,3 +1,6 @@
+import levelData from './levelData';
+import TexUtils from './utils/textures';
+
 const APP = {
   /* === APP: config === */
   /* GLOABAL */
@@ -16,7 +19,7 @@ const APP = {
   /* GOAL */
   basketGoalDiff: 2,
   basketYGoalDiff: 0.5,
-  goalDuration: 800, // ms.
+  goalDuration: 1800, // ms.
   /* EVENTS | MOBILE */
   doubleTapTime: 300,
 
@@ -25,10 +28,21 @@ const APP = {
   doubletap: false, 
   goal: false,
   controlsEnabled: true,
+  levelMenuTriggered: false,
+  animComplete: true, // To prevent problems with transitions.
+  levelPlanes: [],
+  indicatorStatus: false,
 
   cursor: {
     x: 0, 
     y: 0
+  },
+
+  force: {
+    y: 6.2,
+    z: -2,
+    m: 2400,
+    xk: 1
   },
 
   /* === APP: Menu data === */
@@ -36,7 +50,10 @@ const APP = {
     timeClock: null,
     time: 0,
     accuracy: 0,
-    attempts: 0
+    attempts: 0,
+    markText: "",
+
+    grid: false
   },
 
   /* === APP: init === */
@@ -71,7 +88,7 @@ const APP = {
 
     APP.camera = APP.world.getCamera();
 
-    APP.ProgressLoader = new ProgressLoader(11);
+    APP.ProgressLoader = new ProgressLoader(14);
 
     APP.createScene();
     APP.addLights();
@@ -110,11 +127,11 @@ const APP = {
 
   createScene() {
     /* GROUND OBJECT */
-    const ground = new WHS.Plane({
+    APP.ground = new WHS.Plane({
       geometry: {
         buffer: true,
         width: 1000,
-        height: 400
+        height: 800
       },
 
       mass: 0,
@@ -134,16 +151,17 @@ const APP = {
       }
     });
 
-    ground.addTo(APP.world).then(() => APP.ProgressLoader.step());
+    APP.ground.addTo(APP.world).then(() => APP.ProgressLoader.step());
 
     /* WALL OBJECT */
-    const wall = ground.clone();
+    APP.wall = APP.ground.clone();
 
-    wall.position.y = 180;
-    wall.position.z = -APP.basketDistance;
-    wall.rotation.x = 0;
+    APP.wall.position.y = 180;
+    APP.wall.position.z = -APP.basketDistance;
+    APP.wall.rotation.x = 0;
+    APP.wall.addTo(APP.world).then(() => APP.ProgressLoader.step());
 
-    wall.addTo(APP.world).then(() => APP.ProgressLoader.step());
+    APP.planeForRaycasting = new THREE.Plane(new THREE.Vector3(0, 1, 0), -APP.ground.position.y - APP.ballRadius);
   },
 
   addLights() {
@@ -183,7 +201,7 @@ const APP = {
 
   addBasket() {
     /* BACKBOARD OBJECT */
-    const backboard = new WHS.Box({
+    APP.backboard = new WHS.Box({
       geometry: {
         buffer: true,
         width: 41,
@@ -209,7 +227,7 @@ const APP = {
       }
     });
 
-    backboard.addTo(APP.world).then(() => APP.ProgressLoader.step());
+    APP.backboard.addTo(APP.world).then(() => APP.ProgressLoader.step());
 
     /* BASKET OBJECT */
     APP.basket = new WHS.Torus({
@@ -253,7 +271,7 @@ const APP = {
     APP.basket.addTo(APP.world).then(() => APP.ProgressLoader.step());
 
     /* NET OBJECT */
-    const net = new WHS.Cylinder({
+    APP.net = new WHS.Cylinder({
       geometry: {
         radiusTop: APP.getBasketRadius(),
         radiusBottom: APP.getBasketRadius() - 3,
@@ -270,8 +288,12 @@ const APP = {
       physics: {
         pressure: 2000,
         friction: 0.02,
-        margin: 0.3,
-        anchorHardness: 0.4
+        margin: 0.5,
+        anchorHardness: 0.5,
+        viterations: 2,
+        piterations: 2,
+        diterations: 4,
+        citerations: 0
       },
 
       mass: 30,
@@ -292,11 +314,11 @@ const APP = {
       }
     });
 
-    net.addTo(APP.world).then(() => {
-      net.getNative().frustumCulled = false;
+    APP.net.addTo(APP.world).then(() => {
+      APP.net.getNative().frustumCulled = false;
 
       for (let i = 0; i < 16; i++) {
-        net.appendAnchor(APP.world, APP.basket, i, 0.1, false);
+        APP.net.appendAnchor(APP.world, APP.basket, i, 0.8, true);
       }
 
       APP.ProgressLoader.step();
@@ -354,7 +376,7 @@ const APP = {
       material: {
         kind: "phong",
         color: 0xffffff,
-        map: WHS.texture('../textures/text.jpg', {repeat: {x: 0.005, y: 0.005}})
+        map: WHS.texture('./textures/text.jpg', {repeat: {x: 0.005, y: 0.005}})
       },
 
       pos: {
@@ -374,11 +396,39 @@ const APP = {
       // APP.text.hide();
     });
 
-    APP.MenuLight = new WHS.PointLight({
+    APP.menuDataPlane = new WHS.Plane({
+      geometry: {
+        width: 200,
+        height: 100
+      },
+
+      material: {
+        kind: 'phong',
+        transparent: true,
+        opacity: 0,
+        fog: false,
+        shininess: 900,
+        reflectivity: 0.5
+      },
+
+      physics: false,
+
+      rot: {
+        x: -Math.PI / 2
+      },
+
+      pos: {
+        y: -19.5,
+        z: -20
+      }
+    });
+
+    APP.menuDataPlane.addTo(APP.world).then(() => {APP.ProgressLoader.step()});
+
+    APP.MenuLight = new WHS.SpotLight({
       light: {
         distance: 100,
-        intensity: 3,
-        angle: Math.PI
+        intensity: 3
       },
 
       shadowmap: {
@@ -396,9 +446,38 @@ const APP = {
       }
     });
 
+    APP.LevelLight1 = new WHS.SpotLight({
+      light: {
+        distance: 800,
+        intensity: 0,
+        angle: Math.PI / 7
+      },
+
+      shadowmap: {
+        cast: false
+      },
+
+      pos: {
+        y: 10,
+        x: 500,
+        z: 100
+      },
+
+      target: {
+        z: 500,
+        x: -200
+      }
+    });
+
+    APP.LevelLight2 = APP.LevelLight1.clone();
+    APP.LevelLight2.position.x = -500;
+    APP.LevelLight2.target.x = 200;
+
     // APP.MenuLight.hide();
 
     APP.MenuLight.addTo(APP.world).then(() => {APP.ProgressLoader.step()});
+    APP.LevelLight1.addTo(APP.world).then(() => {APP.ProgressLoader.step()});
+    APP.LevelLight2.addTo(APP.world).then(() => {APP.ProgressLoader.step()});
   },
 
   /* === APP: Events === */
@@ -443,8 +522,8 @@ const APP = {
   },
 
   updateCoords(e) {
-    APP.cursor.x = e.clientX || e.touches[0].clientX;
-    APP.cursor.y = e.clientY || e.touches[0].clientY;
+    APP.cursor.x = e.touches && e.touches[0] ? e.touches[0].clientX : e.clientX;
+    APP.cursor.y = e.touches && e.touches[0] ? e.touches[0].clientY : e.clientY;
   },
 
   checkKeys(e) {
@@ -479,8 +558,6 @@ const APP = {
 
     APP.menu.time = APP.menu.timeClock.getElapsedTime();
     APP.menu.accuracy = (1 - distance / 2) * 100;
-    console.log(distance);
-    console.log(APP.menu.accuracy);
     APP.goToMenu();
   },
 
@@ -490,9 +567,9 @@ const APP = {
     if (!APP.detectDoubleTap() && APP.controlsEnabled) {
       const force = 2400;
       const vector = {
-        x: APP.cursor.x - window.innerWidth / 2, 
-        y: 6.2 * force,
-        z: -2 * force
+        x: APP.force.xk * (APP.cursor.x - window.innerWidth / 2), 
+        y: APP.force.y * APP.force.m,
+        z: APP.force.z * APP.force.m
       };
 
       if (!APP.thrown) {
@@ -523,9 +600,6 @@ const APP = {
       APP.camera.lookAt(new THREE.Vector3(0, APP.basketY, 0));
     }});
 
-    document.querySelector('.menu').className += ' active';
-    document.querySelector('.menu').style.display = 'block';
-
     let mark = 0,
       markText = "";
 
@@ -533,16 +607,22 @@ const APP = {
       && APP.menu.attempts.toFixed() == 1
       && APP.menu.accuracy.toFixed() > 60) {
       mark = 3;
-      markText = "Excellent";
+      APP.menu.markText = "Excellent";
     } else if (APP.menu.time.toFixed() < 5
       && APP.menu.attempts.toFixed() == 1
       && APP.menu.accuracy.toFixed() > 40) {
       mark = 2;
-      markText = "Good";
+      APP.menu.markText = "Good";
     } else {
       mark = 1;
-      markText = "OK";
+      APP.menu.markText = "OK";
     }
+
+    APP.menuDataPlane.show();
+    APP.menuDataPlane.M_({map: TexUtils.generateMenuTexture(APP.menu)});
+
+    APP.menuDataPlane.getNative().material.opacity = 0;
+    TweenLite.to(APP.menuDataPlane.getNative().material, 3, {opacity: 0.7, ease: Power2.easeInOut});
 
     // Fill data.
     document.querySelector('.menu_time').innerText = APP.menu.time.toFixed() + 's.';
@@ -557,6 +637,268 @@ const APP = {
     else stars[1].className = 'star';
     if (mark < 3) stars[2].className = 'star inactive';
     else stars[2].className = 'star';
+
+    setTimeout(APP.makeCursorFromBall, 3000);
+  },
+
+  makeCursorFromBall() {
+    APP.raycaster = new THREE.Raycaster();
+
+    APP.loop_raycaster = APP.loop_raycaster || new WHS.Loop(() => {
+      APP.raycaster.setFromCamera(
+        new THREE.Vector2(
+          (APP.cursor.x / window.innerWidth) * 2 - 1,
+          -(APP.cursor.y / window.innerHeight) * 2 + 1
+        ),
+        APP.camera.getNative()
+      );
+
+      const distancePlane = APP.raycaster.ray.distanceToPlane(APP.planeForRaycasting);
+      const raycastPoint = APP.raycaster.ray.at(distancePlane);
+      if (APP.animComplete && !APP.levelMenuTriggered && APP.ball.position.z > 60) APP.triggerLevelMenu();
+      if (APP.animComplete && APP.levelMenuTriggered && APP.ball.position.z < 170) APP.goBackToLevel();
+
+      APP.ball.setLinearVelocity(raycastPoint.sub(APP.ball.position).multiplyScalar(2));
+    });
+
+    APP.world.addLoop(APP.loop_raycaster);
+    APP.loop_raycaster.start();
+  },
+
+  triggerLevelMenu() {
+    APP.levelMenuTriggered = true;
+    APP.animComplete = false;
+    TweenLite.to(APP.camera.position, 1, {z: 350, ease: Power2.easeIn});
+
+    // Reset lights.
+    APP.LevelLight1.getNative().intensity = 0;
+    APP.LevelLight2.getNative().intensity = 0;
+
+    TweenLite.to(APP.LevelLight1.getNative(), 0.5, {intensity: 10, ease: Power2.easeIn, delay: 1});
+    TweenLite.to(APP.LevelLight2.getNative(), 0.5, {intensity: 10, ease: Power2.easeIn, delay: 1.5, onComplete: () => {
+      APP.animComplete = true;
+    }});
+
+    if (!APP.menu.grid) APP.initLevelGrid();
+    if (APP.checkForLevel) APP.checkForLevel.start();
+  },
+
+  initLevelGrid() {
+    APP.menu.grid = true;
+    const ratio = APP.camera.getNative().getFilmWidth() / APP.camera.getNative().getFilmHeight();
+
+    let levelXstartOffset = -225;
+    let levelZstartOffset = 200;
+
+    let cols = 4;
+
+    if (ratio < 0.7) {
+      cols = 1;
+      levelXstartOffset = -90;
+    } else if (ratio < 1) {
+      cols = 2;
+      levelXstartOffset = -135
+    } else if  (ratio < 1.3) {
+      cols = 3;
+      levelXstartOffset = -180;
+    } else {
+      cols = 4;
+      levelXstartOffset = -225;
+    }
+
+    let rows = Math.ceil(levelData.length / cols);
+
+    let levelXoffset = levelXstartOffset;
+    let levelZoffset = levelZstartOffset;
+
+    const levelPlane = new WHS.Plane({
+      geometry: {
+        height: 40,
+        width: 80
+      },
+
+      physics: false,
+
+      material: {
+        kind: 'phong'
+      },
+
+      pos: {
+        y: -19,
+        x: levelXoffset
+      },
+
+      rot: {
+        x: -Math.PI / 2
+      }
+    });
+
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const i = r * cols + c;
+        console.log(i);
+
+        if (levelData[i]) {
+          const newLevelPlane = levelPlane.clone();
+          levelXoffset += 90;
+
+          newLevelPlane.position.z = levelZoffset;
+          newLevelPlane.position.x = levelXoffset;
+
+          newLevelPlane.M_({
+            map: TexUtils.generateLevelTexture(levelData[i])
+          });
+
+          newLevelPlane.getNative().data = levelData[i];
+
+          newLevelPlane.addTo(APP.world);
+          APP.levelPlanes.push(newLevelPlane.getNative());
+        }
+      }
+
+      levelZoffset += 60;
+      levelXoffset = levelXstartOffset;
+    }
+
+    APP.levelIndicator = new WHS.Sphere({
+      geometry: {
+        radius: 1,
+        widthSegments: 16,
+        heightSegments: 16
+      },
+
+      physics: false,
+
+      material: {
+        kind: 'basic',
+        color: 0xffffff
+      }
+    });
+
+    APP.levelIndicator.hide();
+    APP.levelIndicator.addTo(APP.world);
+
+    APP.liProgress = new WHS.Torus({
+      geometry: {
+        radius: 3,
+        tube: 0.5,
+        radialSegments: 16,
+        tubularSegments: 16,
+        arc: 0
+      },
+
+      physics: false,
+
+      material: {
+        kind: 'basic',
+        color: 0xffffff
+      },
+
+      rot: {
+        x: Math.PI / 2,
+        z: Math.PI / 2
+      }
+    });
+
+    APP.liProgress.addTo(APP.levelIndicator);
+    APP.liProgress.data_arc = 0;
+
+    let indicatorTransition = null;
+
+    APP.checkForLevel = new WHS.Loop(() => {
+      const normVec = APP.ball.position.clone().sub(APP.camera.position.clone()).normalize();
+      const raycaster = new THREE.Raycaster(APP.camera.position, normVec, true, 1000);
+      const activeObjects = raycaster.intersectObjects(APP.levelPlanes);
+
+      const indDistance = APP.camera.position.distanceTo(APP.ball.position) - 8;
+      const indPos = raycaster.ray.at(indDistance);
+
+      APP.levelIndicator.position.copy(indPos);
+
+      if (!APP.indicatorStatus && activeObjects.length >= 1) {
+        APP.indicatorStatus = true;
+        APP.levelIndicator.show();
+        indicatorTransition = new TweenLite.to(APP.liProgress, 1.5, 
+          {
+            data_arc: Math.PI * 2, ease: Power2.easeOut, 
+            onUpdate: () => {
+              APP.liProgress.G_({arc: APP.liProgress.data_arc});
+            },
+            onComplete: () => {
+              APP.changeLevel(activeObjects[0].object.data);
+              APP.goBackToLevel();
+            }
+          }
+        );
+      } else if (activeObjects.length === 0) {
+        APP.indicatorStatus = false;
+        APP.levelIndicator.hide();
+        
+        if (APP.liProgress.data_arc !== 0) {
+          indicatorTransition.kill();
+          APP.liProgress.data_arc = 0;
+          APP.liProgress.G_({arc: 0.1});
+        }
+      }
+    });
+
+    APP.world.addLoop(APP.checkForLevel);
+    APP.checkForLevel.start();
+  },
+
+  goBackToLevel() {
+    APP.levelMenuTriggered = false;
+    APP.animComplete = false;
+
+    APP.menu.timeClock = new THREE.Clock();
+    APP.menu.time = 0;
+    APP.menu.attempts = 0;
+    APP.menu.accuracy = 0;
+    APP.menu.timeClock.getElapsedTime();
+
+    if (APP.menuDataPlane) APP.menuDataPlane.hide();
+    if (APP.checkForLevel) APP.checkForLevel.stop();
+
+    const cameraDest = APP.camera.clone();
+    cameraDest.position.set(0, APP.basketY, 50);
+    cameraDest.lookAt(new THREE.Vector3(0, APP.basketY, 0));
+
+    const rotationDest = cameraDest.rotation;
+    TweenLite.to(APP.world.getScene().fog, 0.5, {far: 400, onComplete: () => {
+      APP.loop_raycaster.stop();
+      APP.controlsEnabled = true;
+      APP.thrown = false;
+      APP.ball.setAngularVelocity(new THREE.Vector3(0, 0, 0));
+    }});
+
+    TweenLite.to(APP.world.getScene().fog, 1.5, {delay: 1.5, far: 1000, ease: Power3.easeOut});
+    TweenLite.to(APP.camera.rotation, 2, {delay: 0.5, x: rotationDest.x, y: rotationDest.y, z: rotationDest.z, ease: Power3.easeOut});
+    TweenLite.to(APP.camera.position, 2, {delay: 0.5, z: 50, y: APP.basketY, ease: Power3.easeOut, onComplete: () => {
+      APP.animComplete = true;
+    }});
+  },
+
+  changeLevel(levelData) {
+    const tempBY = APP.basketY;
+    const tempBZ = APP.getBasketZ();
+
+    if (levelData.force.y) APP.force.y = levelData.force.y;
+    if (levelData.force.z) APP.force.z = levelData.force.z;
+    if (levelData.force.m) APP.force.m = levelData.force.m;
+    if (levelData.force.xk) APP.force.xk = levelData.force.xk;
+
+    APP.basketY = levelData.basketY;
+    APP.basketDistance = levelData.basketDistance;
+    APP.basketColor = levelData.basketColor;
+
+    APP.basket.position.y = APP.basketY;
+    APP.basket.position.z = APP.getBasketZ();
+    APP.net.getNative().geometry.translate(0, APP.basketY - tempBY, APP.getBasketZ() - tempBZ);
+    APP.backboard.position.y = APP.basketY + 10;
+    APP.backboard.position.z = APP.getBasketZ() - APP.getBasketRadius();
+    APP.wall.position.z = -APP.basketDistance;
+
+    APP.basket.M_color = APP.basketColor;
   }
 }
 

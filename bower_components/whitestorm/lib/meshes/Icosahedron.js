@@ -67,7 +67,7 @@ var Icosahedron = function (_Shape) {
 
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      var material = (0, _get3.default)(Object.getPrototypeOf(Icosahedron.prototype), '_initMaterial', this).call(this, params.material);
+      var material = (0, _api.loadMaterial)(params.material);
 
       var Mesh = void 0;
 
@@ -91,23 +91,23 @@ var Icosahedron = function (_Shape) {
   }, {
     key: 'clone',
     value: function clone() {
-      return new Icosahderon({ build: false }).copy(this);
+      return new Icosahedron({ build: false }).copy(this);
     }
   }, {
     key: 'G_radius',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.radius;
+      return this._native.geometry.parameters.radius;
     }
   }, {
     key: 'G_detail',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { detail: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.detail;
+      return this._native.geometry.parameters.detail;
     }
   }]);
   return Icosahedron;

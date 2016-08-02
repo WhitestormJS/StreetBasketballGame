@@ -1,0 +1,25 @@
+{
+  "name": "throwintobasket",
+  "version": "1.0.0",
+  "description": "",
+  "main": "js/build/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/WhitestormJS/ThrowIntoBasket.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/WhitestormJS/ThrowIntoBasket/issues"
+  },
+  "homepage": "https://github.com/WhitestormJS/ThrowIntoBasket#readme",
+  "devDependencies": {
+    "babel-preset-es2015-rollup": "^1.1.1",
+    "rollup-plugin-babel": "^2.6.1",
+    "rollup-plugin-uglify": "^1.0.1",
+    "uglify-js": "^2.7.0"
+  }
+}

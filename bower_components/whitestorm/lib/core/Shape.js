@@ -5,6 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Shape = undefined;
 
+var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
+
+var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -68,14 +72,15 @@ var Shape = function (_WHSObject) {
       _this.z = z;
     };
 
-    var physicsDefaults = !!'physics' ? {
+    var physicsDefaults = !!'physics' ? (0, _defineProperty3.default)({
       restitution: 0.3,
       friction: 0.8,
       damping: 0,
       pressure: 100,
       margin: 0,
-      stiffness: 0.9
-    } : false;
+      klst: 0.9,
+      kvst: 0.9
+    }, 'klst', 0.9) : false;
 
     var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Shape).call(this, {
       mass: 10,
@@ -440,18 +445,6 @@ var Shape = function (_WHSObject) {
     }
 
     /**
-     * Initialize shape's material object.
-     */
-
-  }, {
-    key: '_initMaterial',
-    value: function _initMaterial() {
-      var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-      return (0, _api.loadMaterial)(params);
-    }
-
-    /**
      * Clone shape.
      */
 
@@ -473,6 +466,8 @@ var Shape = function (_WHSObject) {
       var sourceNative = source.getNative();
 
       if (source.getParams().softbody) this.setNative(new sourceNative.constructor(sourceNative.tempGeometry.clone(), sourceNative.material, source.getParams()));else this.setNative(sourceNative.clone(source.getParams()));
+
+      this.setParams(source.getParams());
 
       this.wrap();
 
@@ -519,7 +514,7 @@ var Shape = function (_WHSObject) {
     value: function M_() {
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      this.getNative().material = this._initMaterial(this.updateParams({ material: params }).material);
+      this.getNative().material = (0, _api.loadMaterial)(this.updateParams({ material: params }).material);
     }
   }, {
     key: 'proccessSoftbodyGeometry',

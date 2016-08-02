@@ -69,7 +69,7 @@ var Parametric = function (_Shape) {
 
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      var material = (0, _get3.default)(Object.getPrototypeOf(Parametric.prototype), '_initMaterial', this).call(this, params.material);
+      var material = (0, _api.loadMaterial)(params.material);
 
       var Mesh = void 0;
 
@@ -98,26 +98,26 @@ var Parametric = function (_Shape) {
   }, {
     key: 'G_func',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { func: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { func: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.func;
+      return this._native.geometry.parameters.func;
     }
   }, {
     key: 'G_slices',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { slices: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { slices: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.slices;
+      return this._native.geometry.parameters.slices;
     }
   }, {
     key: 'G_stacks',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { stacks: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { stacks: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.stacks;
+      return this._native.geometry.parameters.stacks;
     }
   }]);
   return Parametric;

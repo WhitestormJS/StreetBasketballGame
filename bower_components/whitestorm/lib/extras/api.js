@@ -44,10 +44,11 @@ var extend = function extend(object) {
         for (var _iterator2 = Object.getOwnPropertyNames(extension)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
           var prop = _step2.value;
           // Do not traverse the prototype chain.
-          if (object[prop] !== undefined && object[prop].toString() === '[object Object]' && extension[prop].toString() === '[object Object]')
+          if (object[prop] !== undefined && object[prop].toString() === '[object Object]' && extension[prop].toString() === '[object Object]') {
 
             // Goes deep only if object[prop] and extension[prop] are both objects !
-            extend(object[prop], extension[prop]);else object[prop] = object[prop] === 0 ? 0 : object[prop];
+            if (extension[prop].uuid) object[prop] = extension[prop];else extend(object[prop], extension[prop]);
+          } else object[prop] = object[prop] === 0 ? 0 : object[prop];
           if (typeof object[prop] === 'undefined') object[prop] = extension[prop]; // Add values that do not already exist.
         }
       } catch (err) {
@@ -114,8 +115,6 @@ var texture = function texture(url) {
 
 var loadMaterial = function loadMaterial() {
   var material = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
-
-  if (typeof material.kind !== 'string') console.error('Type of material is undefined or not a string. @loadMaterial');
 
   var materialThree = void 0;
 
@@ -191,6 +190,8 @@ var loadMaterial = function loadMaterial() {
       break;
 
     default:
+      materialThree = new THREE.MeshBasicMaterial(params);
+      break;
   }
 
   return materialThree;

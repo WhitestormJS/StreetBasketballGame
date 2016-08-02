@@ -67,7 +67,7 @@ var Extrude = function (_Shape) {
 
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      var material = (0, _get3.default)(Object.getPrototypeOf(Extrude.prototype), '_initMaterial', this).call(this, params.material);
+      var material = (0, _api.loadMaterial)(params.material);
 
       var Mesh = void 0;
 
@@ -96,18 +96,18 @@ var Extrude = function (_Shape) {
   }, {
     key: 'G_shapes',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { shapes: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { shapes: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.shapes;
+      return this._native.geometry.parameters.shapes;
     }
   }, {
     key: 'G_options',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { options: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { options: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.options;
+      return this._native.geometry.parameters.options;
     }
   }]);
   return Extrude;

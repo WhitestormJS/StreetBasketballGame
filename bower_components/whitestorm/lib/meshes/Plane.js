@@ -69,7 +69,7 @@ var Plane = function (_Shape) {
 
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      var material = (0, _get3.default)(Object.getPrototypeOf(Plane.prototype), '_initMaterial', this).call(this, params.material);
+      var material = (0, _api.loadMaterial)(params.material);
 
       var Mesh = void 0;
 
@@ -102,26 +102,26 @@ var Plane = function (_Shape) {
   }, {
     key: 'G_width',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { width: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { width: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.width;
+      return this._native.geometry.parameters.width;
     }
   }, {
     key: 'G_height',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { height: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { height: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.height;
+      return this._native.geometry.parameters.height;
     }
   }, {
     key: 'G_segments',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { segments: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { segments: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.segments;
+      return this._native.geometry.parameters.segments;
     }
   }]);
   return Plane;

@@ -76,7 +76,7 @@ var Text = function (_Shape) {
 
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      var material = (0, _get3.default)(Object.getPrototypeOf(Text.prototype), '_initMaterial', this).call(this, params.material);
+      var material = (0, _api.loadMaterial)(params.material);
 
       var Mesh = void 0;
 
