@@ -213,9 +213,9 @@ const APP = {
 
       material: {
         kind: 'standard',
-        map: WHS.texture('./textures/backboard.jpg'),
-        normalMap: WHS.texture('./textures/backboard_normal.png'),
-        displacementMap: WHS.texture('./textures/backboard_displacement.png'),
+        map: WHS.texture('textures/backboard.jpg'),
+        normalMap: WHS.texture('textures/backboard_normal.png'),
+        displacementMap: WHS.texture('textures/backboard_displacement.png'),
         normalScale: new THREE.Vector2(0.3, 0.3),
         metalness: 0,
         roughness: 0.3
@@ -300,7 +300,7 @@ const APP = {
       softbody: true,
 
       material: {
-        map: WHS.texture('./textures/net4.png', {repeat: {y: 0.7, x: 2}, offset: {y: 0.3}}), // 0.85, 19
+        map: WHS.texture('textures/net4.png', {repeat: {y: 0.7, x: 2}, offset: {y: 0.3}}), // 0.85, 19
         transparent: true,
         opacity: 0.7,
         kind: 'basic',
@@ -339,8 +339,8 @@ const APP = {
 
       material: {
         kind: 'phong',
-        map: WHS.texture('./textures/ball.png'),
-        normalMap: WHS.texture('./textures/ball_normal.png'),
+        map: WHS.texture('textures/ball.png'),
+        normalMap: WHS.texture('textures/ball_normal.png'),
         shininess: 20,
         reflectivity: 2,
         normalScale: new THREE.Vector2(0.5, 0.5)
@@ -360,7 +360,7 @@ const APP = {
         text: "Street Basketball",
         parameters: {
           size: 10,
-          font: "./fonts/1.js",
+          font: "fonts/1.js",
           height: 4
         }
       },
@@ -376,7 +376,7 @@ const APP = {
       material: {
         kind: "phong",
         color: 0xffffff,
-        map: WHS.texture('./textures/text.jpg', {repeat: {x: 0.005, y: 0.005}})
+        map: WHS.texture('textures/text.jpg', {repeat: {x: 0.005, y: 0.005}})
       },
 
       pos: {
