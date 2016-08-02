@@ -360,7 +360,7 @@ const APP = {
         text: "Street Basketball",
         parameters: {
           size: 10,
-          font: "../fonts/1.js",
+          font: "./fonts/1.js",
           height: 4
         }
       },
