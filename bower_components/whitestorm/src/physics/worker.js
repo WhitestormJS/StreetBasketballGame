@@ -19,6 +19,7 @@ module.exports = function (self) {
   let _object,
     _vector,
     _transform,
+    _transform_pos,
     _softbody_enabled = false,
     last_simulation_duration = 0,
 
@@ -100,7 +101,6 @@ module.exports = function (self) {
           _vec3_1.setY(description.normal.y);
           _vec3_1.setZ(description.normal.z);
           shape = new Ammo.btStaticPlaneShape(_vec3_1, 0);
-          shape.setMargin(description.params.margin);
           setShapeCache(cache_key, shape);
         }
 
@@ -114,7 +114,6 @@ module.exports = function (self) {
           _vec3_1.setY(description.height / 2);
           _vec3_1.setZ(description.depth / 2);
           shape = new Ammo.btBoxShape(_vec3_1);
-          shape.setMargin(description.params.margin);
           setShapeCache(cache_key, shape);
         }
 
@@ -125,7 +124,6 @@ module.exports = function (self) {
 
         if ((shape = getShapeFromCache(cache_key)) === null) {
           shape = new Ammo.btSphereShape(description.radius);
-          shape.setMargin(description.params.margin);
           setShapeCache(cache_key, shape);
         }
 
@@ -139,7 +137,6 @@ module.exports = function (self) {
           _vec3_1.setY(description.height / 2);
           _vec3_1.setZ(description.depth / 2);
           shape = new Ammo.btCylinderShape(_vec3_1);
-          shape.setMargin(description.params.margin);
           setShapeCache(cache_key, shape);
         }
 
@@ -151,7 +148,6 @@ module.exports = function (self) {
         if ((shape = getShapeFromCache(cache_key)) === null) {
           // In Bullet, capsule height excludes the end spheres
           shape = new Ammo.btCapsuleShape(description.radius, description.height - 2 * description.radius);
-          shape.setMargin(description.params.margin);
           setShapeCache(cache_key, shape);
         }
 
@@ -162,7 +158,6 @@ module.exports = function (self) {
 
         if ((shape = getShapeFromCache(cache_key)) === null) {
           shape = new Ammo.btConeShape(description.radius, description.height);
-          shape.setMargin(description.params.margin);
           setShapeCache(cache_key, shape);
         }
 
@@ -199,8 +194,6 @@ module.exports = function (self) {
           true,
           true
         );
-        
-        shape.setMargin(description.params.margin);
 
         _noncached_shapes[description.id] = shape;
 
@@ -217,8 +210,6 @@ module.exports = function (self) {
 
           shape.addPoint(_vec3_1);
         }
-
-        shape.setMargin(description.params.margin);
 
         _noncached_shapes[description.id] = shape;
 
@@ -254,7 +245,6 @@ module.exports = function (self) {
         _vec3_1.setZ(1);
 
         shape.setLocalScaling(_vec3_1);
-        shape.setMargin(description.params.margin);
 
         _noncached_shapes[description.id] = shape;
         break;
@@ -311,6 +301,7 @@ module.exports = function (self) {
 
   public_functions.init = (params = {}) => {
     _transform = new Ammo.btTransform();
+    _transform_pos = new Ammo.btTransform();
     _vec3_1 = new Ammo.btVector3(0, 0, 0);
     _vec3_2 = new Ammo.btVector3(0, 0, 0);
     _vec3_3 = new Ammo.btVector3(0, 0, 0);
@@ -411,8 +402,10 @@ module.exports = function (self) {
       const sbConfig = body.get_m_cfg(),
         physParams = description.params;
 
-      sbConfig.set_viterations(40);
-      sbConfig.set_piterations(40);
+      if (physParams.viterations) sbConfig.set_viterations(physParams.viterations);
+      if (physParams.piterations) sbConfig.set_piterations(physParams.piterations);
+      if (physParams.diterations) sbConfig.set_diterations(physParams.diterations);
+      if (physParams.citerations) sbConfig.set_citerations(physParams.citerations);
       sbConfig.set_collisions(0x11);
       sbConfig.set_kDF(physParams.friction);
       sbConfig.set_kDP(physParams.damping);
@@ -422,11 +415,12 @@ module.exports = function (self) {
       if (physParams.anchorHardness) sbConfig.set_kAHR(physParams.anchorHardness);
       if (physParams.rigidHardness) sbConfig.set_kCHR(physParams.rigidHardness);
 
-      body.get_m_materials().at(0).set_m_kLST(physParams.stiffness ? physParams.stiffness : 0.9);
-      body.get_m_materials().at(0).set_m_kAST(physParams.stiffness ? physParams.stiffness : 0.9);
+      if (physParams.klst) body.get_m_materials().at(0).set_m_kLST(physParams.klst);
+      if (physParams.kast) body.get_m_materials().at(0).set_m_kAST(physParams.kast);
+      if (physParams.kvst) body.get_m_materials().at(0).set_m_kVST(physParams.kvst);
 
       Ammo.castObject(body, Ammo.btCollisionObject).getCollisionShape().setMargin(physParams.margin ? physParams.margin : 0.1);
-      body.setActivationState(4);
+      body.setActivationState(physParams.state || 4);
       body.type = 0; // SoftBody.
 
       _transform.setIdentity();
@@ -489,6 +483,7 @@ module.exports = function (self) {
       _vec3_1.setY(0);
       _vec3_1.setZ(0);
       shape.calculateLocalInertia(description.mass, _vec3_1);
+      if (physParams.margin) shape.setMargin(physParams.margin);
 
       _transform.setIdentity();
 
@@ -512,6 +507,7 @@ module.exports = function (self) {
       rbInfo.set_m_angularDamping(physParams.damping);
 
       body = new Ammo.btRigidBody(rbInfo);
+      body.setActivationState(physParams.state || 4);
       Ammo.destroy(rbInfo);
 
       if (typeof description.collision_flags !== 'undefined') body.setCollisionFlags(description.collision_flags);
@@ -520,6 +516,8 @@ module.exports = function (self) {
       body.type = 1; // RigidBody.
       _num_rigidbody_objects++;
     }
+
+    body.activate();
 
     body.id = description.id;
     _objects[body.id] = body;
@@ -616,11 +614,14 @@ module.exports = function (self) {
     if (_objects[details.id].type === 0) {
       _num_softbody_objects--;
       _softbody_report_size -= _objects[details.id].get_m_nodes().size();
-    } else if (_objects[details.id].type === 1) _num_rigidbody_objects--;
+      world.removeSoftBody(_objects[details.id]);
+    } else if (_objects[details.id].type === 1) {
+      _num_rigidbody_objects--;
+      world.removeRigidBody(_objects[details.id]);
+      Ammo.destroy(_motion_states[details.id]);
+    }
 
-    world.removeRigidBody(_objects[details.id]);
     Ammo.destroy(_objects[details.id]);
-    Ammo.destroy(_motion_states[details.id]);
     if (_compound_shapes[details.id]) Ammo.destroy(_compound_shapes[details.id]);
     if (_noncached_shapes[details.id]) Ammo.destroy(_noncached_shapes[details.id]);
 
@@ -1063,16 +1064,9 @@ module.exports = function (self) {
     if (world) {
       if (params.timeStep && params.timeStep < fixedTimeStep)
         params.timeStep = fixedTimeStep;
-      else if (!params.timeStep && last_simulation_time) {
-        params.timeStep = 0;
-
-        while (params.timeStep + last_simulation_duration <= fixedTimeStep)
-          params.timeStep = (Date.now() - last_simulation_time) / 1000; // time since last simulation
-      } else if (!params.timeStep) params.timeStep = fixedTimeStep; // handle first frame
 
       params.maxSubSteps = params.maxSubSteps || Math.ceil(params.timeStep / fixedTimeStep); // If maxSubSteps is not defined, keep the simulation fully up to date
 
-      last_simulation_duration = Date.now();
       world.stepSimulation(params.timeStep, params.maxSubSteps, fixedTimeStep);
 
       if (_vehicles.length > 0) reportVehicles();
@@ -1080,9 +1074,6 @@ module.exports = function (self) {
       if (_constraints.length > 0) reportConstraints();
       reportWorld();
       if (_softbody_enabled) reportWorld_softbodies();
-
-      last_simulation_duration = (Date.now() - last_simulation_duration) / 1000;
-      last_simulation_time = Date.now();
     }
   };
 
@@ -1296,6 +1287,8 @@ module.exports = function (self) {
           // #TODO: we can't use center of mass transform when center of mass can change,
           //        but getMotionState().getWorldTransform() screws up on objects that have been moved
           // object.getMotionState().getWorldTransform( transform );
+          // object.getMotionState().getWorldTransform(_transform);
+
           const transform = object.getCenterOfMassTransform();
           const origin = transform.getOrigin();
           const rotation = transform.getRotation();

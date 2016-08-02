@@ -360,7 +360,7 @@ var World = function (_WHSObject) {
         _scope._process(clock.getDelta());
         if (_scope.controls) _scope._updateControls();
 
-        if (_scope.simulate) scene.simulate(clock.getDelta());
+        if (_scope.simulate) scene.simulate(clock.getDelta(), 1);
 
         // Effects rendering.
         if (_scope._composer && _scope.render) {

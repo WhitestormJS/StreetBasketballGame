@@ -29,7 +29,7 @@ class Text extends Shape {
   }
 
   build(params = {}) {
-    const material = super._initMaterial(params.material);
+    const material = loadMaterial(params.material);
 
     let Mesh;
 

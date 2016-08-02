@@ -68,7 +68,7 @@ var Box = function (_Shape) {
 
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      var material = (0, _get3.default)(Object.getPrototypeOf(Box.prototype), '_initMaterial', this).call(this, params.material);
+      var material = (0, _api.loadMaterial)(params.material);
 
       var Mesh = void 0;
 
@@ -101,26 +101,26 @@ var Box = function (_Shape) {
   }, {
     key: 'G_width',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { width: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { width: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.width;
+      return this._native.geometry.parameters.width;
     }
   }, {
     key: 'G_height',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { height: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { height: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.height;
+      return this._native.geometry.parameters.height;
     }
   }, {
     key: 'G_depth',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { depth: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { depth: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.depth;
+      return this._native.geometry.parameters.depth;
     }
   }]);
   return Box;

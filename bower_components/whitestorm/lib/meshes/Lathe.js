@@ -66,7 +66,7 @@ var Lathe = function (_Shape) {
 
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      var material = (0, _get3.default)(Object.getPrototypeOf(Lathe.prototype), '_initMaterial', this).call(this, params.material);
+      var material = (0, _api.loadMaterial)(params.material);
 
       var Mesh = void 0;
 
@@ -95,10 +95,10 @@ var Lathe = function (_Shape) {
   }, {
     key: 'G_points',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { points: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { points: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.points;
+      return this._native.geometry.parameters.points;
     }
   }]);
   return Lathe;

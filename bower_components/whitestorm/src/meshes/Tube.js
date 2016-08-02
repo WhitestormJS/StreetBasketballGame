@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {ConvexMesh, ConcaveMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend} from '../extras/api';
+import {extend, loadMaterial} from '../extras/api';
 
 class Tube extends Shape {
   constructor(params = {}) {
@@ -23,7 +23,7 @@ class Tube extends Shape {
   }
 
   build(params = {}) {
-    const material = super._initMaterial(params.material);
+    const material = loadMaterial(params.material);
 
     let Mesh;
 
@@ -60,43 +60,43 @@ class Tube extends Shape {
   }
 
   set G_path(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {path: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {path: val}}));
   }
 
   get G_path() {
-    return this.native.geometry.parameters.path;
+    return this._native.geometry.parameters.path;
   }
 
   set G_segments(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {segments: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {segments: val}}));
   }
 
   get G_segments() {
-    return this.native.geometry.parameters.segments;
+    return this._native.geometry.parameters.segments;
   }
 
   set G_radius(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
   }
 
   get G_radius() {
-    return this.native.geometry.parameters.radius;
+    return this._native.geometry.parameters.radius;
   }
 
   set G_radiusSegments(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusSegments: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radiusSegments: val}}));
   }
 
   get G_radiusSegments() {
-    return this.native.geometry.parameters.radiusSegments;
+    return this._native.geometry.parameters.radiusSegments;
   }
 
   set G_closed(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {closed: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {closed: val}}));
   }
 
   get G_closed() {
-    return this.native.geometry.parameters.closed;
+    return this._native.geometry.parameters.closed;
   }
 
   clone() {

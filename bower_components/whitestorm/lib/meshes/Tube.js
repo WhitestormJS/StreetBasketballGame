@@ -70,7 +70,7 @@ var Tube = function (_Shape) {
 
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      var material = (0, _get3.default)(Object.getPrototypeOf(Tube.prototype), '_initMaterial', this).call(this, params.material);
+      var material = (0, _api.loadMaterial)(params.material);
 
       var Mesh = void 0;
 
@@ -103,42 +103,42 @@ var Tube = function (_Shape) {
   }, {
     key: 'G_path',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { path: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { path: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.path;
+      return this._native.geometry.parameters.path;
     }
   }, {
     key: 'G_segments',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { segments: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { segments: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.segments;
+      return this._native.geometry.parameters.segments;
     }
   }, {
     key: 'G_radius',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.radius;
+      return this._native.geometry.parameters.radius;
     }
   }, {
     key: 'G_radiusSegments',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusSegments: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusSegments: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.radiusSegments;
+      return this._native.geometry.parameters.radiusSegments;
     }
   }, {
     key: 'G_closed',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { closed: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { closed: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.closed;
+      return this._native.geometry.parameters.closed;
     }
   }]);
   return Tube;

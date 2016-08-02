@@ -97,27 +97,30 @@ class World extends WHSObject {
     if (initParams.scene && initParams.helpers) this._initHelpers();
 
     // NOTE: ==================== Autoresize. ======================
-    const scope = this;
 
     if (params.autoresize === "window") {
       window.addEventListener('resize', () => {
-        scope.setSize(
+        this.setSize(
           Number(window.innerWidth * params.rWidth).toFixed(),
           Number(window.innerHeight * params.rHeight).toFixed()
         );
+
+        this.emit('resize');
       });
     } else if (this.getParams().autoresize) {
       window.addEventListener('resize', () => {
-        scope.setSize(
+        this.setSize(
           Number(params.container.offsetWidth * params.rWidth).toFixed(),
           Number(params.container.offsetHeight * params.rHeight).toFixed()
         );
+
+        this.emit('resize');
       });
     }
 
-    scope.loops = [];
+    this.loops = [];
 
-    return scope;
+    return this;
   }
 
   /**
@@ -335,7 +338,7 @@ class World extends WHSObject {
       _scope._process(clock.getDelta());
       if (_scope.controls) _scope._updateControls();
 
-      if (_scope.simulate) scene.simulate(clock.getDelta());
+      if (_scope.simulate) scene.simulate(clock.getDelta(), 1);
 
       // Effects rendering.
       if (_scope._composer && _scope.render) {

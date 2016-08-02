@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {ConvexMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend} from '../extras/api';
+import {extend, loadMaterial} from '../extras/api';
 
 class Dodecahedron extends Shape {
   constructor(params = {}) {
@@ -20,7 +20,7 @@ class Dodecahedron extends Shape {
   }
 
   build(params = {}) {
-    const material = super._initMaterial(params.material);
+    const material = loadMaterial(params.material);
 
     let Mesh;
 
@@ -49,19 +49,19 @@ class Dodecahedron extends Shape {
   }
 
   set G_radius(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {radius: val}}));
   }
 
   get G_radius() {
-    return this.native.geometry.parameters.radius;
+    return this._native.geometry.parameters.radius;
   }
 
   set G_detail(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {detail: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {detail: val}}));
   }
 
   get G_detail() {
-    return this.native.geometry.parameters.detail;
+    return this._native.geometry.parameters.detail;
   }
 
   clone() {

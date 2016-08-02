@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {ConvexMesh, ConcaveMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend} from '../extras/api';
+import {extend, loadMaterial} from '../extras/api';
 
 class Lathe extends Shape {
   constructor(params = {}) {
@@ -19,7 +19,7 @@ class Lathe extends Shape {
   }
 
   build(params = {}) {
-    const material = super._initMaterial(params.material);
+    const material = loadMaterial(params.material);
 
     let Mesh;
 
@@ -48,11 +48,11 @@ class Lathe extends Shape {
   }
 
   set G_points(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {points: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {points: val}}));
   }
 
   get G_points() {
-    return this.native.geometry.parameters.points;
+    return this._native.geometry.parameters.points;
   }
 
   clone() {

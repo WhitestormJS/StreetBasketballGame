@@ -144,6 +144,8 @@ export class Scene extends THREE.Scene {
           data[offset + 2],
           data[offset + 3]
         );
+
+        object.__dirtyPosition = false;
       }
 
       if (object.__dirtyRotation === false) {
@@ -153,6 +155,8 @@ export class Scene extends THREE.Scene {
           data[offset + 6],
           data[offset + 7]
         );
+
+        object.__dirtyRotation = false;
       }
 
       object._physijs.linearVelocity.set(
@@ -584,7 +588,7 @@ export class Scene extends THREE.Scene {
     if (this._is_simulating) return false;
 
     this._is_simulating = true;
-
+    
     for (const object_id in this._objects) {
       if (!this._objects.hasOwnProperty(object_id)) continue;
 

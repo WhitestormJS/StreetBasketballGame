@@ -14,12 +14,13 @@ const extend = (object, ...extensions) => { // $.extend alternative, ... is the 
     for (const prop of Object.getOwnPropertyNames(extension)) { // Do not traverse the prototype chain.
       if (object[prop] !== undefined
         && object[prop].toString() === '[object Object]'
-        && extension[prop].toString() === '[object Object]')
+        && extension[prop].toString() === '[object Object]') {
 
         // Goes deep only if object[prop] and extension[prop] are both objects !
-        extend(object[prop], extension[prop]);
+        if (extension[prop].uuid) object[prop] = extension[prop];
+        else extend(object[prop], extension[prop]);
 
-      else
+      } else
         object[prop] = (object[prop] === 0) ? 0 : object[prop];
       if (typeof object[prop] === 'undefined') object[prop] = extension[prop]; // Add values that do not already exist.
     }
@@ -56,9 +57,6 @@ const texture = (url, repeat = {}) => {
 };
 
 const loadMaterial = (material = {}) => {
-  if (typeof material.kind !== 'string')
-    console.error('Type of material is undefined or not a string. @loadMaterial');
-
   let materialThree;
 
   const params = Object.assign({}, material);
@@ -133,6 +131,8 @@ const loadMaterial = (material = {}) => {
       break;
 
     default:
+      materialThree = new THREE.MeshBasicMaterial(params);
+      break;
   }
 
   return materialThree;

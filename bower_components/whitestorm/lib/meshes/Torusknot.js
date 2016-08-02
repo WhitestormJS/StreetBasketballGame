@@ -72,7 +72,7 @@ var Torusknot = function (_Shape) {
 
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      var material = (0, _get3.default)(Object.getPrototypeOf(Torusknot.prototype), '_initMaterial', this).call(this, params.material);
+      var material = (0, _api.loadMaterial)(params.material);
 
       var Mesh = void 0;
 
@@ -101,58 +101,58 @@ var Torusknot = function (_Shape) {
   }, {
     key: 'G_radius',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radius: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.radius;
+      return this._native.geometry.parameters.radius;
     }
   }, {
     key: 'G_tube',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { tube: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { tube: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.tube;
+      return this._native.geometry.parameters.tube;
     }
   }, {
     key: 'G_radialSegments',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radialSegments: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radialSegments: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.radialSegments;
+      return this._native.geometry.parameters.radialSegments;
     }
   }, {
     key: 'G_tubularSegments',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { tubularSegments: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { tubularSegments: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.tubularSegments;
+      return this._native.geometry.parameters.tubularSegments;
     }
   }, {
     key: 'G_p',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { p: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { p: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.p;
+      return this._native.geometry.parameters.p;
     }
   }, {
     key: 'G_q',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { q: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { q: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.q;
+      return this._native.geometry.parameters.q;
     }
   }, {
     key: 'G_heightScale',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { heightScale: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { heightScale: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.heightScale;
+      return this._native.geometry.parameters.heightScale;
     }
   }]);
   return Torusknot;

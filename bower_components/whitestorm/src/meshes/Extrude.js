@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import {ConvexMesh, ConcaveMesh, SoftMesh} from '../physics/index.js';
 
 import {Shape} from '../core/Shape';
-import {extend} from '../extras/api';
+import {extend, loadMaterial} from '../extras/api';
 
 class Extrude extends Shape {
   constructor(params = {}) {
@@ -20,7 +20,7 @@ class Extrude extends Shape {
   }
 
   build(params = {}) {
-    const material = super._initMaterial(params.material);
+    const material = loadMaterial(params.material);
 
     let Mesh;
 
@@ -50,19 +50,19 @@ class Extrude extends Shape {
   }
 
   set G_shapes(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {shapes: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {shapes: val}}));
   }
 
   get G_shapes() {
-    return this.native.geometry.parameters.shapes;
+    return this._native.geometry.parameters.shapes;
   }
 
   set G_options(val) {
-    this.native.geometry = this.buildGeometry(this.updateParams({geometry: {options: val}}));
+    this._native.geometry = this.buildGeometry(this.updateParams({geometry: {options: val}}));
   }
 
   get G_options() {
-    return this.native.geometry.parameters.options;
+    return this._native.geometry.parameters.options;
   }
 
   clone() {

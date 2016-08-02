@@ -73,7 +73,7 @@ var Cylinder = function (_Shape) {
 
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      var material = (0, _get3.default)(Object.getPrototypeOf(Cylinder.prototype), '_initMaterial', this).call(this, params.material);
+      var material = (0, _api.loadMaterial)(params.material);
 
       var Mesh = void 0;
 
@@ -106,34 +106,34 @@ var Cylinder = function (_Shape) {
   }, {
     key: 'G_radiusTop',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusTop: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusTop: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.radiusTop;
+      return this._native.geometry.parameters.radiusTop;
     }
   }, {
     key: 'G_radiusBottom',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusBottom: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusBottom: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.radiusBottom;
+      return this._native.geometry.parameters.radiusBottom;
     }
   }, {
     key: 'G_height',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { height: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { height: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.height;
+      return this._native.geometry.parameters.height;
     }
   }, {
     key: 'G_radiusSegments',
     set: function set(val) {
-      this.native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusSegments: val } }));
+      this._native.geometry = this.buildGeometry(this.updateParams({ geometry: { radiusSegments: val } }));
     },
     get: function get() {
-      return this.native.geometry.parameters.radiusSegments;
+      return this._native.geometry.parameters.radiusSegments;
     }
   }]);
   return Cylinder;
