@@ -100,8 +100,6 @@ const APP = {
     APP.camera.lookAt(new THREE.Vector3(0, APP.basketY, 0));
     APP.world.start(); // Ready.
 
-    // APP.world.setControls(WHS.orbitControls());
-
     APP.ProgressLoader.on('step', () => {
       const hh = 100 + APP.ProgressLoader.getPercent() * 2;
 
@@ -113,6 +111,27 @@ const APP = {
         ease: Power2.easeInOut
       });
     });
+
+    APP.raycaster = new THREE.Raycaster();
+
+    APP.loop_raycaster = new WHS.Loop(() => {
+      APP.raycaster.setFromCamera(
+        new THREE.Vector2(
+          (APP.cursor.x / window.innerWidth) * 2 - 1,
+          -(APP.cursor.y / window.innerHeight) * 2 + 1
+        ),
+        APP.camera.getNative()
+      );
+
+      const distancePlane = APP.raycaster.ray.distanceToPlane(APP.planeForRaycasting);
+      const raycastPoint = APP.raycaster.ray.at(distancePlane);
+      if (APP.animComplete && !APP.levelMenuTriggered && APP.ball.position.z > 60) APP.triggerLevelMenu();
+      if (APP.animComplete && APP.levelMenuTriggered && APP.ball.position.z < 170) APP.goBackToLevel();
+
+      APP.ball.setLinearVelocity(raycastPoint.sub(APP.ball.position).multiplyScalar(2));
+    });
+
+    APP.world.addLoop(APP.loop_raycaster);
 
     APP.ProgressLoader.on('complete', () => {
       setTimeout(() => {
@@ -499,11 +518,15 @@ const APP = {
 
     const loop = new WHS.Loop(() => {
       if (!APP.thrown) APP.pickBall();
-      if (APP.ball.position.distanceTo(APP.basket.position) < APP.basketGoalDiff
-        && Math.abs(APP.ball.position.y - APP.basket.position.y) < APP.basketYGoalDiff 
+
+      const BLpos = APP.ball.position;
+      const BSpos = APP.basket.position
+
+      if (BLpos.distanceTo(BSpos) < APP.basketGoalDiff
+        && Math.abs(BLpos.y - BSpos.y) < APP.basketYGoalDiff 
         && !APP.goal) {
 
-        APP.onGoal(APP.ball.position, APP.basket.position);
+        APP.onGoal(BLpos, BSpos);
         
         if (APP.helpersActive) {
           document.querySelector('.helpers').className += ' deactivated';
@@ -522,11 +545,14 @@ const APP = {
   },
 
   updateCoords(e) {
+    e.preventDefault();
+
     APP.cursor.x = e.touches && e.touches[0] ? e.touches[0].clientX : e.clientX;
     APP.cursor.y = e.touches && e.touches[0] ? e.touches[0].clientY : e.clientY;
   },
 
   checkKeys(e) {
+    e.preventDefault();
     if (e.code === "Space") APP.thrown = false;
   },
 
@@ -563,7 +589,9 @@ const APP = {
 
   /* === APP: functions === */
 
-  throwBall() {
+  throwBall(e) {
+    e.preventDefault();
+
     if (!APP.detectDoubleTap() && APP.controlsEnabled) {
       const force = 2400;
       const vector = {
@@ -624,45 +652,7 @@ const APP = {
     APP.menuDataPlane.getNative().material.opacity = 0;
     TweenLite.to(APP.menuDataPlane.getNative().material, 3, {opacity: 0.7, ease: Power2.easeInOut});
 
-    // Fill data.
-    document.querySelector('.menu_time').innerText = APP.menu.time.toFixed() + 's.';
-    document.querySelector('.menu_attempts').innerText = APP.menu.attempts.toFixed();
-    document.querySelector('.menu_accuracy').innerText = APP.menu.accuracy.toFixed();
-    document.querySelector('.menu_mark').innerText = markText;
-
-    const stars = document.querySelectorAll('.stars .star');
-    // Stars.
-    stars[0].className = 'star';
-    if (mark < 2) stars[1].className = 'star inactive';
-    else stars[1].className = 'star';
-    if (mark < 3) stars[2].className = 'star inactive';
-    else stars[2].className = 'star';
-
-    setTimeout(APP.makeCursorFromBall, 3000);
-  },
-
-  makeCursorFromBall() {
-    APP.raycaster = new THREE.Raycaster();
-
-    APP.loop_raycaster = APP.loop_raycaster || new WHS.Loop(() => {
-      APP.raycaster.setFromCamera(
-        new THREE.Vector2(
-          (APP.cursor.x / window.innerWidth) * 2 - 1,
-          -(APP.cursor.y / window.innerHeight) * 2 + 1
-        ),
-        APP.camera.getNative()
-      );
-
-      const distancePlane = APP.raycaster.ray.distanceToPlane(APP.planeForRaycasting);
-      const raycastPoint = APP.raycaster.ray.at(distancePlane);
-      if (APP.animComplete && !APP.levelMenuTriggered && APP.ball.position.z > 60) APP.triggerLevelMenu();
-      if (APP.animComplete && APP.levelMenuTriggered && APP.ball.position.z < 170) APP.goBackToLevel();
-
-      APP.ball.setLinearVelocity(raycastPoint.sub(APP.ball.position).multiplyScalar(2));
-    });
-
-    APP.world.addLoop(APP.loop_raycaster);
-    APP.loop_raycaster.start();
+    setTimeout(() => {APP.loop_raycaster.start()}, 3000);
   },
 
   triggerLevelMenu() {
@@ -902,4 +892,6 @@ const APP = {
   }
 }
 
-APP.init();
+basket.require({ url: 'bower_components/whitestorm/build/whitestorm.js' }).then(() => {
+  APP.init();
+});

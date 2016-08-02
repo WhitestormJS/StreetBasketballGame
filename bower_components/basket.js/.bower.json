@@ -1,0 +1,32 @@
+{
+  "name": "basket.js",
+  "main": "dist/basket.js",
+  "ignore": [
+    "_*",
+    ".*",
+    "asset",
+    "dist/basket.full.min.js",
+    "dist/basket.min.js",
+    "lib",
+    "media",
+    "test",
+    "Gruntfile.js",
+    "index.md",
+    "package.json"
+  ],
+  "dependencies": {
+    "rsvp": "~3.0.16"
+  },
+  "homepage": "https://github.com/addyosmani/basket.js",
+  "version": "0.5.2",
+  "_release": "0.5.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.5.2",
+    "commit": "09db68c7e71680f2d41e2507a5f3b0fa5a319b62"
+  },
+  "_source": "https://github.com/addyosmani/basket.js.git",
+  "_target": "^0.5.2",
+  "_originalSource": "basket.js",
+  "_direct": true
+}
