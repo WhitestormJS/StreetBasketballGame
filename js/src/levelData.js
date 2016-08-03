@@ -6,10 +6,8 @@ const levelData = [
     basketColor: 0xff0000,
 
     force: {
-      y: 6.2,
       z: -2,
-      m: 2400,
-      xk: 1
+      xk: 8
     }
   },
   {

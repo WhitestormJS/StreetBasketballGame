@@ -38,7 +38,9 @@ const APP = {
 
   cursor: {
     x: 0, 
-    y: 0
+    y: 0,
+    xCenter: window.innerWidth / 2,
+    yCenter: window.innerHeight / 2
   },
 
   force: {
@@ -88,7 +90,7 @@ const APP = {
     });
 
     APP.camera = APP.world.getCamera();
-    APP.ProgressLoader = new ProgressLoader(14);
+    APP.ProgressLoader = new ProgressLoader(APP.isMobile ? 12 : 14);
 
     APP.createScene(); // 1
     APP.addLights(); // 2
@@ -361,46 +363,48 @@ const APP = {
   },
 
   initMenu() {
-    APP.text = new WHS.Text({
-      geometry: {
-        text: "Street Basketball",
-        parameters: {
-          size: 10,
-          font: "fonts/1.js",
-          height: 4
+    if (!APP.isMobile) {
+      APP.text = new WHS.Text({
+        geometry: {
+          text: "Street Basketball",
+          parameters: {
+            size: 10,
+            font: "fonts/1.js",
+            height: 4
+          }
+        },
+
+        shadow: {
+          cast: false,
+          receive: false
+        },
+
+        physics: false,
+        mass: 0,
+
+        material: {
+          kind: "phong",
+          color: 0xffffff,
+          map: WHS.texture('textures/text.jpg', {repeat: {x: 0.005, y: 0.005}})
+        },
+
+        pos: {
+          y: 120,
+          z: -40
+        },
+
+        rot: {
+          x: -Math.PI / 3
         }
-      },
+      });
 
-      shadow: {
-        cast: false,
-        receive: false
-      },
-
-      physics: false,
-      mass: 0,
-
-      material: {
-        kind: "phong",
-        color: 0xffffff,
-        map: WHS.texture('textures/text.jpg', {repeat: {x: 0.005, y: 0.005}})
-      },
-
-      pos: {
-        y: 120,
-        z: -40
-      },
-
-      rot: {
-        x: -Math.PI / 3
-      }
-    });
-
-    APP.text.addTo(APP.world).then(() => {
-      APP.text.getNative().geometry.computeBoundingBox();
-      APP.text.position.x = -0.5 * (APP.text.getNative().geometry.boundingBox.max.x - APP.text.getNative().geometry.boundingBox.min.x);
-      APP.ProgressLoader.step();
-      // APP.text.hide();
-    });
+      APP.text.addTo(APP.world).then(() => {
+        APP.text.getNative().geometry.computeBoundingBox();
+        APP.text.position.x = -0.5 * (APP.text.getNative().geometry.boundingBox.max.x - APP.text.getNative().geometry.boundingBox.min.x);
+        APP.ProgressLoader.step();
+        // APP.text.hide();
+      });
+    }
 
     APP.menuDataPlane = new WHS.Plane({
       geometry: {
@@ -431,26 +435,28 @@ const APP = {
 
     APP.menuDataPlane.addTo(APP.world).then(() => {APP.ProgressLoader.step()});
 
-    APP.MenuLight = new WHS.SpotLight({
-      light: {
-        distance: 100,
-        intensity: 3
-      },
+    if (!APP.isMobile) {
+      APP.MenuLight = new WHS.SpotLight({
+        light: {
+          distance: 100,
+          intensity: 3
+        },
 
-      shadowmap: {
-        cast: false
-      },
+        shadowmap: {
+          cast: false
+        },
 
-      pos: {
-        y: 200,
-        z: -30
-      },
+        pos: {
+          y: 200,
+          z: -30
+        },
 
-      target: {
-        y: 120,
-        z: -40
-      }
-    });
+        target: {
+          y: 120,
+          z: -40
+        }
+      });
+    }
 
     APP.LevelLight1 = new WHS.SpotLight({
       light: {
@@ -481,7 +487,7 @@ const APP = {
 
     // APP.MenuLight.hide();
 
-    APP.MenuLight.addTo(APP.world).then(() => {APP.ProgressLoader.step()});
+    if (!APP.isMobile) APP.MenuLight.addTo(APP.world).then(() => {APP.ProgressLoader.step()});
     APP.LevelLight1.addTo(APP.world).then(() => {APP.ProgressLoader.step()});
     APP.LevelLight2.addTo(APP.world).then(() => {APP.ProgressLoader.step()});
   },
@@ -607,8 +613,6 @@ const APP = {
     APP.liProgress.addTo(APP.levelIndicator);
     APP.liProgress.data_arc = 0;
 
-    let indicatorTransition = null;
-
     APP.checkForLevel = checkForLevel(APP);
 
     APP.world.addLoop(APP.checkForLevel);
@@ -689,26 +693,33 @@ const APP = {
     e.preventDefault();
 
     if (!APP.detectDoubleTap() && APP.controlsEnabled && !APP.thrown) {
-      const vector = {
-        x: APP.force.xk * (APP.cursor.x - window.innerWidth / 2), 
-        y: APP.force.y * APP.force.m,
-        z: APP.force.z * APP.force.m
-      };
+      const vector = new THREE.Vector3(
+        APP.force.xk * (APP.cursor.x - APP.cursor.xCenter), 
+        APP.force.y * APP.force.m,
+        APP.force.z * APP.force.m
+      );
+
+      APP.ball.setLinearVelocity(new THREE.Vector3(0, 0, 0)); // Reset gravity affect.
 
       APP.ball.applyCentralImpulse(vector);
+
+      vector.multiplyScalar(10 / APP.force.m)
+      vector.y = vector.x;
+      vector.x = APP.force.y;
+      vector.z = 0;
+
+      APP.ball.setAngularVelocity(vector); // Reset gravity affect.
       APP.thrown = true;
       APP.menu.attempts++;
     }
   },
 
   pickBall() {
-    const xCenter = window.innerWidth / 2;
-    const yCenter = window.innerHeight / 2;
-    const intensity = 32;
-    const x = (APP.cursor.x - xCenter) / window.innerWidth * intensity;
-    const y = - (APP.cursor.y - yCenter) / window.innerHeight * intensity;
+    const cursor = APP.cursor;
 
-    APP.ball.setLinearVelocity(new THREE.Vector3(0, 0, 0)); // Reset gravity affect.
+    const x = (cursor.x - cursor.xCenter) / window.innerWidth * 32;
+    const y = - (cursor.y - cursor.yCenter) / window.innerHeight * 32;
+
     APP.ball.position.set(x, y, -36);
   },
 
@@ -801,8 +812,12 @@ const APP = {
     APP.menuDataPlane.show();
     APP.menuDataPlane.M_({map: TexUtils.generateMenuTexture(APP.menu)});
 
-    APP.menuDataPlane.getNative().material.opacity = 0;
-    TweenLite.to(APP.menuDataPlane.getNative().material, 3, {opacity: 0.7, ease: Power2.easeInOut});
+    if (APP.isMobile) {
+      APP.menuDataPlane.getNative().material.opacity = 0.7;
+    } else {
+      APP.menuDataPlane.getNative().material.opacity = 0;
+      TweenLite.to(APP.menuDataPlane.getNative().material, 3, {opacity: 0.7, ease: Power2.easeInOut});
+    }
 
     // Tween camera position and rotation to go upper and look at basket position.
     const cameraDest = APP.camera.clone();
@@ -837,15 +852,20 @@ const APP = {
     // Go to LevelMenu.
     TweenLite.to(APP.camera.position, 1, {z: 350, ease: Power2.easeIn});
 
-    // Reset lights.
-    APP.LevelLight1.getNative().intensity = 0;
-    APP.LevelLight2.getNative().intensity = 0;
+    if (APP.isMobile) {
+      APP.LevelLight1.getNative().intensity = 10;
+      APP.LevelLight2.getNative().intensity = 10;
+    } else {
+      // Reset lights.
+      APP.LevelLight1.getNative().intensity = 0;
+      APP.LevelLight2.getNative().intensity = 0;
 
-    // Tween turning on lights.
-    TweenLite.to(APP.LevelLight1.getNative(), 0.5, {intensity: 10, ease: Power2.easeIn, delay: 1});
-    TweenLite.to(APP.LevelLight2.getNative(), 0.5, {intensity: 10, ease: Power2.easeIn, delay: 1.5, onComplete: () => {
-      APP.animComplete = true;
-    }});
+      // Tween turning on lights.
+      TweenLite.to(APP.LevelLight1.getNative(), 0.5, {intensity: 10, ease: Power2.easeIn, delay: 1});
+      TweenLite.to(APP.LevelLight2.getNative(), 0.5, {intensity: 10, ease: Power2.easeIn, delay: 1.5, onComplete: () => {
+        APP.animComplete = true;
+      }});
+    }
   }
 }
 

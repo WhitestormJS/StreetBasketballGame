@@ -24,6 +24,9 @@ export default {
   },
 
   _resize(APP) {
+    APP.cursor.xCenter = window.innerWidth / 2;
+    APP.cursor.yCenter = window.innerHeight / 2;
+
     window.addEventListener('resize', () => {
       const style = document.querySelector('.whs canvas').style;
 

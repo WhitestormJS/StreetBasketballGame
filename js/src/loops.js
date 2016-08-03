@@ -1,58 +1,78 @@
 export const checkForLevel = (APP) => {
+  const levelPlanes = APP.levelPlanes;
+  const raycaster = APP.raycaster;
+  const levelIndicator = APP.levelIndicator;
+  const liProgress = APP.liProgress;
+  let levelToGo = null;
+
+  const indicatorTransition = new TweenLite.to(APP.liProgress, 1.5, 
+    {
+      data_arc: Math.PI * 2, ease: Power2.easeOut, 
+      onUpdate: () => {
+        APP.liProgress.G_({arc: APP.liProgress.data_arc});
+      },
+      onComplete: () => {
+        APP.changeLevel(levelToGo);
+        APP.goBackToLevel();
+      }
+    }
+  );
+
+  indicatorTransition.kill();
+
   return new WHS.Loop(() => {
-    const normVec = APP.ball.position.clone().sub(APP.camera.position.clone()).normalize();
-    const raycaster = new THREE.Raycaster(APP.camera.position, normVec, true, 1000);
-    const activeObjects = raycaster.intersectObjects(APP.levelPlanes);
+    const cPos = APP.camera.position;
+    const bPos = APP.ball.position;
 
-    const indDistance = APP.camera.position.distanceTo(APP.ball.position) - 8;
-    const indPos = raycaster.ray.at(indDistance);
+    const normVec = bPos.clone().sub(cPos.clone()).normalize();
+    raycaster.set(cPos, normVec);
 
-    APP.levelIndicator.position.copy(indPos);
+    const activeObjects = raycaster.intersectObjects(levelPlanes);
+
+    if (activeObjects.length >= 1) levelIndicator.position.copy(raycaster.ray.at(cPos.distanceTo(bPos) - 8));
 
     if (!APP.indicatorStatus && activeObjects.length >= 1) {
       APP.indicatorStatus = true;
-      APP.levelIndicator.show();
-      indicatorTransition = new TweenLite.to(APP.liProgress, 1.5, 
-        {
-          data_arc: Math.PI * 2, ease: Power2.easeOut, 
-          onUpdate: () => {
-            APP.liProgress.G_({arc: APP.liProgress.data_arc});
-          },
-          onComplete: () => {
-            APP.changeLevel(activeObjects[0].object.data);
-            APP.goBackToLevel();
-          }
-        }
-      );
+      levelIndicator.show();
+
+      levelToGo = activeObjects[0].object.data;
+      indicatorTransition.restart();
     } else if (activeObjects.length === 0) {
       APP.indicatorStatus = false;
-      APP.levelIndicator.hide();
+      levelIndicator.hide();
       
-      if (APP.liProgress.data_arc !== 0) {
+      if (liProgress.data_arc !== 0) {
         indicatorTransition.kill();
-        APP.liProgress.data_arc = 0;
-        APP.liProgress.G_({arc: 0.1});
+
+        liProgress.data_arc = 0;
+        liProgress.G_({arc: 0.1});
       }
     }
   });
 }
 
 export const loop_raycaster = (APP) => {
+  const cameraNative = APP.camera.getNative();
+  const raycaster = APP.raycaster;
+  const ray = APP.raycaster.ray;
+  const plane = APP.planeForRaycasting;
+
   return new WHS.Loop(() => {
-    APP.raycaster.setFromCamera(
+    raycaster.setFromCamera(
       new THREE.Vector2(
         (APP.cursor.x / window.innerWidth) * 2 - 1,
         -(APP.cursor.y / window.innerHeight) * 2 + 1
       ),
-      APP.camera.getNative()
+      cameraNative
     );
 
-    const distancePlane = APP.raycaster.ray.distanceToPlane(APP.planeForRaycasting);
-    const raycastPoint = APP.raycaster.ray.at(distancePlane);
-    if (APP.animComplete && !APP.levelMenuTriggered && APP.ball.position.z > 60) APP.triggerLevelMenu();
-    if (APP.animComplete && APP.levelMenuTriggered && APP.ball.position.z < 170) APP.goBackToLevel();
+    const bPos = APP.ball.position;
+    const raycastPoint = ray.at(ray.distanceToPlane(plane));
 
-    APP.ball.setLinearVelocity(raycastPoint.sub(APP.ball.position).multiplyScalar(2));
+    if (!APP.levelMenuTriggered && APP.animComplete && bPos.z > 60) APP.triggerLevelMenu();
+    if (APP.levelMenuTriggered && APP.animComplete && bPos.z < 170) APP.goBackToLevel();
+
+    APP.ball.setLinearVelocity(raycastPoint.sub(bPos).multiplyScalar(2));
   });
 }
 
