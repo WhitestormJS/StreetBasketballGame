@@ -4,7 +4,7 @@ export default {
     window.addEventListener('click', () => {
       const el = APP.world.getRenderer().domElement;
       
-      if (!el.fullscreenElement && navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/)) {
+      if (!el.fullscreenElement && APP.isMobile) {
         if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
         if (el.mozRequestFullscreen) el.mozRequestFullscreen();
         if (el.msRequestFullscreen) el.msRequestFullscreen();

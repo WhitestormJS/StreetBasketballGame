@@ -34,6 +34,7 @@ const APP = {
   animComplete: true, // To prevent problems with transitions.
   levelPlanes: [],
   indicatorStatus: false,
+  isMobile: navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/),
 
   cursor: {
     x: 0, 
@@ -237,8 +238,8 @@ const APP = {
         buffer: true,
         radius: APP.getBasketRadius(),
         tube: APP.basketTubeRadius,
-        radialSegments: 16,
-        tubularSegments: 16
+        radialSegments: APP.isMobile ? 8 : 16,
+        tubularSegments: APP.isMobile ? 8 : 16
       },
 
       shadow: {
@@ -272,6 +273,8 @@ const APP = {
 
     APP.basket.addTo(APP.world).then(() => APP.ProgressLoader.step());
 
+    const netRadSegments = APP.isMobile ? 8 : 16;
+
     /* NET OBJECT */
     APP.net = new WHS.Cylinder({
       geometry: {
@@ -279,8 +282,8 @@ const APP = {
         radiusBottom: APP.getBasketRadius() - 3,
         height: 15,
         openEnded: true,
-        heightSegments: 3,
-        radiusSegments: 16
+        heightSegments: APP.isMobile ? 2 : 3,
+        radiusSegments: netRadSegments
       },
 
       shadow: {
@@ -319,7 +322,7 @@ const APP = {
     APP.net.addTo(APP.world).then(() => {
       APP.net.getNative().frustumCulled = false;
 
-      for (let i = 0; i < 16; i++) {
+      for (let i = 0; i < netRadSegments; i++) {
         APP.net.appendAnchor(APP.world, APP.basket, i, 0.8, true);
       }
 
@@ -333,8 +336,8 @@ const APP = {
       geometry: {
         buffer: true,
         radius: APP.ballRadius, 
-        widthSegments: 32,
-        heightSegments: 32
+        widthSegments: APP.isMobile ? 16 : 32,
+        heightSegments: APP.isMobile ? 16 : 32
       },
 
       mass: 120,
