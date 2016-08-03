@@ -65,6 +65,7 @@ const APP = {
     APP.world = new WHS.World({
       autoresize: "window",
       softbody: true,
+      stats: "fps",
 
       background: {
         color: APP.bgColor
