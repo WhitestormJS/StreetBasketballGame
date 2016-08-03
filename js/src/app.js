@@ -1,5 +1,7 @@
 import levelData from './levelData';
 import TexUtils from './utils/textures';
+import EVENTS from './events';
+import {checkForLevel, loop_raycaster, pick_ball} from './loops';
 
 const APP = {
   /* === APP: config === */
@@ -42,7 +44,7 @@ const APP = {
     y: 6.2,
     z: -2,
     m: 2400,
-    xk: 1
+    xk: 8
   },
 
   /* === APP: Menu data === */
@@ -53,7 +55,7 @@ const APP = {
     attempts: 0,
     markText: "",
 
-    grid: false
+    enabled: false
   },
 
   /* === APP: init === */
@@ -78,24 +80,20 @@ const APP = {
         aspect: 45
       },
 
-      // rWidth: 1.2,
-      // rHeight: 1.2,
-
       gravity: {
         y: -200
       }
     });
 
     APP.camera = APP.world.getCamera();
-
     APP.ProgressLoader = new ProgressLoader(14);
 
-    APP.createScene();
-    APP.addLights();
-    APP.addBasket();
-    APP.addBall();
-    APP.initEvents();
-    APP.initMenu();
+    APP.createScene(); // 1
+    APP.addLights(); // 2
+    APP.addBasket(); // 3
+    APP.addBall(); // 4
+    APP.initEvents(); // 5
+    APP.initMenu(); // 6
 
     APP.camera.lookAt(new THREE.Vector3(0, APP.basketY, 0));
     APP.world.start(); // Ready.
@@ -114,34 +112,19 @@ const APP = {
 
     APP.raycaster = new THREE.Raycaster();
 
-    APP.loop_raycaster = new WHS.Loop(() => {
-      APP.raycaster.setFromCamera(
-        new THREE.Vector2(
-          (APP.cursor.x / window.innerWidth) * 2 - 1,
-          -(APP.cursor.y / window.innerHeight) * 2 + 1
-        ),
-        APP.camera.getNative()
-      );
-
-      const distancePlane = APP.raycaster.ray.distanceToPlane(APP.planeForRaycasting);
-      const raycastPoint = APP.raycaster.ray.at(distancePlane);
-      if (APP.animComplete && !APP.levelMenuTriggered && APP.ball.position.z > 60) APP.triggerLevelMenu();
-      if (APP.animComplete && APP.levelMenuTriggered && APP.ball.position.z < 170) APP.goBackToLevel();
-
-      APP.ball.setLinearVelocity(raycastPoint.sub(APP.ball.position).multiplyScalar(2));
-    });
-
+    APP.loop_raycaster = loop_raycaster(APP);
     APP.world.addLoop(APP.loop_raycaster);
 
     APP.ProgressLoader.on('complete', () => {
       setTimeout(() => {
         document.querySelector('.loader').className += ' loaded';
+
         setTimeout(() => {
           document.querySelector('.loader').style.display = 'none';
           APP.onLevelStart();
         }, 2000);
       }, 2000);
-    })
+    });
   },
 
   createScene() {
@@ -232,9 +215,9 @@ const APP = {
 
       material: {
         kind: 'standard',
-        map: WHS.texture('textures/backboard.jpg'),
-        normalMap: WHS.texture('textures/backboard_normal.png'),
-        displacementMap: WHS.texture('textures/backboard_displacement.png'),
+        map: WHS.texture('textures/backboard/1/backboard.jpg'),
+        normalMap: WHS.texture('textures/backboard/1/backboard_normal.png'),
+        displacementMap: WHS.texture('textures/backboard/1/backboard_displacement.png'),
         normalScale: new THREE.Vector2(0.3, 0.3),
         metalness: 0,
         roughness: 0.3
@@ -499,182 +482,9 @@ const APP = {
     APP.LevelLight2.addTo(APP.world).then(() => {APP.ProgressLoader.step()});
   },
 
-  /* === APP: Events === */
 
-  initEvents() {
-    ['mousemove', 'touchmove'].forEach((e) => {
-      window.addEventListener(e, APP.updateCoords);
-    });
-
-    window.addEventListener('click', APP.throwBall);
-    window.addEventListener('keypress', APP.checkKeys);
-
-    window.addEventListener('resize', () => {
-      const style = document.querySelector('.whs canvas').style;
-
-      style.width = '100%';
-      style.height = '100%';
-    });
-
-    const loop = new WHS.Loop(() => {
-      if (!APP.thrown) APP.pickBall();
-
-      const BLpos = APP.ball.position;
-      const BSpos = APP.basket.position
-
-      if (BLpos.distanceTo(BSpos) < APP.basketGoalDiff
-        && Math.abs(BLpos.y - BSpos.y) < APP.basketYGoalDiff 
-        && !APP.goal) {
-
-        APP.onGoal(BLpos, BSpos);
-        
-        if (APP.helpersActive) {
-          document.querySelector('.helpers').className += ' deactivated';
-          APP.helpersActive = false;
-        }
-
-        APP.goal = true;
-        setTimeout(() => APP.goal = false, APP.goalDuration);
-      }
-    });
-
-    APP.world.addLoop(loop);
-    loop.start();
-
-    APP.ProgressLoader.step();
-  },
-
-  updateCoords(e) {
-    e.preventDefault();
-
-    APP.cursor.x = e.touches && e.touches[0] ? e.touches[0].clientX : e.clientX;
-    APP.cursor.y = e.touches && e.touches[0] ? e.touches[0].clientY : e.clientY;
-  },
-
-  checkKeys(e) {
-    e.preventDefault();
-    if (e.code === "Space") APP.thrown = false;
-  },
-
-  detectDoubleTap() {
-    if (!APP.doubletap) { // Wait for second click.
-      APP.doubletap = true;
-
-      setTimeout(() => {
-        APP.doubletap = false;
-      }, APP.doubleTapTime);
-
-      return false;
-    } else { // Double tap triggered.
-      APP.thrown = false;
-      APP.doubletap = true;
-
-      return true;
-    }
-  },
-
-  onLevelStart() {
-    APP.menu.timeClock = new THREE.Clock();
-    APP.menu.timeClock.getElapsedTime();
-  },
-
-  onGoal(ballp, basketp) {
-    const distance = new THREE.Vector2(ballp.x, ballp.z)
-      .distanceTo(new THREE.Vector2(basketp.x, basketp.z));
-
-    APP.menu.time = APP.menu.timeClock.getElapsedTime();
-    APP.menu.accuracy = (1 - distance / 2) * 100;
-    APP.goToMenu();
-  },
-
-  /* === APP: functions === */
-
-  throwBall(e) {
-    e.preventDefault();
-
-    if (!APP.detectDoubleTap() && APP.controlsEnabled) {
-      const force = 2400;
-      const vector = {
-        x: APP.force.xk * (APP.cursor.x - window.innerWidth / 2), 
-        y: APP.force.y * APP.force.m,
-        z: APP.force.z * APP.force.m
-      };
-
-      if (!APP.thrown) {
-        APP.ball.applyCentralImpulse(vector);
-        APP.thrown = true;
-        APP.menu.attempts++;
-      }
-    }
-  },
-
-  pickBall() {
-    if (APP.controlsEnabled) {
-      const xCenter = window.innerWidth / 2;
-      const yCenter = window.innerHeight / 2;
-      const intensity = 32;
-      const x = (APP.cursor.x - xCenter) / window.innerWidth * intensity;
-      const y = - (APP.cursor.y - yCenter) / window.innerHeight * intensity;
-
-      APP.ball.setLinearVelocity(new THREE.Vector3(0, 0, 0)); // Reset gravity affect.
-      APP.ball.position.set(x, y, -36);
-    }
-  },
-
-  goToMenu() {
-    APP.controlsEnabled = false; // Disable moving.
-
-    TweenLite.to(APP.camera.position, 3, {y: 300, ease: Power2.easeInOut, onUpdate: () => {
-      APP.camera.lookAt(new THREE.Vector3(0, APP.basketY, 0));
-    }});
-
-    let mark = 0,
-      markText = "";
-
-    if (APP.menu.time.toFixed() < 2
-      && APP.menu.attempts.toFixed() == 1
-      && APP.menu.accuracy.toFixed() > 60) {
-      mark = 3;
-      APP.menu.markText = "Excellent";
-    } else if (APP.menu.time.toFixed() < 5
-      && APP.menu.attempts.toFixed() == 1
-      && APP.menu.accuracy.toFixed() > 40) {
-      mark = 2;
-      APP.menu.markText = "Good";
-    } else {
-      mark = 1;
-      APP.menu.markText = "OK";
-    }
-
-    APP.menuDataPlane.show();
-    APP.menuDataPlane.M_({map: TexUtils.generateMenuTexture(APP.menu)});
-
-    APP.menuDataPlane.getNative().material.opacity = 0;
-    TweenLite.to(APP.menuDataPlane.getNative().material, 3, {opacity: 0.7, ease: Power2.easeInOut});
-
-    setTimeout(() => {APP.loop_raycaster.start()}, 3000);
-  },
-
-  triggerLevelMenu() {
-    APP.levelMenuTriggered = true;
-    APP.animComplete = false;
-    TweenLite.to(APP.camera.position, 1, {z: 350, ease: Power2.easeIn});
-
-    // Reset lights.
-    APP.LevelLight1.getNative().intensity = 0;
-    APP.LevelLight2.getNative().intensity = 0;
-
-    TweenLite.to(APP.LevelLight1.getNative(), 0.5, {intensity: 10, ease: Power2.easeIn, delay: 1});
-    TweenLite.to(APP.LevelLight2.getNative(), 0.5, {intensity: 10, ease: Power2.easeIn, delay: 1.5, onComplete: () => {
-      APP.animComplete = true;
-    }});
-
-    if (!APP.menu.grid) APP.initLevelGrid();
-    if (APP.checkForLevel) APP.checkForLevel.start();
-  },
-
-  initLevelGrid() {
-    APP.menu.grid = true;
+  initLevelMenu() {
+    APP.menu.enabled = true;
     const ratio = APP.camera.getNative().getFilmWidth() / APP.camera.getNative().getFilmHeight();
 
     let levelXstartOffset = -225;
@@ -795,45 +605,107 @@ const APP = {
 
     let indicatorTransition = null;
 
-    APP.checkForLevel = new WHS.Loop(() => {
-      const normVec = APP.ball.position.clone().sub(APP.camera.position.clone()).normalize();
-      const raycaster = new THREE.Raycaster(APP.camera.position, normVec, true, 1000);
-      const activeObjects = raycaster.intersectObjects(APP.levelPlanes);
-
-      const indDistance = APP.camera.position.distanceTo(APP.ball.position) - 8;
-      const indPos = raycaster.ray.at(indDistance);
-
-      APP.levelIndicator.position.copy(indPos);
-
-      if (!APP.indicatorStatus && activeObjects.length >= 1) {
-        APP.indicatorStatus = true;
-        APP.levelIndicator.show();
-        indicatorTransition = new TweenLite.to(APP.liProgress, 1.5, 
-          {
-            data_arc: Math.PI * 2, ease: Power2.easeOut, 
-            onUpdate: () => {
-              APP.liProgress.G_({arc: APP.liProgress.data_arc});
-            },
-            onComplete: () => {
-              APP.changeLevel(activeObjects[0].object.data);
-              APP.goBackToLevel();
-            }
-          }
-        );
-      } else if (activeObjects.length === 0) {
-        APP.indicatorStatus = false;
-        APP.levelIndicator.hide();
-        
-        if (APP.liProgress.data_arc !== 0) {
-          indicatorTransition.kill();
-          APP.liProgress.data_arc = 0;
-          APP.liProgress.G_({arc: 0.1});
-        }
-      }
-    });
+    APP.checkForLevel = checkForLevel(APP);
 
     APP.world.addLoop(APP.checkForLevel);
     APP.checkForLevel.start();
+  },
+
+  /* === APP: Events === */
+
+  initEvents() {
+    EVENTS._move(APP);
+    EVENTS._click(APP);
+    EVENTS._keypress(APP);
+    EVENTS._resize(APP);
+
+    APP.pick_ball = pick_ball(APP);
+    APP.world.addLoop(APP.pick_ball);
+    APP.pick_ball.start();
+
+    APP.ProgressLoader.step();
+  },
+
+  updateCoords(e) {
+    e.preventDefault();
+
+    APP.cursor.x = e.touches && e.touches[0] ? e.touches[0].clientX : e.clientX;
+    APP.cursor.y = e.touches && e.touches[0] ? e.touches[0].clientY : e.clientY;
+  },
+
+  checkKeys(e) {
+    e.preventDefault();
+    if (e.code === "Space") APP.thrown = false;
+  },
+
+  detectDoubleTap() {
+    if (!APP.doubletap) { // Wait for second click.
+      APP.doubletap = true;
+
+      setTimeout(() => {
+        APP.doubletap = false;
+      }, APP.doubleTapTime);
+
+      return false;
+    } else { // Double tap triggered.
+      APP.thrown = false;
+      APP.doubletap = true;
+
+      return true;
+    }
+  },
+
+  onLevelStart() {
+    APP.menu.timeClock = new THREE.Clock();
+    APP.menu.timeClock.getElapsedTime();
+  },
+
+  onGoal(ballp, basketp) {
+    const distance = new THREE.Vector2(ballp.x, ballp.z)
+      .distanceTo(new THREE.Vector2(basketp.x, basketp.z));
+
+    APP.menu.time = APP.menu.timeClock.getElapsedTime();
+    APP.menu.accuracy = (1 - distance / 2) * 100;
+
+    if (APP.helpersActive) {
+      document.querySelector('.helpers').className += ' deactivated';
+      APP.helpersActive = false;
+    }
+
+    APP.goal = true;
+    setTimeout(() => APP.goal = false, APP.goalDuration);
+
+    APP.goToMenu();
+  },
+
+  /* === APP: functions === */
+  /* Func: 1 Section. GAME */
+
+  throwBall(e) {
+    e.preventDefault();
+
+    if (!APP.detectDoubleTap() && APP.controlsEnabled && !APP.thrown) {
+      const vector = {
+        x: APP.force.xk * (APP.cursor.x - window.innerWidth / 2), 
+        y: APP.force.y * APP.force.m,
+        z: APP.force.z * APP.force.m
+      };
+
+      APP.ball.applyCentralImpulse(vector);
+      APP.thrown = true;
+      APP.menu.attempts++;
+    }
+  },
+
+  pickBall() {
+    const xCenter = window.innerWidth / 2;
+    const yCenter = window.innerHeight / 2;
+    const intensity = 32;
+    const x = (APP.cursor.x - xCenter) / window.innerWidth * intensity;
+    const y = - (APP.cursor.y - yCenter) / window.innerHeight * intensity;
+
+    APP.ball.setLinearVelocity(new THREE.Vector3(0, 0, 0)); // Reset gravity affect.
+    APP.ball.position.set(x, y, -36);
   },
 
   goBackToLevel() {
@@ -857,6 +729,7 @@ const APP = {
     TweenLite.to(APP.world.getScene().fog, 0.5, {far: 400, onComplete: () => {
       APP.loop_raycaster.stop();
       APP.controlsEnabled = true;
+      APP.pick_ball.start();
       APP.thrown = false;
       APP.ball.setAngularVelocity(new THREE.Vector3(0, 0, 0));
     }});
@@ -877,6 +750,10 @@ const APP = {
     if (levelData.force.m) APP.force.m = levelData.force.m;
     if (levelData.force.xk) APP.force.xk = levelData.force.xk;
 
+    APP.backboard.getNative().material.map = WHS.texture('textures/backboard/' + levelData.level + '/backboard.jpg'),
+    APP.backboard.getNative().material.normalMap =  WHS.texture('textures/backboard/' + levelData.level + '/backboard_normal.png'),
+    APP.backboard.getNative().material.displacementMap = WHS.texture('textures/backboard/' + levelData.level + '/backboard_displacement.png')
+
     APP.basketY = levelData.basketY;
     APP.basketDistance = levelData.basketDistance;
     APP.basketColor = levelData.basketColor;
@@ -889,6 +766,82 @@ const APP = {
     APP.wall.position.z = -APP.basketDistance;
 
     APP.basket.M_color = APP.basketColor;
+  },
+
+  /* Func: 2 Section. MENU */
+
+  goToMenu() {
+    // Stop picking ball.
+    APP.pick_ball.stop();
+    APP.controlsEnabled = false; // Disable moving.
+
+    let mark = 0, markText = "";
+
+    // Detect mark depending on existing stats.
+    if (APP.menu.time.toFixed() < 2
+      && APP.menu.attempts.toFixed() == 1
+      && APP.menu.accuracy.toFixed() > 60) {
+      mark = 3;
+      APP.menu.markText = "Excellent";
+    } else if (APP.menu.time.toFixed() < 5
+      && APP.menu.attempts.toFixed() == 1
+      && APP.menu.accuracy.toFixed() > 40) {
+      mark = 2;
+      APP.menu.markText = "Good";
+    } else {
+      mark = 1;
+      APP.menu.markText = "OK";
+    }
+
+    // FadeIn effect for 
+    APP.menuDataPlane.show();
+    APP.menuDataPlane.M_({map: TexUtils.generateMenuTexture(APP.menu)});
+
+    APP.menuDataPlane.getNative().material.opacity = 0;
+    TweenLite.to(APP.menuDataPlane.getNative().material, 3, {opacity: 0.7, ease: Power2.easeInOut});
+
+    // Tween camera position and rotation to go upper and look at basket position.
+    const cameraDest = APP.camera.clone();
+    cameraDest.position.y = 300;
+    cameraDest.lookAt(new THREE.Vector3(0, APP.basketY, 0));
+
+    TweenLite.to(APP.camera.position, 3, {y: 300, ease: Power2.easeInOut});
+
+    TweenLite.to(APP.camera.rotation, 3, {
+      x: cameraDest.rotation.x, 
+      y: cameraDest.rotation.y, 
+      z: cameraDest.rotation.z, 
+      ease: Power2.easeInOut
+    });
+
+    setTimeout(() => {APP.loop_raycaster.start()}, 3000);
+  },
+
+  /* Func: 3 Section. LEVELMENU */
+
+  triggerLevelMenu() {
+    // Enable for checking in loop.
+    APP.levelMenuTriggered = true;
+
+    // Prevent checking in loop before animation complete.
+    APP.animComplete = false;
+
+    // Draw level grid. Start checking for selecting level.
+    if (!APP.menu.enabled) APP.initLevelMenu();
+    if (APP.checkForLevel) APP.checkForLevel.start();
+
+    // Go to LevelMenu.
+    TweenLite.to(APP.camera.position, 1, {z: 350, ease: Power2.easeIn});
+
+    // Reset lights.
+    APP.LevelLight1.getNative().intensity = 0;
+    APP.LevelLight2.getNative().intensity = 0;
+
+    // Tween turning on lights.
+    TweenLite.to(APP.LevelLight1.getNative(), 0.5, {intensity: 10, ease: Power2.easeIn, delay: 1});
+    TweenLite.to(APP.LevelLight2.getNative(), 0.5, {intensity: 10, ease: Power2.easeIn, delay: 1.5, onComplete: () => {
+      APP.animComplete = true;
+    }});
   }
 }
 
