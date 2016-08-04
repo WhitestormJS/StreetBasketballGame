@@ -35,6 +35,7 @@ const APP = {
   levelPlanes: [],
   indicatorStatus: false,
   isMobile: navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/),
+  raycaster: new THREE.Raycaster(),
 
   cursor: {
     x: 0, 
@@ -67,7 +68,6 @@ const APP = {
     APP.world = new WHS.World({
       autoresize: "window",
       softbody: true,
-      stats: "fps",
 
       background: {
         color: APP.bgColor
@@ -82,6 +82,10 @@ const APP = {
         z: 50,
         y: APP.basketY,
         aspect: 45
+      },
+
+      physics: {
+        fixedTimeStep: APP.isMobile ? 1 / 300 : false
       },
 
       gravity: {
@@ -113,11 +117,6 @@ const APP = {
         ease: Power2.easeInOut
       });
     });
-
-    APP.raycaster = new THREE.Raycaster();
-
-    APP.loop_raycaster = loop_raycaster(APP);
-    APP.world.addLoop(APP.loop_raycaster);
 
     APP.ProgressLoader.on('complete', () => {
       setTimeout(() => {
@@ -241,7 +240,7 @@ const APP = {
         buffer: true,
         radius: APP.getBasketRadius(),
         tube: APP.basketTubeRadius,
-        radialSegments: APP.isMobile ? 8 : 16,
+        radialSegments: 16,
         tubularSegments: APP.isMobile ? 8 : 16
       },
 
@@ -490,6 +489,9 @@ const APP = {
     if (!APP.isMobile) APP.MenuLight.addTo(APP.world).then(() => {APP.ProgressLoader.step()});
     APP.LevelLight1.addTo(APP.world).then(() => {APP.ProgressLoader.step()});
     APP.LevelLight2.addTo(APP.world).then(() => {APP.ProgressLoader.step()});
+    
+    APP.loop_raycaster = loop_raycaster(APP);
+    APP.world.addLoop(APP.loop_raycaster);
   },
 
 
