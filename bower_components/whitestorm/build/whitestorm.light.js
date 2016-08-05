@@ -46366,21 +46366,24 @@ var WHS =
 	    if (initParams.scene && initParams.helpers) _this._initHelpers();
 	
 	    // NOTE: ==================== Autoresize. ======================
-	    var scope = _this;
 	
 	    if (params.autoresize === "window") {
 	      window.addEventListener('resize', function () {
-	        scope.setSize(Number(window.innerWidth * params.rWidth).toFixed(), Number(window.innerHeight * params.rHeight).toFixed());
+	        _this.setSize(Number(window.innerWidth * params.rWidth).toFixed(), Number(window.innerHeight * params.rHeight).toFixed());
+	
+	        _this.emit('resize');
 	      });
 	    } else if (_this.getParams().autoresize) {
 	      window.addEventListener('resize', function () {
-	        scope.setSize(Number(params.container.offsetWidth * params.rWidth).toFixed(), Number(params.container.offsetHeight * params.rHeight).toFixed());
+	        _this.setSize(Number(params.container.offsetWidth * params.rWidth).toFixed(), Number(params.container.offsetHeight * params.rHeight).toFixed());
+	
+	        _this.emit('resize');
 	      });
 	    }
 	
-	    scope.loops = [];
+	    _this.loops = [];
 	
-	    return _ret = scope, (0, _possibleConstructorReturn3.default)(_this, _ret);
+	    return _ret = _this, (0, _possibleConstructorReturn3.default)(_this, _ret);
 	  }
 	
 	  /**
