@@ -19,8 +19,9 @@ const APP = {
   basketDistance: 80,
   getBasketZ: () => APP.getBasketRadius() + APP.basketTubeRadius * 2 - APP.basketDistance,
   /* GOAL */
-  basketGoalDiff: 2,
-  basketYGoalDiff: 0.5,
+  basketGoalDiff: 2.5,
+  basketYGoalDiff: 1,
+  basketYDeep: 1,
   goalDuration: 1800, // ms.
   /* EVENTS | MOBILE */
   doubleTapTime: 300,
@@ -35,7 +36,6 @@ const APP = {
   levelPlanes: [],
   indicatorStatus: false,
   isMobile: navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry)/),
-  raycaster: new THREE.Raycaster(),
 
   cursor: {
     x: 0, 
@@ -93,6 +93,7 @@ const APP = {
       }
     });
 
+    APP.raycaster = new THREE.Raycaster();
     APP.camera = APP.world.getCamera();
     APP.ProgressLoader = new ProgressLoader(APP.isMobile ? 12 : 14);
 
@@ -102,6 +103,7 @@ const APP = {
     APP.addBall(); // 4
     APP.initEvents(); // 5
     APP.initMenu(); // 6
+
 
     APP.camera.lookAt(new THREE.Vector3(0, APP.basketY, 0));
     APP.world.start(); // Ready.
@@ -434,6 +436,33 @@ const APP = {
 
     APP.menuDataPlane.addTo(APP.world).then(() => {APP.ProgressLoader.step()});
 
+    APP.selectLevelHelper = new WHS.Plane({
+      geometry: {
+        width: 50,
+        height: 50
+      },
+
+      material: {
+        kind: 'basic',
+        transparent: true,
+        fog: false,
+        map: WHS.texture('textures/select-level.png')
+      },
+
+      physics: false,
+
+      rot: {
+        x: -Math.PI / 2
+      },
+
+      pos: {
+        y: -19.5,
+        z: 90
+      }
+    });
+
+    APP.selectLevelHelper.addTo(APP.world);
+
     if (!APP.isMobile) {
       APP.MenuLight = new WHS.SpotLight({
         light: {
@@ -736,6 +765,7 @@ const APP = {
     APP.menu.timeClock.getElapsedTime();
 
     if (APP.menuDataPlane) APP.menuDataPlane.hide();
+    if (APP.selectLevelHelper) APP.selectLevelHelper.hide();
     if (APP.checkForLevel) APP.checkForLevel.stop();
 
     const cameraDest = APP.camera.clone();
@@ -812,6 +842,7 @@ const APP = {
 
     // FadeIn effect for 
     APP.menuDataPlane.show();
+    APP.selectLevelHelper.show();
     APP.menuDataPlane.M_({map: TexUtils.generateMenuTexture(APP.menu)});
 
     if (APP.isMobile) {
