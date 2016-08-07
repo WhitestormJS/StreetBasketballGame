@@ -85,7 +85,7 @@ export const pick_ball = (APP) => {
     const BSpos = APP.basket.position
 
     if (BLpos.distanceTo(BSpos) < APP.basketGoalDiff
-      && Math.abs(BLpos.y - BSpos.y + APP.basketYDeep) < APP.basketYGoalDiff 
+      && Math.abs(BLpos.y - BSpos.y + APP.basketYDeep()) < APP.basketYGoalDiff() 
       && !APP.goal) APP.onGoal(BLpos, BSpos);
   });
 }

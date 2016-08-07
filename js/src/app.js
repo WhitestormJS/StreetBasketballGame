@@ -20,8 +20,8 @@ const APP = {
   getBasketZ: () => APP.getBasketRadius() + APP.basketTubeRadius * 2 - APP.basketDistance,
   /* GOAL */
   basketGoalDiff: 2.5,
-  basketYGoalDiff: 1,
-  basketYDeep: 1,
+  basketYGoalDiff: () => APP.isMobile ? 2 : 1,
+  basketYDeep: () => APP.isMobile ? 2 : 1,
   goalDuration: 1800, // ms.
   /* EVENTS | MOBILE */
   doubleTapTime: 300,
