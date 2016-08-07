@@ -18,6 +18,10 @@ const GAME = new WHS.World({
     type: THREE.PCFShadowMap
   },
 
+  physics: {
+    broadphase: {type: 'sweepprune'}
+  },
+
   background: {
     color: 0xaaaaaa
   }
@@ -55,7 +59,7 @@ stick2.position.set(0, 4, 20);
 
 const height = 10; // BASE: 6, 0, 2, 2.
 const delta = 0;
-const cols = 4,
+const cols = 6,
   rows = 4;
 
 let objects = 0;

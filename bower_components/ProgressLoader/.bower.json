@@ -20,15 +20,15 @@
     "test",
     "tests"
   ],
-  "version": "0.0.1",
-  "_release": "0.0.1",
+  "version": "0.0.2",
+  "_release": "0.0.2",
   "_resolution": {
     "type": "version",
-    "tag": "0.0.1",
-    "commit": "aa3b9ad23611f56257a8d31b578934267e458cbe"
+    "tag": "0.0.2",
+    "commit": "8d008392db49a37f4b3690d6c7fc87ffce35586c"
   },
   "_source": "https://github.com/sasha240100/ProgressLoader.git",
-  "_target": "^0.0.1",
+  "_target": "^0.0.2",
   "_originalSource": "progress-loader",
   "_direct": true
 }

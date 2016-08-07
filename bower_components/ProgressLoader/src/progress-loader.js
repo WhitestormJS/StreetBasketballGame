@@ -1,23 +1,20 @@
-'use strict';
-
 /**
  * @author Alexander Buzin <alexbuzin88@gmail.com>
  * @version 0.0.1
  */
 
-var ProgressLoader = function ProgressLoader() {
-	var maxsteps = arguments.length <= 0 || arguments[0] === undefined ? 1 : arguments[0];
-
+var ProgressLoader = function (maxsteps = 1) {
 	this.percents = 0;
 	this.currentStep = 0;
 	this.maxSteps = maxsteps;
 	this.events = {};
 
 	return this;
-};
+}
 
-ProgressLoader.prototype.step = function (step) {
-	if (step) this.currentStep = step;else this.currentStep++;
+ProgressLoader.prototype.step = function(step) {
+	if (step) this.currentStep = step;
+	else this.currentStep++;
 
 	this.executeEvent('step');
 	if (this.events['step-' + this.currentStep]) this.executeEvent('step-' + this.currentStep);
@@ -26,21 +23,23 @@ ProgressLoader.prototype.step = function (step) {
 	if (this.currentStep > this.maxSteps) this.executeEvent('error');
 };
 
-ProgressLoader.prototype.getStep = function () {
+ProgressLoader.prototype.getStep = function() {
 	return this.currentStep;
 };
 
-ProgressLoader.prototype.getPercent = function () {
+ProgressLoader.prototype.getPercent = function() {
 	return Math.floor(this.currentStep / this.maxSteps * 100);
 };
 
-ProgressLoader.prototype.on = function (eventName, callback) {
+ProgressLoader.prototype.on = function(eventName, callback) {
 	var event = this.events[eventName];
 
-	if (!event) this.events[eventName] = callback;else if (typeof event === 'function') this.events[eventName] = [event, callback];else event.push(callback);
-};
+	if (!event) this.events[eventName] = callback;
+	else if (typeof event === 'function') this.events[eventName] = [event, callback];
+	else event.push(callback); 
+}
 
-ProgressLoader.prototype.executeEvent = function (eventName) {
+ProgressLoader.prototype.executeEvent = function(eventName) {
 	var callback = this.events[eventName];
 	var eventObject = {
 		time: Date.now(),
@@ -49,9 +48,11 @@ ProgressLoader.prototype.executeEvent = function (eventName) {
 		percent: this.getPercent()
 	};
 
-	if (!callback) return false;else if (typeof callback === 'function') callback(eventObject);else {
-		callback.forEach(function (cb) {
+	if (!callback) return false;
+	else if (typeof callback === 'function') callback(eventObject);
+	else {
+		callback.forEach(function(cb) {
 			cb(eventObject);
-		});
-	};
+		})
+	}; 
 };
