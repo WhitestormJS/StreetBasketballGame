@@ -45,7 +45,7 @@ const APP = {
   },
 
   force: {
-    y: 6.2,
+    y: 6,
     z: -2,
     m: 2400,
     xk: 8
@@ -109,12 +109,11 @@ const APP = {
     APP.world.start(); // Ready.
 
     APP.ProgressLoader.on('step', () => {
-      const hh = 100 + APP.ProgressLoader.getPercent() * 2;
+      const hh = APP.ProgressLoader.getPercent();
 
-      TweenLite.to(document.querySelector('.preloader'), 2, {
+      TweenLite.to(document.querySelector('#loader0'), 2, {
         css: {
-          backgroundPositionY: hh + 'px', 
-          bottom: hh + 'px'
+          height: (100 - hh) + '%'
         }, 
         ease: Power2.easeInOut
       });
@@ -221,8 +220,8 @@ const APP = {
       material: {
         kind: 'standard',
         map: WHS.texture('textures/backboard/1/backboard.jpg'),
-        normalMap: WHS.texture('textures/backboard/1/backboard_normal.png'),
-        displacementMap: WHS.texture('textures/backboard/1/backboard_displacement.png'),
+        normalMap: WHS.texture('textures/backboard/1/backboard_normal.jpg'),
+        displacementMap: WHS.texture('textures/backboard/1/backboard_displacement.jpg'),
         normalScale: new THREE.Vector2(0.3, 0.3),
         metalness: 0,
         roughness: 0.3
@@ -364,6 +363,8 @@ const APP = {
   },
 
   initMenu() {
+    const ratio = APP.camera.getNative().getFilmWidth() / APP.camera.getNative().getFilmHeight();
+
     if (!APP.isMobile) {
       APP.text = new WHS.Text({
         geometry: {
@@ -409,8 +410,8 @@ const APP = {
 
     APP.menuDataPlane = new WHS.Plane({
       geometry: {
-        width: 200,
-        height: 100
+        width: ratio < 0.7 ? 150 : 200,
+        height: ratio < 0.7 ? 75 : 100
       },
 
       material: {
@@ -419,7 +420,8 @@ const APP = {
         opacity: 0,
         fog: false,
         shininess: 900,
-        reflectivity: 0.5
+        reflectivity: 0.5,
+        map: TexUtils.generateMenuTexture(APP.menu)
       },
 
       physics: false,
@@ -798,8 +800,8 @@ const APP = {
     if (levelData.force.xk) APP.force.xk = levelData.force.xk;
 
     APP.backboard.getNative().material.map = WHS.texture('textures/backboard/' + levelData.level + '/backboard.jpg'),
-    APP.backboard.getNative().material.normalMap =  WHS.texture('textures/backboard/' + levelData.level + '/backboard_normal.png'),
-    APP.backboard.getNative().material.displacementMap = WHS.texture('textures/backboard/' + levelData.level + '/backboard_displacement.png')
+    APP.backboard.getNative().material.normalMap =  WHS.texture('textures/backboard/' + levelData.level + '/backboard_normal.jpg'),
+    APP.backboard.getNative().material.displacementMap = WHS.texture('textures/backboard/' + levelData.level + '/backboard_displacement.jpg')
 
     APP.basketY = levelData.basketY;
     APP.basketDistance = levelData.basketDistance;
@@ -841,9 +843,9 @@ const APP = {
     }
 
     // FadeIn effect for 
+    APP.menuDataPlane.getNative().material.map = TexUtils.generateMenuTexture(APP.menu);
     APP.menuDataPlane.show();
     APP.selectLevelHelper.show();
-    APP.menuDataPlane.M_({map: TexUtils.generateMenuTexture(APP.menu)});
 
     if (APP.isMobile) {
       APP.menuDataPlane.getNative().material.opacity = 0.7;

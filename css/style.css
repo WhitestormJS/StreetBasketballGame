@@ -26,26 +26,43 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  background: url('../img/splash.png');
-  background-size: auto 100%;
-  background-position: right bottom;
+  background: url('../img/background.jpg');
+  background-size: cover;
+  background-position: center center;
   z-index: 2;
   height: 100%;
   font-family: 'Richardson';
+  display: flex;
 }
 
 .preloader {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: url('../img/splash_grey.png');
-  background-size: auto 100%;
-  background-position-x: right;
-  background-position-y: 100px;
-  z-index: 3;
+  position: relative;
+  width: 150px;
+  height: 130px;
+  margin: 0 auto;
+  align-self: center;
+}
+
+.preloader .cover {
+  overflow: hidden;
+  position: absolute;
   height: 100%;
-  bottom: 100px;
+  width: 100%;
+}
+
+.greyscale {
+  filter: grayscale(100%);
+  -webkit-filter: grayscale(100%);
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  filter: url(grayscale.svg#greyscale);
+  filter: gray;
+  -webkit-filter: grayscale(1);
+}
+
+#loader0 {
+  height: 100%;
 }
 
 .loader.loaded {

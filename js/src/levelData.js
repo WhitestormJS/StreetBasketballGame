@@ -6,8 +6,8 @@ const levelData = [
     basketColor: 0xff0000,
 
     force: {
-      z: -2,
-      xk: 8
+      y: 6,
+      z: -2
     }
   },
   {
@@ -17,6 +17,7 @@ const levelData = [
     basketColor: 0x0000ff,
 
     force: {
+      y: 6.2,
       z: -3
     }
   },
@@ -27,6 +28,7 @@ const levelData = [
     basketColor: 0x00ff00,
 
     force: {
+      y: 6.2,
       z: -4
     }
   },
@@ -37,7 +39,8 @@ const levelData = [
     basketColor: 0xffff00,
 
     force: {
-      z: -5
+      z: -5,
+      y: 6.6
     }
   }
 ];
