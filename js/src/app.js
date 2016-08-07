@@ -85,7 +85,7 @@ const APP = {
       },
 
       physics: {
-        fixedTimeStep: APP.isMobile ? 1 / 30 : false
+        fixedTimeStep: APP.isMobile ? 1 / 60 : false
       },
 
       gravity: {
