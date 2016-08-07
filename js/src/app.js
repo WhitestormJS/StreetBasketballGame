@@ -242,8 +242,8 @@ const APP = {
         buffer: true,
         radius: APP.getBasketRadius(),
         tube: APP.basketTubeRadius,
-        radialSegments: 16,
-        tubularSegments: APP.isMobile ? 8 : 16
+        radialSegments: APP.isMobile ? 6 : 8,
+        tubularSegments: 16
       },
 
       shadow: {
