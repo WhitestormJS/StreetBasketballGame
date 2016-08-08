@@ -54,15 +54,9 @@ export function config({production}) {
             warnings: false
           }
         }),
-        new webpack.ProvidePlugin({
-            'Symbol': 'es6-symbol'
-        }),
         new HappyPack({loaders: ['babel', 'string-replace'], threads: 4})
       ]
       : [
-        new webpack.ProvidePlugin({
-            'Symbol': 'es6-symbol'
-        }),
         new HappyPack({loaders: ['babel', 'string-replace'], threads: 4})
       ]
   };

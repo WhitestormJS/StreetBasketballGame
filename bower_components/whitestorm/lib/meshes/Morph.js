@@ -5,6 +5,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Morph = undefined;
 
+var _promise = require('babel-runtime/core-js/promise');
+
+var _promise2 = _interopRequireDefault(_promise);
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -50,7 +58,7 @@ var Morph = function (_Shape) {
     var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
     (0, _classCallCheck3.default)(this, Morph);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Morph).call(this, params, 'morph'));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Morph).call(this, params, 'morph'));
 
     (0, _api.extend)(params.geometry, {
       path: '',
@@ -59,7 +67,7 @@ var Morph = function (_Shape) {
 
     if (params.build) {
       _this.build(params);
-      (0, _get3.default)(Object.getPrototypeOf(Morph.prototype), 'wrap', _this).call(_this, 'wait');
+      (0, _get3.default)((0, _getPrototypeOf2.default)(Morph.prototype), 'wrap', _this).call(_this, 'wait');
     }
     return _this;
   }
@@ -71,7 +79,7 @@ var Morph = function (_Shape) {
 
       var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
 
-      var promise = new Promise(function (resolve) {
+      var promise = new _promise2.default(function (resolve) {
         var Loader = params.geometry.loader;
 
         Loader.load(params.geometry.path, function (data, materials) {
@@ -101,7 +109,7 @@ var Morph = function (_Shape) {
         });
       });
 
-      (0, _get3.default)(Object.getPrototypeOf(Morph.prototype), 'wait', this).call(this, promise);
+      (0, _get3.default)((0, _getPrototypeOf2.default)(Morph.prototype), 'wait', this).call(this, promise);
       return promise;
     }
   }, {

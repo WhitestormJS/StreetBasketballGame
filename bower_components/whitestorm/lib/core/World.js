@@ -5,6 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.World = undefined;
 
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -67,7 +71,7 @@ var World = function (_WHSObject) {
     var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
     (0, _classCallCheck3.default)(this, World);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(World).call(this, {
+    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(World).call(this, {
       stats: false,
       autoresize: false,
       softbody: false,
@@ -135,7 +139,7 @@ var World = function (_WHSObject) {
       container: document.body
     }));
 
-    (0, _get3.default)(Object.getPrototypeOf(World.prototype), 'setParams', _this).call(_this, params);
+    (0, _get3.default)((0, _getPrototypeOf2.default)(World.prototype), 'setParams', _this).call(_this, params);
 
     var initParams = _this.getParams().init;
 

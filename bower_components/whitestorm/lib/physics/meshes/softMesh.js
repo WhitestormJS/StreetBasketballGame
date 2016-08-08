@@ -5,6 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.SoftMesh = undefined;
 
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -39,7 +43,7 @@ var SoftMesh = exports.SoftMesh = function (_Mesh) {
         if (!(geometry instanceof THREE.BufferGeometry)) // Converts to BufferGeometry.
             geometry = new THREE.BufferGeometry().fromGeometry(geometry);
 
-        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(SoftMesh).call(this, geometry, material, mass));
+        var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(SoftMesh).call(this, geometry, material, mass));
 
         tempGeometry.mergeVertices();
         var idxGeometry = _this.createIndexedBufferGeometryFromGeometry(tempGeometry);

@@ -1,14 +1,17 @@
 'use strict';
 
+import _Object$defineProperty from 'babel-runtime/core-js/object/define-property';
+import _Object$keys from 'babel-runtime/core-js/object/keys';
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
 var _ConeTwistConstraint = require('./ConeTwistConstraint');
 
-Object.keys(_ConeTwistConstraint).forEach(function (key) {
+_Object$keys(_ConeTwistConstraint).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _ConeTwistConstraint[key];
@@ -18,9 +21,10 @@ Object.keys(_ConeTwistConstraint).forEach(function (key) {
 
 var _HingeConstraint = require('./HingeConstraint');
 
-Object.keys(_HingeConstraint).forEach(function (key) {
+_Object$keys(_HingeConstraint).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _HingeConstraint[key];
@@ -30,9 +34,10 @@ Object.keys(_HingeConstraint).forEach(function (key) {
 
 var _PointConstraint = require('./PointConstraint');
 
-Object.keys(_PointConstraint).forEach(function (key) {
+_Object$keys(_PointConstraint).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _PointConstraint[key];
@@ -42,9 +47,10 @@ Object.keys(_PointConstraint).forEach(function (key) {
 
 var _SliderConstraint = require('./SliderConstraint');
 
-Object.keys(_SliderConstraint).forEach(function (key) {
+_Object$keys(_SliderConstraint).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _SliderConstraint[key];

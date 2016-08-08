@@ -1,14 +1,17 @@
 'use strict';
 
+import _Object$defineProperty from 'babel-runtime/core-js/object/define-property';
+import _Object$keys from 'babel-runtime/core-js/object/keys';
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
 var _Camera = require('./Camera');
 
-Object.keys(_Camera).forEach(function (key) {
+_Object$keys(_Camera).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Camera[key];
@@ -18,9 +21,10 @@ Object.keys(_Camera).forEach(function (key) {
 
 var _Light = require('./Light');
 
-Object.keys(_Light).forEach(function (key) {
+_Object$keys(_Light).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Light[key];
@@ -30,9 +34,10 @@ Object.keys(_Light).forEach(function (key) {
 
 var _Object = require('./Object');
 
-Object.keys(_Object).forEach(function (key) {
+_Object$keys(_Object).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Object[key];
@@ -42,9 +47,10 @@ Object.keys(_Object).forEach(function (key) {
 
 var _Shape = require('./Shape');
 
-Object.keys(_Shape).forEach(function (key) {
+_Object$keys(_Shape).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Shape[key];
@@ -54,9 +60,10 @@ Object.keys(_Shape).forEach(function (key) {
 
 var _World = require('./World');
 
-Object.keys(_World).forEach(function (key) {
+_Object$keys(_World).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _World[key];

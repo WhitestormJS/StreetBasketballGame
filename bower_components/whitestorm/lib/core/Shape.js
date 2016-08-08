@@ -5,6 +5,22 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Shape = undefined;
 
+var _defineProperties = require('babel-runtime/core-js/object/define-properties');
+
+var _defineProperties2 = _interopRequireDefault(_defineProperties);
+
+var _promise = require('babel-runtime/core-js/promise');
+
+var _promise2 = _interopRequireDefault(_promise);
+
+var _assign = require('babel-runtime/core-js/object/assign');
+
+var _assign2 = _interopRequireDefault(_assign);
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
 var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
 
 var _defineProperty3 = _interopRequireDefault(_defineProperty2);
@@ -82,7 +98,7 @@ var Shape = function (_WHSObject) {
       kvst: 0.9
     }, 'klst', 0.9) : false;
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Shape).call(this, {
+    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Shape).call(this, {
       mass: 10,
       build: true,
       softbody: false,
@@ -136,16 +152,16 @@ var Shape = function (_WHSObject) {
     }));
 
     if (params instanceof THREE.Object3D) {
-      (0, _get3.default)(Object.getPrototypeOf(Shape.prototype), 'setParams', _this).call(_this, {
+      (0, _get3.default)((0, _getPrototypeOf2.default)(Shape.prototype), 'setParams', _this).call(_this, {
         pos: { x: params.position.x, y: params.position.y, z: params.position.z },
         rot: { x: params.rotation.x, y: params.rotation.y, z: params.rotation.z },
         scale: { x: params.scale.x, y: params.scale.y, z: params.scale.z },
         mass: params.mass,
         physics: Boolean(params._physijs)
       });
-    } else (0, _get3.default)(Object.getPrototypeOf(Shape.prototype), 'setParams', _this).call(_this, params);
+    } else (0, _get3.default)((0, _getPrototypeOf2.default)(Shape.prototype), 'setParams', _this).call(_this, params);
 
-    var scope = Object.assign(_this, {
+    var scope = (0, _assign2.default)(_this, {
       _type: type,
       __c_rot: false,
 
@@ -190,8 +206,8 @@ var Shape = function (_WHSObject) {
       }
 
       if (this._wait.length) {
-        return new Promise(function (resolve, reject) {
-          Promise.all(_this2._wait).then(function () {
+        return new _promise2.default(function (resolve, reject) {
+          _promise2.default.all(_this2._wait).then(function () {
             var _native = _this2.getNative(),
                 _params = _this2.getParams(),
                 _params_helpers = _params.helpers;
@@ -272,7 +288,7 @@ var Shape = function (_WHSObject) {
           });
         });
       } else {
-        return new Promise(function (resolve, reject) {
+        return new _promise2.default(function (resolve, reject) {
           var _native = _this2.getNative(),
               _params = _this2.getParams(),
               _params_helpers = _params.helpers;
@@ -370,8 +386,8 @@ var Shape = function (_WHSObject) {
       this.parent = parent;
 
       if (this._wait.length) {
-        return new Promise(function (resolve, reject) {
-          Promise.all(_this3._wait).then(function () {
+        return new _promise2.default(function (resolve, reject) {
+          _promise2.default.all(_this3._wait).then(function () {
             var _native = _this3.getNative(),
                 _params = _this3.getParams(),
                 _params_helpers = _params.helpers,
@@ -407,7 +423,7 @@ var Shape = function (_WHSObject) {
           });
         });
       } else {
-        return new Promise(function (resolve, reject) {
+        return new _promise2.default(function (resolve, reject) {
           var _native = _this3.getNative(),
               _params = _this3.getParams(),
               _params_helpers = _params.helpers,
@@ -735,7 +751,7 @@ var Shape = function (_WHSObject) {
       var pos = this.getNative().position,
           native = this.getNative();
 
-      Object.defineProperties(pos, {
+      (0, _defineProperties2.default)(pos, {
         x: {
           get: function get() {
             return this._x;

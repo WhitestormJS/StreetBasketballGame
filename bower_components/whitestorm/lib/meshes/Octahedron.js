@@ -5,6 +5,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Octahedron = undefined;
 
+var _promise = require('babel-runtime/core-js/promise');
+
+var _promise2 = _interopRequireDefault(_promise);
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -46,7 +54,7 @@ var Octahedron = function (_Shape) {
     var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
     (0, _classCallCheck3.default)(this, Octahedron);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Octahedron).call(this, params, 'octahedron'));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Octahedron).call(this, params, 'octahedron'));
 
     (0, _api.extend)(params.geometry, {
       radius: 1,
@@ -55,7 +63,7 @@ var Octahedron = function (_Shape) {
 
     if (params.build) {
       _this.build(params);
-      (0, _get3.default)(Object.getPrototypeOf(Octahedron.prototype), 'wrap', _this).call(_this);
+      (0, _get3.default)((0, _getPrototypeOf2.default)(Octahedron.prototype), 'wrap', _this).call(_this);
     }
     return _this;
   }
@@ -73,7 +81,7 @@ var Octahedron = function (_Shape) {
 
       if (this.physics && this.getParams().softbody) Mesh = _index.SoftMesh;else if (this.physics) Mesh = _index.ConvexMesh;else Mesh = THREE.Mesh;
 
-      return new Promise(function (resolve) {
+      return new _promise2.default(function (resolve) {
         _this2.setNative(new Mesh(_this2.buildGeometry(params), material, _this2.getParams()));
 
         resolve();

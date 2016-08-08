@@ -5,6 +5,10 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Skybox = undefined;
 
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -40,7 +44,7 @@ var Skybox = function (_Shape) {
     var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
     (0, _classCallCheck3.default)(this, Skybox);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Skybox).call(this, params, 'skybox'));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Skybox).call(this, params, 'skybox'));
 
     (0, _api.extend)(params, {
       skyType: 'box',
@@ -90,8 +94,8 @@ var Skybox = function (_Shape) {
     var mesh = new THREE.Mesh(skyGeometry, skyMat);
     mesh.renderDepth = 1000.0;
 
-    (0, _get3.default)(Object.getPrototypeOf(Skybox.prototype), 'setNative', _this).call(_this, mesh);
-    (0, _get3.default)(Object.getPrototypeOf(Skybox.prototype), 'wrap', _this).call(_this);
+    (0, _get3.default)((0, _getPrototypeOf2.default)(Skybox.prototype), 'setNative', _this).call(_this, mesh);
+    (0, _get3.default)((0, _getPrototypeOf2.default)(Skybox.prototype), 'wrap', _this).call(_this);
     return _this;
   }
 

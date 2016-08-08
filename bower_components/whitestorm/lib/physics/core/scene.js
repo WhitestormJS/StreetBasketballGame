@@ -5,6 +5,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Scene = undefined;
 
+var _assign = require('babel-runtime/core-js/object/assign');
+
+var _assign2 = _interopRequireDefault(_assign);
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -49,9 +57,9 @@ var Scene = exports.Scene = function (_THREE$Scene) {
     var init = arguments.length <= 1 || arguments[1] === undefined ? {} : arguments[1];
     (0, _classCallCheck3.default)(this, Scene);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Scene).call(this));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Scene).call(this));
 
-    Object.assign(_this, new _eventable.Eventable());
+    (0, _assign2.default)(_this, new _eventable.Eventable());
     _eventable.Eventable.make(Scene);
 
     _this._worker = new _inlineWorker2.default(require('../worker.js'));

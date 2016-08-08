@@ -1,14 +1,17 @@
 'use strict';
 
+import _Object$defineProperty from 'babel-runtime/core-js/object/define-property';
+import _Object$keys from 'babel-runtime/core-js/object/keys';
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
 var _firstPersonControls = require('./controls/firstPersonControls');
 
-Object.keys(_firstPersonControls).forEach(function (key) {
+_Object$keys(_firstPersonControls).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _firstPersonControls[key];
@@ -18,9 +21,10 @@ Object.keys(_firstPersonControls).forEach(function (key) {
 
 var _orbitControls = require('./controls/orbitControls');
 
-Object.keys(_orbitControls).forEach(function (key) {
+_Object$keys(_orbitControls).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _orbitControls[key];
@@ -30,9 +34,10 @@ Object.keys(_orbitControls).forEach(function (key) {
 
 var _api = require('./api');
 
-Object.keys(_api).forEach(function (key) {
+_Object$keys(_api).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _api[key];
@@ -42,9 +47,10 @@ Object.keys(_api).forEach(function (key) {
 
 var _Curve = require('./Curve');
 
-Object.keys(_Curve).forEach(function (key) {
+_Object$keys(_Curve).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Curve[key];
@@ -54,9 +60,10 @@ Object.keys(_Curve).forEach(function (key) {
 
 var _Points = require('./Points');
 
-Object.keys(_Points).forEach(function (key) {
+_Object$keys(_Points).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Points[key];
@@ -66,9 +73,10 @@ Object.keys(_Points).forEach(function (key) {
 
 var _Group = require('./Group');
 
-Object.keys(_Group).forEach(function (key) {
+_Object$keys(_Group).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Group[key];
@@ -78,9 +86,10 @@ Object.keys(_Group).forEach(function (key) {
 
 var _Skybox = require('./Skybox');
 
-Object.keys(_Skybox).forEach(function (key) {
+_Object$keys(_Skybox).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Skybox[key];

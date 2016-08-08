@@ -5,6 +5,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.WHSObject = undefined;
 
+var _promise = require('babel-runtime/core-js/promise');
+
+var _promise2 = _interopRequireDefault(_promise);
+
+var _assign = require('babel-runtime/core-js/object/assign');
+
+var _assign2 = _interopRequireDefault(_assign);
+
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -35,7 +43,7 @@ var WHSObject = function () {
     var structurable = arguments.length <= 1 || arguments[1] === undefined ? true : arguments[1];
     (0, _classCallCheck3.default)(this, WHSObject);
 
-    var scope = structurable ? Object.assign(this, {
+    var scope = structurable ? (0, _assign2.default)(this, {
       __whsobject: true,
       __releaseTime: new Date().getTime(),
       __params: {},
@@ -43,7 +51,7 @@ var WHSObject = function () {
 
       parent: null,
       children: []
-    }, new _minivents2.default()) : Object.assign(this, {
+    }, new _minivents2.default()) : (0, _assign2.default)(this, {
       __whsobject: true,
       __releaseTime: new Date().getTime(),
       __params: {},
@@ -91,7 +99,7 @@ var WHSObject = function () {
       var _scope = this;
 
       if (children.addTo) return children.addTo(this);else if (children instanceof Object) {
-        return new Promise(function (resolve) {
+        return new _promise2.default(function (resolve) {
           children.parent = _scope;
 
           _scope.getNative().add(children.getNative());

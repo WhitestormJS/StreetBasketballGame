@@ -5,6 +5,18 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Light = undefined;
 
+var _promise = require('babel-runtime/core-js/promise');
+
+var _promise2 = _interopRequireDefault(_promise);
+
+var _assign = require('babel-runtime/core-js/object/assign');
+
+var _assign2 = _interopRequireDefault(_assign);
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -63,7 +75,7 @@ var Light = function (_WHSObject) {
       _this.z = z;
     };
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Light).call(this, {
+    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Light).call(this, {
       light: {
         color: 0xffffff,
         skyColor: 0xffffff,
@@ -119,9 +131,9 @@ var Light = function (_WHSObject) {
       }
     }));
 
-    (0, _get3.default)(Object.getPrototypeOf(Light.prototype), 'setParams', _this).call(_this, params);
+    (0, _get3.default)((0, _getPrototypeOf2.default)(Light.prototype), 'setParams', _this).call(_this, params);
 
-    var scope = Object.assign(_this, {
+    var scope = (0, _assign2.default)(_this, {
       _type: type,
 
       _light: _this.__params.light,
@@ -150,7 +162,7 @@ var Light = function (_WHSObject) {
         tags[_key] = arguments[_key];
       }
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         var _native = _this2.getNative();
 
         if (tags.indexOf('no-shadows') < 0) {
@@ -193,7 +205,7 @@ var Light = function (_WHSObject) {
 
       this.parent = parent;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         var _native = _this3.getNative();
 
         parent.getScene().add(_native);
@@ -219,7 +231,7 @@ var Light = function (_WHSObject) {
     value: function wrapShadow() {
       var _this4 = this;
 
-      return new Promise(function (resolve, reject) {
+      return new _promise2.default(function (resolve, reject) {
         var _native = _this4.getNative(),
             _shadow = _this4._shadowmap;
 

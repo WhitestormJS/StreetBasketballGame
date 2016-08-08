@@ -5,6 +5,14 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Shape2D = undefined;
 
+var _promise = require('babel-runtime/core-js/promise');
+
+var _promise2 = _interopRequireDefault(_promise);
+
+var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
+
+var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
+
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -44,7 +52,7 @@ var Shape2D = function (_Shape) {
     var params = arguments.length <= 0 || arguments[0] === undefined ? {} : arguments[0];
     (0, _classCallCheck3.default)(this, Shape2D);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Shape2D).call(this, params, 'shape2D'));
+    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Shape2D).call(this, params, 'shape2D'));
 
     (0, _api.extend)(params.geometry, {
       shapes: []
@@ -52,7 +60,7 @@ var Shape2D = function (_Shape) {
 
     if (params.build) {
       _this.build(params);
-      (0, _get3.default)(Object.getPrototypeOf(Shape2D.prototype), 'wrap', _this).call(_this, 'onlyvis');
+      (0, _get3.default)((0, _getPrototypeOf2.default)(Shape2D.prototype), 'wrap', _this).call(_this, 'onlyvis');
     }
     return _this;
   }
@@ -66,7 +74,7 @@ var Shape2D = function (_Shape) {
 
       var material = (0, _api.loadMaterial)(params.material);
 
-      return new Promise(function (resolve) {
+      return new _promise2.default(function (resolve) {
         _this2.setNative(new THREE.Mesh(_this2.buildGeometry(params), material));
 
         resolve();

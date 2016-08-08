@@ -1,14 +1,17 @@
 'use strict';
 
+import _Object$defineProperty from 'babel-runtime/core-js/object/define-property';
+import _Object$keys from 'babel-runtime/core-js/object/keys';
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
 var _Box = require('./Box');
 
-Object.keys(_Box).forEach(function (key) {
+_Object$keys(_Box).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Box[key];
@@ -18,9 +21,10 @@ Object.keys(_Box).forEach(function (key) {
 
 var _Cylinder = require('./Cylinder');
 
-Object.keys(_Cylinder).forEach(function (key) {
+_Object$keys(_Cylinder).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Cylinder[key];
@@ -30,9 +34,10 @@ Object.keys(_Cylinder).forEach(function (key) {
 
 var _Dodecahedron = require('./Dodecahedron');
 
-Object.keys(_Dodecahedron).forEach(function (key) {
+_Object$keys(_Dodecahedron).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Dodecahedron[key];
@@ -42,9 +47,10 @@ Object.keys(_Dodecahedron).forEach(function (key) {
 
 var _Extrude = require('./Extrude');
 
-Object.keys(_Extrude).forEach(function (key) {
+_Object$keys(_Extrude).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Extrude[key];
@@ -54,9 +60,10 @@ Object.keys(_Extrude).forEach(function (key) {
 
 var _Icosahedron = require('./Icosahedron');
 
-Object.keys(_Icosahedron).forEach(function (key) {
+_Object$keys(_Icosahedron).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Icosahedron[key];
@@ -66,9 +73,10 @@ Object.keys(_Icosahedron).forEach(function (key) {
 
 var _Lathe = require('./Lathe');
 
-Object.keys(_Lathe).forEach(function (key) {
+_Object$keys(_Lathe).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Lathe[key];
@@ -78,9 +86,10 @@ Object.keys(_Lathe).forEach(function (key) {
 
 var _Model = require('./Model');
 
-Object.keys(_Model).forEach(function (key) {
+_Object$keys(_Model).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Model[key];
@@ -90,9 +99,10 @@ Object.keys(_Model).forEach(function (key) {
 
 var _Morph = require('./Morph');
 
-Object.keys(_Morph).forEach(function (key) {
+_Object$keys(_Morph).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Morph[key];
@@ -102,9 +112,10 @@ Object.keys(_Morph).forEach(function (key) {
 
 var _Octahedron = require('./Octahedron');
 
-Object.keys(_Octahedron).forEach(function (key) {
+_Object$keys(_Octahedron).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Octahedron[key];
@@ -114,9 +125,10 @@ Object.keys(_Octahedron).forEach(function (key) {
 
 var _Parametric = require('./Parametric');
 
-Object.keys(_Parametric).forEach(function (key) {
+_Object$keys(_Parametric).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Parametric[key];
@@ -126,9 +138,10 @@ Object.keys(_Parametric).forEach(function (key) {
 
 var _Plane = require('./Plane');
 
-Object.keys(_Plane).forEach(function (key) {
+_Object$keys(_Plane).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Plane[key];
@@ -138,9 +151,10 @@ Object.keys(_Plane).forEach(function (key) {
 
 var _Polyhedron = require('./Polyhedron');
 
-Object.keys(_Polyhedron).forEach(function (key) {
+_Object$keys(_Polyhedron).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Polyhedron[key];
@@ -150,9 +164,10 @@ Object.keys(_Polyhedron).forEach(function (key) {
 
 var _Ring = require('./Ring');
 
-Object.keys(_Ring).forEach(function (key) {
+_Object$keys(_Ring).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Ring[key];
@@ -162,9 +177,10 @@ Object.keys(_Ring).forEach(function (key) {
 
 var _Shape2D = require('./Shape2D');
 
-Object.keys(_Shape2D).forEach(function (key) {
+_Object$keys(_Shape2D).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Shape2D[key];
@@ -174,9 +190,10 @@ Object.keys(_Shape2D).forEach(function (key) {
 
 var _Sphere = require('./Sphere');
 
-Object.keys(_Sphere).forEach(function (key) {
+_Object$keys(_Sphere).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Sphere[key];
@@ -186,9 +203,10 @@ Object.keys(_Sphere).forEach(function (key) {
 
 var _Tetrahedron = require('./Tetrahedron');
 
-Object.keys(_Tetrahedron).forEach(function (key) {
+_Object$keys(_Tetrahedron).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Tetrahedron[key];
@@ -198,9 +216,10 @@ Object.keys(_Tetrahedron).forEach(function (key) {
 
 var _Text = require('./Text');
 
-Object.keys(_Text).forEach(function (key) {
+_Object$keys(_Text).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Text[key];
@@ -210,9 +229,10 @@ Object.keys(_Text).forEach(function (key) {
 
 var _Torus = require('./Torus');
 
-Object.keys(_Torus).forEach(function (key) {
+_Object$keys(_Torus).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Torus[key];
@@ -222,9 +242,10 @@ Object.keys(_Torus).forEach(function (key) {
 
 var _Torusknot = require('./Torusknot');
 
-Object.keys(_Torusknot).forEach(function (key) {
+_Object$keys(_Torusknot).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Torusknot[key];
@@ -234,9 +255,10 @@ Object.keys(_Torusknot).forEach(function (key) {
 
 var _Tube = require('./Tube');
 
-Object.keys(_Tube).forEach(function (key) {
+_Object$keys(_Tube).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
-  Object.defineProperty(exports, key, {
+
+  _Object$defineProperty(exports, key, {
     enumerable: true,
     get: function get() {
       return _Tube[key];
