@@ -5,18 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Points = undefined;
 
-var _promise = require('babel-runtime/core-js/promise');
-
-var _promise2 = _interopRequireDefault(_promise);
-
-var _assign = require('babel-runtime/core-js/object/assign');
-
-var _assign2 = _interopRequireDefault(_assign);
-
-var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
-
-var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -65,7 +53,7 @@ var Points = function (_WHSObject) {
 
     (0, _classCallCheck3.default)(this, Points);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Points).call(this, {
+    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Points).call(this, {
       geometry: false,
 
       material: {
@@ -73,7 +61,7 @@ var Points = function (_WHSObject) {
       }
     }));
 
-    (0, _get3.default)((0, _getPrototypeOf2.default)(Points.prototype), 'setParams', _this).call(_this, params);
+    (0, _get3.default)(Object.getPrototypeOf(Points.prototype), 'setParams', _this).call(_this, params);
 
     var _verts = params.geometry.points;
 
@@ -81,7 +69,7 @@ var Points = function (_WHSObject) {
 
     _this.setNative(points);
 
-    var scope = (0, _assign2.default)(_this, {
+    var scope = Object.assign(_this, {
       _type: 'points'
     });
 
@@ -99,7 +87,7 @@ var Points = function (_WHSObject) {
       var _scope = this;
       _scope.parent = parent;
 
-      return new _promise2.default(function (resolve, reject) {
+      return new Promise(function (resolve, reject) {
         try {
           _scope.parent.getScene().add(_scope.getNative());
           _scope.parent.children.push(_scope);

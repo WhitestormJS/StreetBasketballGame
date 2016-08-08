@@ -5,10 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Group = undefined;
 
-var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
-
-var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -43,10 +39,10 @@ var Group = function (_Shape) {
   function Group() {
     (0, _classCallCheck3.default)(this, Group);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Group).call(this, {}, 'group'));
+    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Group).call(this, {}, 'group'));
 
-    (0, _get3.default)((0, _getPrototypeOf2.default)(Group.prototype), 'setNative', _this).call(_this, new THREE.Object3D());
-    (0, _get3.default)((0, _getPrototypeOf2.default)(Group.prototype), 'wrap', _this).call(_this);
+    (0, _get3.default)(Object.getPrototypeOf(Group.prototype), 'setNative', _this).call(_this, new THREE.Object3D());
+    (0, _get3.default)(Object.getPrototypeOf(Group.prototype), 'wrap', _this).call(_this);
 
     for (var _len = arguments.length, objects = Array(_len), _key = 0; _key < _len; _key++) {
       objects[_key] = arguments[_key];

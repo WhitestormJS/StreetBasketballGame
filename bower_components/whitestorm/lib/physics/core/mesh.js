@@ -5,14 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.Mesh = undefined;
 
-var _assign = require('babel-runtime/core-js/object/assign');
-
-var _assign2 = _interopRequireDefault(_assign);
-
-var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
-
-var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -49,9 +41,9 @@ var Mesh = exports.Mesh = function (_THREE$Mesh) {
 
     if (!geometry) return (0, _possibleConstructorReturn3.default)(_this);
 
-    var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(Mesh).call(this, geometry, material));
+    var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(Mesh).call(this, geometry, material));
 
-    (0, _assign2.default)(_this, new _eventable.Eventable());
+    Object.assign(_this, new _eventable.Eventable());
     _eventable.Eventable.make(Mesh);
 
     if (!geometry.boundingBox) geometry.computeBoundingBox();

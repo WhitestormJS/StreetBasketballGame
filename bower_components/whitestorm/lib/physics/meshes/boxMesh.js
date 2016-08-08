@@ -5,10 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.BoxMesh = undefined;
 
-var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
-
-var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -35,7 +31,7 @@ var BoxMesh = exports.BoxMesh = function (_Mesh) {
         var physParams = params.physics;
         var mass = physParams.mass || params.mass;
 
-        var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(BoxMesh).call(this, geometry, material, mass));
+        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(BoxMesh).call(this, geometry, material, mass));
 
         if (!geometry.boundingBox) geometry.computeBoundingBox();
 

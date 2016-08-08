@@ -5,18 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.loadMaterial = exports.extend = exports.texture = exports.TextureLoader = exports.JSONLoader = exports.FontLoader = undefined;
 
-var _assign = require('babel-runtime/core-js/object/assign');
-
-var _assign2 = _interopRequireDefault(_assign);
-
-var _getOwnPropertyNames = require('babel-runtime/core-js/object/get-own-property-names');
-
-var _getOwnPropertyNames2 = _interopRequireDefault(_getOwnPropertyNames);
-
-var _getIterator2 = require('babel-runtime/core-js/get-iterator');
-
-var _getIterator3 = _interopRequireDefault(_getIterator2);
-
 var _three = require('three');
 
 var THREE = _interopRequireWildcard(_three);
@@ -29,8 +17,6 @@ var _loaders = require('../utils/loaders');
 
 function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 var extend = function extend(object) {
   for (var _len = arguments.length, extensions = Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
     extensions[_key - 1] = arguments[_key];
@@ -42,7 +28,7 @@ var extend = function extend(object) {
   var _iteratorError = undefined;
 
   try {
-    for (var _iterator = (0, _getIterator3.default)(extensions), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+    for (var _iterator = extensions[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
       var extension = _step.value;
 
       // console.log(extension);
@@ -55,7 +41,7 @@ var extend = function extend(object) {
       var _iteratorError2 = undefined;
 
       try {
-        for (var _iterator2 = (0, _getIterator3.default)((0, _getOwnPropertyNames2.default)(extension)), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+        for (var _iterator2 = Object.getOwnPropertyNames(extension)[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
           var prop = _step2.value;
           // Do not traverse the prototype chain.
           if (object[prop] !== undefined && object[prop].toString() === '[object Object]' && extension[prop].toString() === '[object Object]') {
@@ -132,7 +118,7 @@ var loadMaterial = function loadMaterial() {
 
   var materialThree = void 0;
 
-  var params = (0, _assign2.default)({}, material);
+  var params = Object.assign({}, material);
 
   delete params.kind;
   delete params.useCustomMaterial;

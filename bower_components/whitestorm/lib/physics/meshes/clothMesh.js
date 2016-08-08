@@ -5,10 +5,6 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.ClothMesh = undefined;
 
-var _getPrototypeOf = require('babel-runtime/core-js/object/get-prototype-of');
-
-var _getPrototypeOf2 = _interopRequireDefault(_getPrototypeOf);
-
 var _classCallCheck2 = require('babel-runtime/helpers/classCallCheck');
 
 var _classCallCheck3 = _interopRequireDefault(_classCallCheck2);
@@ -41,7 +37,7 @@ var ClothMesh = exports.ClothMesh = function (_Mesh) {
 
         var mass = physParams.mass || params.mass;
 
-        var _this = (0, _possibleConstructorReturn3.default)(this, (0, _getPrototypeOf2.default)(ClothMesh).call(this, geometry, material, mass));
+        var _this = (0, _possibleConstructorReturn3.default)(this, Object.getPrototypeOf(ClothMesh).call(this, geometry, material, mass));
 
         _this._physijs.type = 'softClothMesh';
 
