@@ -1461,4 +1461,3 @@ module.exports = function (self) {
     } else if (event.data.cmd && public_functions[event.data.cmd]) public_functions[event.data.cmd](event.data.params);
   };
 };
-//# sourceMappingURL=worker.js.map

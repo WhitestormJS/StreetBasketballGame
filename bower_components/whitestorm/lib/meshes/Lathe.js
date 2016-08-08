@@ -105,4 +105,3 @@ var Lathe = function (_Shape) {
 }(_Shape2.Shape);
 
 exports.Lathe = Lathe;
-//# sourceMappingURL=Lathe.js.map

@@ -114,4 +114,3 @@ var Icosahedron = function (_Shape) {
 }(_Shape2.Shape);
 
 exports.Icosahedron = Icosahedron;
-//# sourceMappingURL=Icosahedron.js.map

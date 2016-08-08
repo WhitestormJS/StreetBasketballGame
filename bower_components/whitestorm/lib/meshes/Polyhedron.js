@@ -142,4 +142,3 @@ var Polyhedron = function (_Shape) {
 }(_Shape2.Shape);
 
 exports.Polyhedron = Polyhedron;
-//# sourceMappingURL=Polyhedron.js.map

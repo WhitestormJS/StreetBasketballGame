@@ -114,4 +114,3 @@ var Tetrahedron = function (_Shape) {
 }(_Shape2.Shape);
 
 exports.Tetrahedron = Tetrahedron;
-//# sourceMappingURL=Tetrahedron.js.map

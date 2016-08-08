@@ -841,4 +841,3 @@ var Shape = function (_WHSObject) {
 }(_Object.WHSObject);
 
 exports.Shape = Shape;
-//# sourceMappingURL=Shape.js.map

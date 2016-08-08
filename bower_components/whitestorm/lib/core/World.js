@@ -545,4 +545,3 @@ var World = function (_WHSObject) {
 }(_Object.WHSObject);
 
 exports.World = World;
-//# sourceMappingURL=World.js.map

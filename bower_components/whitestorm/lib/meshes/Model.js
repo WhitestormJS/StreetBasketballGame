@@ -135,4 +135,3 @@ var Model = function (_Shape) {
 }(_Shape2.Shape);
 
 exports.Model = Model;
-//# sourceMappingURL=Model.js.map

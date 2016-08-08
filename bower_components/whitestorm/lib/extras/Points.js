@@ -157,4 +157,3 @@ var Points = function (_WHSObject) {
 }(_Object.WHSObject);
 
 exports.Points = Points;
-//# sourceMappingURL=Points.js.map

@@ -82,4 +82,3 @@ var ConeTwistConstraint = exports.ConeTwistConstraint = function () {
   }]);
   return ConeTwistConstraint;
 }();
-//# sourceMappingURL=ConeTwistConstraint.js.map

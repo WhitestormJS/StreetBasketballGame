@@ -69,4 +69,3 @@ var ConvexMesh = exports.ConvexMesh = function (_Mesh) {
 
     return ConvexMesh;
 }(_mesh.Mesh);
-//# sourceMappingURL=convexMesh.js.map

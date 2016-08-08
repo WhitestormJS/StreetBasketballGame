@@ -106,4 +106,3 @@ var Text = function (_Shape) {
 }(_Shape2.Shape);
 
 exports.Text = Text;
-//# sourceMappingURL=Text.js.map

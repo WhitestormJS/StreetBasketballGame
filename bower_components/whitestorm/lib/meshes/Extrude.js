@@ -114,4 +114,3 @@ var Extrude = function (_Shape) {
 }(_Shape2.Shape);
 
 exports.Extrude = Extrude;
-//# sourceMappingURL=Extrude.js.map

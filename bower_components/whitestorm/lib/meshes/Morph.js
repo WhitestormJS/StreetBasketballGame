@@ -114,4 +114,3 @@ var Morph = function (_Shape) {
 }(_Shape2.Shape);
 
 exports.Morph = Morph;
-//# sourceMappingURL=Morph.js.map

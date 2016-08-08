@@ -108,4 +108,3 @@ var SliderConstraint = exports.SliderConstraint = function () {
   }]);
   return SliderConstraint;
 }();
-//# sourceMappingURL=SliderConstraint.js.map

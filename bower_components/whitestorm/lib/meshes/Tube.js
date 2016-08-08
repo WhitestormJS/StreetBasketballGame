@@ -145,4 +145,3 @@ var Tube = function (_Shape) {
 }(_Shape2.Shape);
 
 exports.Tube = Tube;
-//# sourceMappingURL=Tube.js.map

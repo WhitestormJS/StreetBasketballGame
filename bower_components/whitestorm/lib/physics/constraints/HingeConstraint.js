@@ -86,4 +86,3 @@ var HingeConstraint = exports.HingeConstraint = function () {
   }]);
   return HingeConstraint;
 }();
-//# sourceMappingURL=HingeConstraint.js.map

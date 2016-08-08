@@ -114,4 +114,3 @@ var Dodecahedron = function (_Shape) {
 }(_Shape2.Shape);
 
 exports.Dodecahedron = Dodecahedron;
-//# sourceMappingURL=Dodecahedron.js.map

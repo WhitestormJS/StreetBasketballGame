@@ -127,4 +127,3 @@ var Sphere = function (_Shape) {
 }(_Shape2.Shape);
 
 exports.Sphere = Sphere;
-//# sourceMappingURL=Sphere.js.map

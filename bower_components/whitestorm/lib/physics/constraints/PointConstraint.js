@@ -56,4 +56,3 @@ var PointConstraint = exports.PointConstraint = function () {
   }]);
   return PointConstraint;
 }();
-//# sourceMappingURL=PointConstraint.js.map
