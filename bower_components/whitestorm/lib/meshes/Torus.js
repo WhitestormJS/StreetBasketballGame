@@ -141,3 +141,4 @@ var Torus = function (_Shape) {
 }(_Shape2.Shape);
 
 exports.Torus = Torus;
+//# sourceMappingURL=Torus.js.map

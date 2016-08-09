@@ -127,3 +127,4 @@ var Box = function (_Shape) {
 }(_Shape2.Shape);
 
 exports.Box = Box;
+//# sourceMappingURL=Box.js.map

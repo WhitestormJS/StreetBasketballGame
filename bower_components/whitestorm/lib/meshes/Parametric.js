@@ -124,3 +124,4 @@ var Parametric = function (_Shape) {
 }(_Shape2.Shape);
 
 exports.Parametric = Parametric;
+//# sourceMappingURL=Parametric.js.map

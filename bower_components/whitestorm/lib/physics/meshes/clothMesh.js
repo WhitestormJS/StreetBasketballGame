@@ -89,3 +89,4 @@ var ClothMesh = exports.ClothMesh = function (_Mesh) {
     }]);
     return ClothMesh;
 }(_mesh.Mesh);
+//# sourceMappingURL=clothMesh.js.map

@@ -624,3 +624,4 @@ var Scene = exports.Scene = function (_THREE$Scene) {
   }]);
   return Scene;
 }(THREE.Scene);
+//# sourceMappingURL=scene.js.map

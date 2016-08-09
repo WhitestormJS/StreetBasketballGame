@@ -277,3 +277,4 @@ var Camera = function (_WHSObject) {
 }(_Object.WHSObject);
 
 exports.Camera = Camera;
+//# sourceMappingURL=Camera.js.map

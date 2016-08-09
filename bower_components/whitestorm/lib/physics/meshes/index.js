@@ -135,3 +135,4 @@ Object.keys(_clothMesh).forEach(function (key) {
     }
   });
 });
+//# sourceMappingURL=index.js.map

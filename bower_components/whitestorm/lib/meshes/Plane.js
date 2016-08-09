@@ -128,3 +128,4 @@ var Plane = function (_Shape) {
 }(_Shape2.Shape);
 
 exports.Plane = Plane;
+//# sourceMappingURL=Plane.js.map

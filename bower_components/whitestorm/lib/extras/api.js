@@ -203,3 +203,4 @@ exports.TextureLoader = _loaders.TextureLoader;
 exports.texture = texture;
 exports.extend = extend;
 exports.loadMaterial = loadMaterial;
+//# sourceMappingURL=api.js.map

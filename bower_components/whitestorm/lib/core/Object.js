@@ -129,3 +129,4 @@ var WHSObject = function () {
 }();
 
 exports.WHSObject = WHSObject;
+//# sourceMappingURL=Object.js.map

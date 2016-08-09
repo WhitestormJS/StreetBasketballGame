@@ -76,3 +76,4 @@ var HeightfieldMesh = exports.HeightfieldMesh = function (_Mesh) {
 
     return HeightfieldMesh;
 }(_mesh.Mesh);
+//# sourceMappingURL=heightfieldMesh.js.map

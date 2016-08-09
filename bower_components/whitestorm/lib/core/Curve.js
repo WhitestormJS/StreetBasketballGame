@@ -170,3 +170,4 @@ var Curve = function (_WHSObject) {
 }(_Object.WHSObject);
 
 exports.Curve = Curve;
+//# sourceMappingURL=Curve.js.map

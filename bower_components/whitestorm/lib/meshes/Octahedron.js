@@ -114,3 +114,4 @@ var Octahedron = function (_Shape) {
 }(_Shape2.Shape);
 
 exports.Octahedron = Octahedron;
+//# sourceMappingURL=Octahedron.js.map

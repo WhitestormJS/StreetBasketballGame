@@ -379,3 +379,4 @@ var Light = function (_WHSObject) {
 }(_Object.WHSObject);
 
 exports.Light = Light;
+//# sourceMappingURL=Light.js.map

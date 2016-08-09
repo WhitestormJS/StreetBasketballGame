@@ -147,3 +147,4 @@ var SoftMesh = exports.SoftMesh = function (_Mesh) {
     }]);
     return SoftMesh;
 }(_mesh.Mesh);
+//# sourceMappingURL=softMesh.js.map
