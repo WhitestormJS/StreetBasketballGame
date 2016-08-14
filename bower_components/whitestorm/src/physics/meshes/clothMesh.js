@@ -32,9 +32,18 @@ export class ClothMesh extends Mesh {
     this._physijs.params = {
       friction: physParams.friction,
       damping: physParams.damping,
-      pressure: physParams.pressure,
       margin: physParams.margin,
-      stiffness: physParams.stiffness
+      klst: physParams.klst,
+      kast: physParams.kast,
+      kvst: physParams.kvst,
+      drag: physParams.drag,
+      lift: physParams.lift,
+      piterations: physParams.piterations,
+      viterations: physParams.viterations,
+      diterations: physParams.diterations,
+      citerations: physParams.citerations,
+      anchorHardness: physParams.anchorHardness,
+      rigidHardness: physParams.rigidHardness,
     };
 
     this._physijs.mass = mass;

@@ -27,12 +27,12 @@ var GAME = new WHS.World({
   }
 });
 
-var cloth = new WHS.Plane({ // Softbody (blue).
+window.cloth = new WHS.Plane({ // Softbody (blue).
   geometry: {
     width: 160,
     height: 60,
-    wSegments: 20,
-    hSegments: 15
+    wSegments: 40,
+    hSegments: 30
   },
 
   mass: 10,
@@ -45,7 +45,7 @@ var cloth = new WHS.Plane({ // Softbody (blue).
   },
 
   physics: {
-    margin: 2
+    margin: 6
   },
 
   pos: {
@@ -57,7 +57,7 @@ var cloth = new WHS.Plane({ // Softbody (blue).
   }
 });
 
-cloth.addTo(GAME);
+window.cloth.addTo(GAME);
 
 new WHS.Box({ // Rigidbody (green).
   geometry: {
