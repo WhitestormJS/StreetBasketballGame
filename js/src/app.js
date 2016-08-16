@@ -1,5 +1,5 @@
 import EVENTS from './events';
-import {pick_ball} from './loops';
+import {keep_ball} from './loops';
 
 const APP = {
   /* === APP: config === */
@@ -76,8 +76,9 @@ const APP = {
       }
     });
 
-    APP.raycaster = new THREE.Raycaster();
     APP.camera = APP.world.getCamera();
+    APP.camera.lookAt(new THREE.Vector3(0, APP.basketY, 0));
+
     APP.ProgressLoader = new ProgressLoader(APP.isMobile ? 12 : 14);
 
     APP.createScene(); // 1
@@ -86,7 +87,10 @@ const APP = {
     APP.addBall(); // 4
     APP.initEvents(); // 5
 
-    APP.camera.lookAt(new THREE.Vector3(0, APP.basketY, 0));
+    APP.keep_ball = keep_ball(APP);
+    APP.world.addLoop(APP.keep_ball);
+    APP.keep_ball.start();
+
     APP.world.start(); // Ready.
   },
 
@@ -235,8 +239,6 @@ const APP = {
 
     APP.basket.addTo(APP.world).then(() => APP.ProgressLoader.step());
 
-    const netRadSegments = APP.isMobile ? 8 : 16;
-
     /* NET OBJECT */
     APP.net = new WHS.Cylinder({
       geometry: {
@@ -245,7 +247,7 @@ const APP = {
         height: 15,
         openEnded: true,
         heightSegments: APP.isMobile ? 2 : 3,
-        radiusSegments: netRadSegments
+        radiusSegments: APP.isMobile ? 8 : 16
       },
 
       shadow: {
@@ -283,6 +285,7 @@ const APP = {
 
     APP.net.addTo(APP.world).then(() => {
       APP.net.getNative().frustumCulled = false;
+      const netRadSegments = APP.isMobile ? 8 : 16;
 
       for (let i = 0; i < netRadSegments; i++) {
         APP.net.appendAnchor(APP.world, APP.basket, i, 0.8, true);
@@ -329,10 +332,6 @@ const APP = {
     EVENTS._keypress(APP);
     EVENTS._resize(APP);
 
-    APP.pick_ball = pick_ball(APP);
-    APP.world.addLoop(APP.pick_ball);
-    APP.pick_ball.start();
-
     APP.ProgressLoader.step();
   },
 
@@ -365,7 +364,7 @@ const APP = {
     }
   },
 
-  /* === APP: functions === */
+  /* === APP: Functions === */
   /* Func: 1 Section. GAME */
 
   throwBall(e) {
@@ -393,7 +392,7 @@ const APP = {
     }
   },
 
-  pickBall() {
+  keepBall() {
     const cursor = APP.cursor;
 
     const x = (cursor.x - cursor.xCenter) / window.innerWidth * 32;

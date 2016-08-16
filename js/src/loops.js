@@ -1,7 +1,7 @@
-// Pick ball and detect goal.
-export const pick_ball = (APP) => {
+// Keep a ball and goal detection.
+export const keep_ball = (APP) => {
   return new WHS.Loop(() => {
-    if (!APP.thrown) APP.pickBall();
+    if (!APP.thrown) APP.keepBall();
 
     const BLpos = APP.ball.position;
     const BSpos = APP.basket.position
