@@ -104,6 +104,9 @@ const APP = {
     APP.initEvents(); // 5
     APP.initMenu(); // 6
 
+    APP.pick_ball = pick_ball(APP);
+    APP.world.addLoop(APP.pick_ball);
+    APP.pick_ball.start();
 
     APP.camera.lookAt(new THREE.Vector3(0, APP.basketY, 0));
     APP.world.start(); // Ready.
@@ -659,10 +662,6 @@ const APP = {
     EVENTS._click(APP);
     EVENTS._keypress(APP);
     EVENTS._resize(APP);
-
-    APP.pick_ball = pick_ball(APP);
-    APP.world.addLoop(APP.pick_ball);
-    APP.pick_ball.start();
 
     APP.ProgressLoader.step();
   },
