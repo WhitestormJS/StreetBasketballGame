@@ -24,14 +24,14 @@ var GAME = new WHS.World({
 
 window.teapot = new WHS.Model({
   geometry: {
-    path: '../../_assets/models/utah-teapot-large.json',
-    physics: '../../_assets/models/utah-teapot-light.json'
+    path: '../../_assets/models/teapot/utah-teapot-large.json',
+    physics: '../../_assets/models/teapot/utah-teapot-light.json'
   },
 
   mass: 100,
 
   physics: {
-    type: 'convex',
+    type: 'concave',
     friction: 1,
     restitution: 0
   },
