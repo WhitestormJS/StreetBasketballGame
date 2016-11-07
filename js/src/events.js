@@ -2,7 +2,7 @@ export default {
   _click(APP) {
     window.addEventListener('click', APP.throwBall);
     window.addEventListener('click', () => {
-      const el = APP.world.getRenderer().domElement;
+      const el = APP.world.renderer.domElement;
       
       if (!el.fullscreenElement && APP.isMobile) {
         if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();

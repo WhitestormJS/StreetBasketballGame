@@ -78,36 +78,5 @@ export default {
     texture.needsUpdate = true;
 
     return texture;
-  },
-
-  generateLevelEmTexture(levelData) {
-    /* CANVAS */
-    const canvas = document.createElement('canvas');
-    canvas.width = 160;
-    canvas.height = 80;
-    const context = canvas.getContext('2d');
-
-    context.fillStyle = "#aaa";
-    context.beginPath();
-    context.rect(0, 0, 160, 80);
-    context.fill();
-
-    context.fillStyle = "#222";
-    context.beginPath();
-    context.rect(5, 5, 150, 70);
-    context.fill();
-
-    context.font = "Bold 60px Richardson";
-    context.fillStyle = "#aaa";
-    context.textAlign = "center";
-    context.fillText("" + levelData.level, 80, 60);
-
-    const image = document.createElement('img');
-    image.src = canvas.toDataURL();
-
-    const texture = new THREE.Texture(image);
-    texture.needsUpdate = true;
-
-    return texture;
   }
 };

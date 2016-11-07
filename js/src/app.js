@@ -1,7 +1,7 @@
 import levelData from './levelData';
 import TexUtils from './utils/textures';
 import EVENTS from './events';
-import {checkForLevel, loop_raycaster, pick_ball} from './loops';
+import {checkForLevel, loop_raycaster, keep_ball} from './loops';
 
 const APP = {
   /* === APP: config === */
@@ -69,8 +69,14 @@ const APP = {
       autoresize: "window",
       softbody: true,
 
-      background: {
-        color: APP.bgColor
+      rendering: {
+        background: {
+          color: APP.bgColor
+        },
+
+        renderer: {
+          antialias: true
+        }
       },
 
       fog: {
@@ -79,9 +85,11 @@ const APP = {
       },
 
       camera: {
-        z: 50,
-        y: APP.basketY,
-        aspect: 45
+        fov: 45,
+        position: {
+          z: 50,
+          y: APP.basketY
+        }
       },
 
       physics: {
@@ -94,7 +102,7 @@ const APP = {
     });
 
     APP.raycaster = new THREE.Raycaster();
-    APP.camera = APP.world.getCamera();
+    APP.camera = APP.world.camera;
     APP.ProgressLoader = new ProgressLoader(APP.isMobile ? 12 : 14);
 
     APP.createScene(); // 1
@@ -103,10 +111,12 @@ const APP = {
     APP.addBall(); // 4
     APP.initEvents(); // 5
     APP.initMenu(); // 6
+    console.log(1234);
 
-    APP.pick_ball = pick_ball(APP);
-    APP.world.addLoop(APP.pick_ball);
-    APP.pick_ball.start();
+
+    APP.keep_ball = keep_ball(APP);
+    APP.world.addLoop(APP.keep_ball);
+    APP.keep_ball.start();
 
     APP.camera.lookAt(new THREE.Vector3(0, APP.basketY, 0));
     APP.world.start(); // Ready.
@@ -150,12 +160,12 @@ const APP = {
         color: APP.bgColor
       },
 
-      pos: {
+      position: {
         y: -20,
         z: 120
       },
 
-      rot: {
+      rotation: {
         x: -Math.PI / 2
       }
     });
@@ -195,7 +205,7 @@ const APP = {
         fov: 90,
       },
 
-      pos: {
+      position: {
         y: 60,
         z: -40
       },
@@ -230,7 +240,7 @@ const APP = {
         roughness: 0.3
       },
 
-      pos: {
+      position: {
         y: APP.basketY + 10,
         z: APP.getBasketZ() - APP.getBasketRadius()
       }
@@ -263,7 +273,7 @@ const APP = {
         emissiveIntensity: 0.2
       },
 
-      pos: {
+      position: {
         y: APP.basketY,
         z: APP.getBasketZ()
       },
@@ -272,7 +282,7 @@ const APP = {
         type: 'concave'
       },
 
-      rot: {
+      rotation: {
         x: Math.PI / 2
       }
     });
@@ -319,14 +329,14 @@ const APP = {
         depthWrite: false
       },
 
-      pos: {
+      position: {
         y: APP.basketY - 8,
         z: APP.getBasketZ()
       }
     });
 
     APP.net.addTo(APP.world).then(() => {
-      APP.net.getNative().frustumCulled = false;
+      APP.net.native.frustumCulled = false;
 
       for (let i = 0; i < netRadSegments; i++) {
         APP.net.appendAnchor(APP.world, APP.basket, i, 0.8, true);
@@ -366,7 +376,8 @@ const APP = {
   },
 
   initMenu() {
-    const ratio = APP.camera.getNative().getFilmWidth() / APP.camera.getNative().getFilmHeight();
+    const ratio = APP.camera.native.getFilmWidth() / APP.camera.native.getFilmHeight();
+
 
     if (!APP.isMobile) {
       APP.text = new WHS.Text({
@@ -393,19 +404,19 @@ const APP = {
           map: WHS.texture('textures/text.jpg', {repeat: {x: 0.005, y: 0.005}})
         },
 
-        pos: {
+        position: {
           y: 120,
           z: -40
         },
 
-        rot: {
+        rotation: {
           x: -Math.PI / 3
         }
       });
 
       APP.text.addTo(APP.world).then(() => {
-        APP.text.getNative().geometry.computeBoundingBox();
-        APP.text.position.x = -0.5 * (APP.text.getNative().geometry.boundingBox.max.x - APP.text.getNative().geometry.boundingBox.min.x);
+        APP.text.native.geometry.computeBoundingBox();
+        APP.text.position.x = -0.5 * (APP.text.native.geometry.boundingBox.max.x - APP.text.native.geometry.boundingBox.min.x);
         APP.ProgressLoader.step();
         // APP.text.hide();
       });
@@ -429,11 +440,11 @@ const APP = {
 
       physics: false,
 
-      rot: {
+      rotation: {
         x: -Math.PI / 2
       },
 
-      pos: {
+      position: {
         y: -19.5,
         z: -20
       }
@@ -456,11 +467,11 @@ const APP = {
 
       physics: false,
 
-      rot: {
+      rotation: {
         x: -Math.PI / 2
       },
 
-      pos: {
+      position: {
         y: -19.5,
         z: 90
       }
@@ -479,16 +490,14 @@ const APP = {
           cast: false
         },
 
-        pos: {
+        position: {
           y: 200,
           z: -30
-        },
-
-        target: {
-          y: 120,
-          z: -40
         }
       });
+
+      APP.MenuLight.target.position.set(0, 120, -40);
+      APP.world.scene.add(APP.MenuLight.target);
     }
 
     APP.LevelLight1 = new WHS.SpotLight({
@@ -502,21 +511,20 @@ const APP = {
         cast: false
       },
 
-      pos: {
+      position: {
         y: 10,
         x: 500,
         z: 100
-      },
-
-      target: {
-        z: 500,
-        x: -200
       }
     });
 
+    APP.LevelLight1.target.position.set(-200, 0, 500);
+    APP.world.scene.add(APP.LevelLight1.target);
+
     APP.LevelLight2 = APP.LevelLight1.clone();
     APP.LevelLight2.position.x = -500;
-    APP.LevelLight2.target.x = 200;
+    APP.LevelLight2.target.position.x = 200;
+    APP.world.scene.add(APP.LevelLight2.target);
 
     // APP.MenuLight.hide();
 
@@ -528,10 +536,9 @@ const APP = {
     APP.world.addLoop(APP.loop_raycaster);
   },
 
-
   initLevelMenu() {
     APP.menu.enabled = true;
-    const ratio = APP.camera.getNative().getFilmWidth() / APP.camera.getNative().getFilmHeight();
+    const ratio = APP.camera.native.getFilmWidth() / APP.camera.native.getFilmHeight();
 
     let levelXstartOffset = -225;
     let levelZstartOffset = 200;
@@ -569,12 +576,12 @@ const APP = {
         kind: 'phong'
       },
 
-      pos: {
+      position: {
         y: -19,
         x: levelXoffset
       },
 
-      rot: {
+      rotation: {
         x: -Math.PI / 2
       }
     });
@@ -591,14 +598,14 @@ const APP = {
           newLevelPlane.position.z = levelZoffset;
           newLevelPlane.position.x = levelXoffset;
 
-          newLevelPlane.M_({
+          newLevelPlane.m_({
             map: TexUtils.generateLevelTexture(levelData[i])
           });
 
-          newLevelPlane.getNative().data = levelData[i];
+          newLevelPlane.native.data = levelData[i];
 
           newLevelPlane.addTo(APP.world);
-          APP.levelPlanes.push(newLevelPlane.getNative());
+          APP.levelPlanes.push(newLevelPlane.native);
         }
       }
 
@@ -640,7 +647,7 @@ const APP = {
         color: 0xffffff
       },
 
-      rot: {
+      rotation: {
         x: Math.PI / 2,
         z: Math.PI / 2
       }
@@ -753,6 +760,7 @@ const APP = {
     const y = - (cursor.y - cursor.yCenter) / window.innerHeight * 32;
 
     APP.ball.position.set(x, y, -36);
+    APP.ball.setAngularVelocity(new THREE.Vector3(0, 0, 0));
   },
 
   goBackToLevel() {
@@ -774,15 +782,15 @@ const APP = {
     cameraDest.lookAt(new THREE.Vector3(0, APP.basketY, 0));
 
     const rotationDest = cameraDest.rotation;
-    TweenLite.to(APP.world.getScene().fog, 0.5, {far: 400, onComplete: () => {
+    TweenLite.to(APP.world.scene.fog, 0.5, {far: 400, onComplete: () => {
       APP.loop_raycaster.stop();
       APP.controlsEnabled = true;
-      APP.pick_ball.start();
+      APP.keep_ball.start();
       APP.thrown = false;
       APP.ball.setAngularVelocity(new THREE.Vector3(0, 0, 0));
     }});
 
-    TweenLite.to(APP.world.getScene().fog, 1.5, {delay: 1.5, far: 1000, ease: Power3.easeOut});
+    TweenLite.to(APP.world.scene.fog, 1.5, {delay: 1.5, far: 1000, ease: Power3.easeOut});
     TweenLite.to(APP.camera.rotation, 2, {delay: 0.5, x: rotationDest.x, y: rotationDest.y, z: rotationDest.z, ease: Power3.easeOut});
     TweenLite.to(APP.camera.position, 2, {delay: 0.5, z: 50, y: APP.basketY, ease: Power3.easeOut, onComplete: () => {
       APP.animComplete = true;
@@ -798,9 +806,9 @@ const APP = {
     if (levelData.force.m) APP.force.m = levelData.force.m;
     if (levelData.force.xk) APP.force.xk = levelData.force.xk;
 
-    APP.backboard.getNative().material.map = WHS.texture('textures/backboard/' + levelData.level + '/backboard.jpg'),
-    APP.backboard.getNative().material.normalMap =  WHS.texture('textures/backboard/' + levelData.level + '/backboard_normal.jpg'),
-    APP.backboard.getNative().material.displacementMap = WHS.texture('textures/backboard/' + levelData.level + '/backboard_displacement.jpg')
+    APP.backboard.native.material.map = WHS.texture('textures/backboard/' + levelData.level + '/backboard.jpg'),
+    APP.backboard.native.material.normalMap =  WHS.texture('textures/backboard/' + levelData.level + '/backboard_normal.jpg'),
+    APP.backboard.native.material.displacementMap = WHS.texture('textures/backboard/' + levelData.level + '/backboard_displacement.jpg')
 
     APP.basketY = levelData.basketY;
     APP.basketDistance = levelData.basketDistance;
@@ -808,7 +816,7 @@ const APP = {
 
     APP.basket.position.y = APP.basketY;
     APP.basket.position.z = APP.getBasketZ();
-    APP.net.getNative().geometry.translate(0, APP.basketY - tempBY, APP.getBasketZ() - tempBZ);
+    APP.net.native.geometry.translate(0, APP.basketY - tempBY, APP.getBasketZ() - tempBZ);
     APP.backboard.position.y = APP.basketY + 10;
     APP.backboard.position.z = APP.getBasketZ() - APP.getBasketRadius();
     APP.wall.position.z = -APP.basketDistance;
@@ -820,7 +828,7 @@ const APP = {
 
   goToMenu() {
     // Stop picking ball.
-    APP.pick_ball.stop();
+    APP.keep_ball.stop();
     APP.controlsEnabled = false; // Disable moving.
 
     let mark = 0, markText = "";
@@ -842,15 +850,15 @@ const APP = {
     }
 
     // FadeIn effect for 
-    APP.menuDataPlane.getNative().material.map = TexUtils.generateMenuTexture(APP.menu);
+    APP.menuDataPlane.native.material.map = TexUtils.generateMenuTexture(APP.menu);
     APP.menuDataPlane.show();
     APP.selectLevelHelper.show();
 
     if (APP.isMobile) {
-      APP.menuDataPlane.getNative().material.opacity = 0.7;
+      APP.menuDataPlane.native.material.opacity = 0.7;
     } else {
-      APP.menuDataPlane.getNative().material.opacity = 0;
-      TweenLite.to(APP.menuDataPlane.getNative().material, 3, {opacity: 0.7, ease: Power2.easeInOut});
+      APP.menuDataPlane.native.material.opacity = 0;
+      TweenLite.to(APP.menuDataPlane.native.material, 3, {opacity: 0.7, ease: Power2.easeInOut});
     }
 
     // Tween camera position and rotation to go upper and look at basket position.
@@ -864,10 +872,11 @@ const APP = {
       x: cameraDest.rotation.x, 
       y: cameraDest.rotation.y, 
       z: cameraDest.rotation.z, 
-      ease: Power2.easeInOut
+      ease: Power2.easeInOut,
+      onComplete: () => {
+        APP.loop_raycaster.start();
+      }
     });
-
-    setTimeout(() => {APP.loop_raycaster.start()}, 3000);
   },
 
   /* Func: 3 Section. LEVELMENU */
@@ -887,22 +896,22 @@ const APP = {
     TweenLite.to(APP.camera.position, 1, {z: 350, ease: Power2.easeIn});
 
     if (APP.isMobile) {
-      APP.LevelLight1.getNative().intensity = 10;
-      APP.LevelLight2.getNative().intensity = 10;
+      APP.LevelLight1.native.intensity = 10;
+      APP.LevelLight2.native.intensity = 10;
     } else {
       // Reset lights.
-      APP.LevelLight1.getNative().intensity = 0;
-      APP.LevelLight2.getNative().intensity = 0;
+      APP.LevelLight1.native.intensity = 0;
+      APP.LevelLight2.native.intensity = 0;
 
       // Tween turning on lights.
-      TweenLite.to(APP.LevelLight1.getNative(), 0.5, {intensity: 10, ease: Power2.easeIn, delay: 1});
-      TweenLite.to(APP.LevelLight2.getNative(), 0.5, {intensity: 10, ease: Power2.easeIn, delay: 1.5, onComplete: () => {
+      TweenLite.to(APP.LevelLight1.native, 0.5, {intensity: 10, ease: Power2.easeIn, delay: 1});
+      TweenLite.to(APP.LevelLight2.native, 0.5, {intensity: 10, ease: Power2.easeIn, delay: 1.5, onComplete: () => {
         APP.animComplete = true;
       }});
     }
   }
 }
 
-basket.require({ url: 'bower_components/whitestorm/build/whitestorm.js' }).then(() => {
+basket.require({ url: 'bower_components/whs/build/whitestorm.js' }).then(() => {
   APP.init();
 });

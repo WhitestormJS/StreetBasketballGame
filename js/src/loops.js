@@ -9,7 +9,7 @@ export const checkForLevel = (APP) => {
     {
       data_arc: Math.PI * 2, ease: Power2.easeOut, 
       onUpdate: () => {
-        APP.liProgress.G_({arc: APP.liProgress.data_arc});
+        APP.liProgress.g_({arc: APP.liProgress.data_arc});
       },
       onComplete: () => {
         APP.changeLevel(levelToGo);
@@ -45,14 +45,14 @@ export const checkForLevel = (APP) => {
         indicatorTransition.kill();
 
         liProgress.data_arc = 0;
-        liProgress.G_({arc: 0.1});
+        liProgress.g_({arc: 0.1});
       }
     }
   });
 }
 
 export const loop_raycaster = (APP) => {
-  const cameraNative = APP.camera.getNative();
+  const cameraNative = APP.camera.native;
   const raycaster = APP.raycaster;
   const ray = APP.raycaster.ray;
   const plane = APP.planeForRaycasting;
@@ -77,7 +77,7 @@ export const loop_raycaster = (APP) => {
 }
 
 // Pick ball and detect goal.
-export const pick_ball = (APP) => {
+export const keep_ball = (APP) => {
   return new WHS.Loop(() => {
     if (!APP.thrown) APP.pickBall();
 
